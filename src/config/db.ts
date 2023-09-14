@@ -2,7 +2,7 @@ import { initializeApp, applicationDefault, cert } from 'firebase-admin/app'
 import { getFirestore, Timestamp, FieldValue, Filter } from 'firebase-admin/firestore'
 
 
-const serviceAccount = require('./token.json');
+const serviceAccount = require('../../token.json');
 
 initializeApp({
   credential: cert(serviceAccount)
@@ -11,10 +11,10 @@ initializeApp({
 const db = async () =>{
   try{
     getFirestore();
-    console.log('banco de dados conectado com sucesso!!!');
+    console.log('Banco de dados conectado com sucesso!!!');
   }catch(error){
       console.log(error)
   }
-  }
+}
 
 export default db;
