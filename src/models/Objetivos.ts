@@ -1,3 +1,4 @@
+import { PRIORIDADES, STATUS } from "../utils/enum"
 import Tarefas from "./Tarefas"
 
 export default interface Objetivos {
@@ -6,11 +7,12 @@ export default interface Objetivos {
     descricao: string,
     progresso: number,
     total_tarefas: number,
-    prioridade: Enumerator
+    prioridade: PRIORIDADES,
     data_criacao: Date,
     data_inicio: Date,
     data_conclusao: Date,
     data_estimada: Date,
-    status: Enumerator
+    status: STATUS,
     tarefas: Tarefas
 }
+
