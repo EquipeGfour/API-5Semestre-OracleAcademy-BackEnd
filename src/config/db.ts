@@ -17,4 +17,6 @@ const db = async () =>{
   }
 }
 
+export const connection = getFirestore();
+
 export default db;
