@@ -19,6 +19,20 @@ class ObjetivoController {
             res.status(500).json(error);
         }
     }
+    public async alterarPrioridade(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const { novaPrioridade } = req.body;
+            const prioridadeInt = parseInt(novaPrioridade);
+            if (![1, 2, 3, 4].includes(prioridadeInt)) {
+                return res.status(400).json({ error: "Valor de prioridade inválido. A prioridade deve ser 1, 2, 3 ou 4" });
+            }
+            const result = await ObjetivoService.changePriority(id, prioridadeInt);
+            return res.json(result);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 }
 
 
