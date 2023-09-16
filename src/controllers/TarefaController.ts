@@ -23,7 +23,6 @@ class TarefaController{
             const response: Tarefas[] = await TarefaService.createTarefa(id, tarefa);
             res.json(response);
         }catch(error){
-            console.log(error)
             res.status(500).json(error);
         }
     }
