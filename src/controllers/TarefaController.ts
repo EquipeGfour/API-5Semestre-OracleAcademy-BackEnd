@@ -11,6 +11,7 @@ class TarefaController{
             const {id} = req.params;
             const tarefa: Tarefas = req.body;
             let idTarefa: number = uuidv4();
+
             tarefa.id = idTarefa.toString();
             tarefa.data_criacao = Date.now().toString();
             tarefa.data_estimada = "";
@@ -18,6 +19,7 @@ class TarefaController{
             tarefa.status = STATUS.NAO_INICIADO;
             tarefa.anexo = false;
             tarefa.arquivos = null;
+
             const response: Tarefas[] = await TarefaService.createTarefa(id, tarefa);
             res.json(response);
         }catch(error){
