@@ -9,9 +9,11 @@ class TarefaService {
             if (!response.exists) {
                 throw `Objetivo ${id} não encontrado...`
             }
+            let total_tarefas: number = (response.data() as Objetivos).total_tarefas;
+            total_tarefas++;
             const listaObjetivos: Tarefas[] = (response.data() as Objetivos).tarefas;
             listaObjetivos.push(tarefa);
-            await connection.collection("objetivos").doc(id).update({ tarefas: listaObjetivos });
+            await connection.collection("objetivos").doc(id).update({ tarefas: listaObjetivos, total_tarefas:total_tarefas });
             return listaObjetivos;
         } catch (error) {
             throw error
