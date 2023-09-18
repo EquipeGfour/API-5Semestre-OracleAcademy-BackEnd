@@ -17,6 +17,19 @@ class TarefaService {
             throw error
         }
     }
+
+    public async findtaskID(id: string): Promise<Tarefas[]> {
+        try {
+            const response = await connection.collection("objetivos").doc(id).get();
+            if (!response.exists) {
+                throw `Objetivo ${id} não encontrado...`;
+            }
+            const listaObjetivos: Tarefas[] = (response.data() as Objetivos).tarefas;
+            return listaObjetivos;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 

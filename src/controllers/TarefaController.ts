@@ -26,6 +26,16 @@ class TarefaController{
             res.status(500).json(error);
         }
     }
+    public async BuscarTarefaID(req: Request, res: Response) {
+        try {
+            const { id } = req.params; 
+            const tarefas: Tarefas[] = await TarefaService.findtaskID(id); 
+            res.json(tarefas);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
 }
 
 export default new TarefaController();
