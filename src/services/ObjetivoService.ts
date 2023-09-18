@@ -1,9 +1,17 @@
 import { connection } from "../config/db";
-import { Objetivos } from "../models";
+import { Objetivos, Tarefas } from "../models";
 import { PRIORIDADES } from "../utils/enum";
 
 
 class ObjetivoService{
+    public async createObjetivo(objetivo: Objetivos) {
+        try {
+            const response = await connection.collection("objetivos").doc().create(objetivo);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
     public async findAll(){
         try{
             const listaObjetivos: Objetivos[] = [];

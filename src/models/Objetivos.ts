@@ -8,11 +8,11 @@ export default interface Objetivos {
     progresso: number,
     total_tarefas: number,
     prioridade: PRIORIDADES,
-    data_criacao: Date,
-    data_inicio: Date,
-    data_conclusao: Date,
-    data_estimada: Date,
+    data_criacao: string,
+    data_inicio: string,
+    data_conclusao: string,
+    data_estimada: string,
     status: STATUS,
-    tarefas: Tarefas
+    tarefas: Tarefas []
 }
 
