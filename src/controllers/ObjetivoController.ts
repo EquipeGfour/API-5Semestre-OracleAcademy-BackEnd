@@ -14,7 +14,6 @@ class ObjetivoController {
             novoObjetivo.tarefas = []
             novoObjetivo.total_tarefas = 0
             novoObjetivo.data_conclusao = ""
-            novoObjetivo.data_estimada = ""
             novoObjetivo.data_inicio = ""
             const objetivo = await ObjetivoService.createObjetivo(novoObjetivo);
             return res.json(objetivo);
