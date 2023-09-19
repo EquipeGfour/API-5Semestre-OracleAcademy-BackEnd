@@ -26,14 +26,14 @@ class ObjetivoService{
             throw error;
         }
     }
-    public async getObjetivoById(id: string) {
+    public async getObjetivoById(id: string):Promise<Objetivos> {
         try {
             const objetivoRef = connection.collection("objetivos").doc(id);
             const objetivoDoc = await objetivoRef.get();
             if (!objetivoDoc.exists) {
                 throw (`Objetivo com ID ${id} não encontrado!!.`);
             }
-            const objetivoData = objetivoDoc.data();
+            const objetivoData: Objetivos = (objetivoDoc.data()) as Objetivos;
             return objetivoData;
         } catch (error) {
             throw error;
@@ -50,6 +50,14 @@ class ObjetivoService{
             return { message: `Objetivo com ID ${id} foi excluído com sucesso!!.` };
         } catch (error) {
             throw error;
+        }
+    }
+    public async updateObjetivo(id:string, titulo:string, descricao:string, data_estimada:string) {
+        try{
+            await connection.collection("objetivos").doc(id).update({titulo: titulo, descricao: descricao, data_estimada: data_estimada});
+        } catch (error) {
+            console.log(error)
+            throw error
         }
     }
     public async changePriority(id: string, novaPrioridade: PRIORIDADES) {

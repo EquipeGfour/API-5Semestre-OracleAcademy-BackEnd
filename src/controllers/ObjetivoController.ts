@@ -40,6 +40,21 @@ class ObjetivoController {
             res.status(500).json(error);
         }
     }
+    public async editarObjetivo(req: Request, res: Response) {
+        try {
+            const { id } = req.params; 
+            const { titulo, descricao, data_estimada } = req.body;
+            const objetivo: Objetivos = await ObjetivoService.getObjetivoById(id);
+            objetivo.id = id
+            objetivo.titulo = titulo
+            objetivo.data_estimada = data_estimada
+            objetivo.descricao = descricao
+            await ObjetivoService.updateObjetivo(id, titulo, descricao, data_estimada)
+            return res.json(objetivo)
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
     public async alterarPrioridade(req: Request, res: Response) {
         try {
             const { id } = req.params;
