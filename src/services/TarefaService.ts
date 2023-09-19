@@ -32,6 +32,20 @@ class TarefaService {
             throw error;
         }
     }
+    public async editTask(objetivoId: string, taskIdFromBody: string, updatedTask: Tarefas): Promise<Tarefas[]> {
+        try {
+            const listaObjetivos = await this.findtaskID(objetivoId);
+            const taskIndex = listaObjetivos.findIndex((task) => task.id === taskIdFromBody);
+            if (taskIndex === -1) {
+                throw `Tarefa com ID ${taskIdFromBody} não encontrada no objetivo ${objetivoId}...`;
+            }
+            listaObjetivos[taskIndex] = { ...listaObjetivos[taskIndex], ...updatedTask };
+            await connection.collection("objetivos").doc(objetivoId).update({ tarefas: listaObjetivos });
+            return listaObjetivos;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 

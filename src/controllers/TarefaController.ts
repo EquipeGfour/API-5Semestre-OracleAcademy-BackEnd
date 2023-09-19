@@ -35,6 +35,23 @@ class TarefaController{
             res.status(500).json(error);
         }
     }
+    public async EditarTarefa(req: Request, res: Response) {
+        try {
+            const { id } = req.params; 
+            const { taskId } = req.body; 
+            const updatedTaskData: Tarefas = req.body.updatedTask; 
+            const tarefas: Tarefas[] = await TarefaService.findtaskID(id);
+            const taskIndex = tarefas.findIndex((task) => task.id === taskId);
+            if (taskIndex === -1) {
+                return res.status(404).json({ message: `Tarefa com ID ${taskId} não encontrada no objetivo ${id}...` });
+            }
+            tarefas[taskIndex] = { ...tarefas[taskIndex], ...updatedTaskData };
+            const updatedTarefas: Tarefas[] = await TarefaService.editTask(id, taskId, updatedTaskData);
+            res.json(updatedTarefas);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 
 }
 
