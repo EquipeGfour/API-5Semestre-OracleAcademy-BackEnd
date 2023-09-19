@@ -52,7 +52,7 @@ class TarefaController{
             res.status(500).json(error);
         }
     }
-    public async deletarTarefa(req: Request, res: Response){
+    public async DeletarTarefa(req: Request, res: Response){
         try {
             const { id } = req.params
             const {idTarefa} = req.body
@@ -77,7 +77,19 @@ class TarefaController{
         } catch (error) {
             res.status(500).json(error);
         }
-    } 
+    }
+    public async MudarPrioridadeDaTarefa(req: Request, res: Response){
+        try{
+            const {id} = req.params;
+            const idTarefa = req.body.id;
+            const prioridade = req.body.prioridade
+
+            const response = await TarefaService.changeTaskPriority(id, idTarefa, prioridade);
+            return res.json(response);
+        }catch(error){
+            res.status(500).json(error);
+        }
+    }
 }
 
 export default new TarefaController();

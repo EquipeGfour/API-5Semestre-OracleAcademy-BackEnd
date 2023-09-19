@@ -52,12 +52,31 @@ class TarefaService {
             if (!response.exists) {
                 throw `Objetivo ${id} não encontrado...`
             }
-            const Tarefa = (response.data() as Objetivos).tarefas
+            const Tarefa = (response.data() as Objetivos).tarefas;
+            let total_tarefas = (response.data() as Objetivos).total_tarefas;
             const taskIndex = Tarefa.filter((T) => T.id != taskIdFromBody)
-            console.log(taskIndex)
+            total_tarefas--;
             await connection.collection("objetivos").doc(id).update({ tarefas: taskIndex});
             return `Tarefa de ID ${id} excluída`;
         } catch (error) {
+            throw error
+        }
+    }
+    public async changeTaskPriority(idObjetivo: string, idTarefa: string, prioridade): Promise<string> {
+        try{
+            const response = await connection.collection("objetivos").doc(idObjetivo).get();
+            if (!response.exists) {
+                throw `Objetivo ${idObjetivo} não encontrado...`
+            }
+            const tarefas = (response.data() as Objetivos).tarefas;
+            tarefas.forEach((tarefa) => {
+                if(tarefa.id === idTarefa){
+                    tarefa.prioridade = prioridade;
+                }
+            })
+            await connection.collection("objetivos").doc(idObjetivo).update({tarefas: tarefas})
+            return `Prioridade da tarefa com ID ${idTarefa} foi atualizada com sucesso!!.`
+        }catch(error){
             throw error
         }
     }
