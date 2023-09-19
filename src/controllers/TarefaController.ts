@@ -52,7 +52,17 @@ class TarefaController{
             res.status(500).json(error);
         }
     }
-
+    public async deletarTarefa(req: Request, res: Response){
+        try {
+            const { id } = req.params
+            const {idTarefa} = req.body
+            await TarefaService.deleteTafefa(id, idTarefa)
+            return res.json({ message: `Tarefa com ID ${id} deletado com sucesso` })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json(error)
+        }
+    }
 }
 
 export default new TarefaController();

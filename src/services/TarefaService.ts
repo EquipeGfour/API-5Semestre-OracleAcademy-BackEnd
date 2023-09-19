@@ -46,6 +46,21 @@ class TarefaService {
             throw error;
         }
     }
+    public async deleteTafefa(id: string, taskIdFromBody: string) {
+        try{
+            const response = await connection.collection("objetivos").doc(id).get();
+            if (!response.exists) {
+                throw `Objetivo ${id} não encontrado...`
+            }
+            const Tarefa = (response.data() as Objetivos).tarefas
+            const taskIndex = Tarefa.filter((T) => T.id != taskIdFromBody)
+            console.log(taskIndex)
+            await connection.collection("objetivos").doc(id).update({ tarefas: taskIndex});
+            return `Tarefa de ID ${id} excluída`;
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 
