@@ -1,5 +1,5 @@
 import { initializeApp, applicationDefault, cert } from 'firebase-admin/app'
-import { getFirestore, Timestamp, FieldValue, Filter } from 'firebase-admin/firestore'
+import { getFirestore } from 'firebase-admin/firestore'
 
 
 const serviceAccount = require('../../token.json');
@@ -16,5 +16,7 @@ const db = async () =>{
       console.log(error)
   }
 }
+
+export const connection = getFirestore();
 
 export default db;

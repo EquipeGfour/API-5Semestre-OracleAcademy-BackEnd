@@ -6,11 +6,11 @@ export default interface Tarefas {
     titulo: string,
     descricao: string,
     prioridade: PRIORIDADES
-    data_criacao: Date,
-    data_inicio: Date,
-    data_conclusao: Date,
-    data_estimada: Date,
+    data_criacao: string,
+    data_inicio: string,
+    data_conclusao: string,
+    data_estimada: string,
     status: STATUS,
     anexo: Boolean,
-    arquivos: Arquivos
+    arquivos: Arquivos | null
 }
