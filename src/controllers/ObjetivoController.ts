@@ -1,7 +1,28 @@
 import { Request, Response } from "express";
 import { ObjetivoService } from "../services";
+import { Objetivos } from "../models";
+import { STATUS } from "../utils/enum";
 
 class ObjetivoController {
+    public async cadastrarObjetivos(req: Request, res: Response) {
+        try {
+            console.log(req.body)
+            let novoObjetivo:Objetivos = req.body
+            novoObjetivo.data_criacao = Date.now().toString();
+            novoObjetivo.status = STATUS.NAO_INICIADO;
+            novoObjetivo.progresso = 0;
+            novoObjetivo.tarefas = []
+            novoObjetivo.total_tarefas = 0
+            novoObjetivo.data_conclusao = ""
+            novoObjetivo.data_inicio = ""
+            const objetivo = await ObjetivoService.createObjetivo(novoObjetivo);
+            return res.json(objetivo);
+        } catch (error){
+            console.log(error)
+            res.status(500).json(error);
+        }
+    }
+
     public async buscarTodosOsObjetivos(req: Request, res: Response) {
         try {
             const objetivos = await ObjetivoService.findAll();
@@ -15,6 +36,21 @@ class ObjetivoController {
             const { id } = req.params; 
             await ObjetivoService.deleteObjetivo(id);
             return res.json({ message: `Objetivo com ID ${id} deletado com sucesso` });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+    public async editarObjetivo(req: Request, res: Response) {
+        try {
+            const { id } = req.params; 
+            const { titulo, descricao, data_estimada } = req.body;
+            const objetivo: Objetivos = await ObjetivoService.getObjetivoById(id);
+            objetivo.id = id
+            objetivo.titulo = titulo
+            objetivo.data_estimada = data_estimada
+            objetivo.descricao = descricao
+            await ObjetivoService.updateObjetivo(id, titulo, descricao, data_estimada)
+            return res.json(objetivo)
         } catch (error) {
             res.status(500).json(error);
         }

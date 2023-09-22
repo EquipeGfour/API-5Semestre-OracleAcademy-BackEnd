@@ -13,6 +13,6 @@ export default interface Objetivos {
     data_conclusao: string,
     data_estimada: string,
     status: STATUS,
-    tarefas: [Tarefas]
+    tarefas: Tarefas []
 }
 

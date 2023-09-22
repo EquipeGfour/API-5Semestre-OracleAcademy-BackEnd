@@ -21,6 +21,51 @@
         }
       }
     },
+    "/objetivo/criar": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data_criacao": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                },
+                "progresso": {
+                  "example": "any"
+                },
+                "tarefas": {
+                  "example": "any"
+                },
+                "total_tarefas": {
+                  "example": "any"
+                },
+                "data_conclusao": {
+                  "example": "any"
+                },
+                "data_inicio": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/objetivo/deletar/{id}": {
       "delete": {
         "description": "",
