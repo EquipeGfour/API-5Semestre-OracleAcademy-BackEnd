@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ObjetivoService } from "../services";
 import { Objetivos } from "../models";
-import { STATUS } from "../utils/enum";
+import { PRIORIDADES, STATUS } from "../utils/enum";
 
 class ObjetivoController {
     public async cadastrarObjetivos(req: Request, res: Response) {
@@ -15,6 +15,7 @@ class ObjetivoController {
             novoObjetivo.total_tarefas = 0
             novoObjetivo.data_conclusao = ""
             novoObjetivo.data_inicio = ""
+            novoObjetivo.prioridade = novoObjetivo.prioridade || PRIORIDADES.BAIXO
             const objetivo = await ObjetivoService.createObjetivo(novoObjetivo);
             return res.json(objetivo);
         } catch (error){
