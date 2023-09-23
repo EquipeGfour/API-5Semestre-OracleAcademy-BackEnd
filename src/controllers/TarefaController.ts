@@ -54,12 +54,11 @@ class TarefaController{
     }
     public async DeletarTarefa(req: Request, res: Response){
         try {
-            const { id } = req.params
-            const {idTarefa} = req.body
-            await TarefaService.deleteTafefa(id, idTarefa)
+            const { id, idtarefa } = req.params            
+            await TarefaService.deleteTafefa(id, idtarefa)
             return res.json({ message: `Tarefa com ID ${id} deletado com sucesso` })
         } catch (error) {
-            console.log(error)
+
             res.status(500).json(error)
         }
     }

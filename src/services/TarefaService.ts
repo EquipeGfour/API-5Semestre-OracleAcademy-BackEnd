@@ -53,7 +53,7 @@ class TarefaService {
                 throw `Objetivo ${id} não encontrado...`
             }
             const Tarefa = (response.data() as Objetivos).tarefas;
-            let total_tarefas = (response.data() as Objetivos).total_tarefas;
+            let total_tarefas = (response.data() as Objetivos).total_tarefas;          
             const taskIndex = Tarefa.filter((T) => T.id != taskIdFromBody)
             total_tarefas--;
             await connection.collection("objetivos").doc(id).update({ tarefas: taskIndex});
