@@ -15,6 +15,7 @@
 <br>
 
 <h2> :gear: Executando o Back </h2>
+Obs.: Será preciso ter o tokken do Firebase para rodar o Back-End
 
 ```bash
 
@@ -25,11 +26,8 @@ git clone https://github.com/EquipeGfour/API-5Semestre-OracleAcademy-BackEnd.git
 npm install
 
 # Inicie o sistema:
-npm run start
+npm run dev
 ```
 <br>
 
-## Swagger
-   
- [Documentação com toda a parte de rotas da aplicação, no site do Swaggerhub - Versão 1.0.0](https://app.swaggerhub.com/apis-docs/VINIZEUS2002/api-tec_sus/1.0.0)
 
