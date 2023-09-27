@@ -1,4 +1,4 @@
-import ObjetivoController from "./ObjetivoController";
-import TarefaController from "./TarefaController";
+// import ObjetivoController from "./ObjetivoController";
+// import TarefaController from "./TarefaController";
 
-export { ObjetivoController, TarefaController };
+// export { ObjetivoController, TarefaController };
