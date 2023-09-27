@@ -16,8 +16,7 @@ interface IObjetivo {
     data_inicio: string,
     data_conclusao: string,
     data_estimada: string,
-    status: STATUS,
-    tarefas: ITarefa []
+    status: STATUS
 }
 
 const objetivo = new Schema({
@@ -60,8 +59,7 @@ const objetivo = new Schema({
         enum: STATUS,
         default: STATUS.NAO_INICIADO,
         require: false
-    },
-    //tarefas: Tarefas []
+    }
 })
 
 const Objetivo = mongoose.model<IObjetivo>("objetivos", objetivo);

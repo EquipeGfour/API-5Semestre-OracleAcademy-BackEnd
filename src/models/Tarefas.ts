@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { PRIORIDADES, STATUS } from "../utils/enum"
 import Arquivos from "./Arquivos"
+import { IObjetivo, Objetivo } from "./Objetivos";
 
 
 const { Schema } = mongoose;
@@ -15,7 +16,8 @@ interface ITarefa {
     data_estimada: string,
     status: STATUS,
     anexo: Boolean,
-    arquivos: Arquivos
+    arquivos: Arquivos,
+    objetivo_id: IObjetivo
 }
 
 const tarefa = new Schema({
@@ -36,7 +38,11 @@ const tarefa = new Schema({
         default: STATUS.NAO_INICIADO
     },
     anexo: Boolean,
-    //arquivos: Arquivos
+    //arquivos: Arquivos,
+    objetivo_id: {
+        type: mongoose.Types.ObjectId,
+        ref: Objetivo
+    }
 });
 
 const Tarefa = mongoose.model<ITarefa>("tarefas", tarefa);
