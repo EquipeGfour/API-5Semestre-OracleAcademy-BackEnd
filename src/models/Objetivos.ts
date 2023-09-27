@@ -23,21 +23,43 @@ interface IObjetivo {
 const objetivo = new Schema({
     titulo: String,
     descricao: String,
-    progresso: Number,
-    total_tarefas: Number,
+    progresso: {
+        type: Number,
+        default: 0,
+        require: false
+    },
+    total_tarefas: {
+        type: Number,
+        default: 0,
+        require: false
+    },
     prioridade: {
         type: Number,
         enum: PRIORIDADES,
-        default: PRIORIDADES.BAIXO
+        default: PRIORIDADES.BAIXO,
+        require: false
     },
-    data_criacao: String,
-    data_inicio: String,
-    data_conclusao: String,
+    data_criacao: {
+        type: String, 
+        require: false,
+        default: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0],
+    },
+    data_inicio: {
+        type: String, 
+        require: false,
+        default:""
+    },
+    data_conclusao: {
+        type: String, 
+        require: false,
+        default:""
+    },
     data_estimada: String,
     status: {
         type: Number,
         enum: STATUS,
-        default: STATUS.NAO_INICIADO
+        default: STATUS.NAO_INICIADO,
+        require: false
     },
     //tarefas: Tarefas []
 })

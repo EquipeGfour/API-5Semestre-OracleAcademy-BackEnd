@@ -1,4 +1,4 @@
-// import ObjetivoService from "./ObjetivoService";
-// import TarefaService from "./TarefaService";
+import ObjetivoService from "./ObjetivoService";
 
-// export { ObjetivoService, TarefaService };
+
+export { ObjetivoService };
