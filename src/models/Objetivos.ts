@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { PRIORIDADES, STATUS } from "../utils/enum";
-import { ITarefa } from './Tarefas';
 
 
 const { Schema } = mongoose;
@@ -53,7 +52,11 @@ const objetivo = new Schema({
         require: false,
         default:""
     },
-    data_estimada: String,
+    data_estimada: {
+        type: String, 
+        require: true,
+        default: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0],
+    },
     status: {
         type: Number,
         enum: STATUS,

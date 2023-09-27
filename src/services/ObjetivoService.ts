@@ -12,20 +12,15 @@ class ObjetivoService{
             throw error;
         }
     }
-    // public async findAll(){
-    //     try{
-    //         const listaObjetivos: IObjetivos[] = [];
-    //         const objetivos = await connection.collection("objetivos").get();
-    //         if(!objetivos.empty){
-    //             objetivos.forEach(doc => {
-    //                 listaObjetivos.push({id: doc.id, ...doc.data() as IObjetivos})
-    //             })
-    //         }
-    //         return listaObjetivos;
-    //     }catch(error){
-    //         throw error;
-    //     }
-    // }
+
+    public async findAll(){
+        try{
+            const objetivos = await Objetivo.find({},'-__v');
+            return objetivos;
+        }catch(error){
+            throw error;
+        }
+    }
     // public async getObjetivoById(id: string):Promise<IObjetivos> {
     //     try {
     //         const objetivoRef = connection.collection("objetivos").doc(id);

@@ -18,19 +18,19 @@ class ObjetivoController {
             const objetivo = await ObjetivoService.createObjetivo(novoObjetivo);
             return res.json(objetivo);
         } catch (error){
-            console.log(error)
             res.status(500).json(error);
         }
     }
 
-    // public async buscarTodosOsObjetivos(req: Request, res: Response) {
-    //     try {
-    //         const objetivos = await ObjetivoService.findAll();
-    //         return res.json(objetivos);
-    //     } catch (error) {
-    //         res.status(500).json(error);
-    //     }
-    // }
+    public async buscarTodosOsObjetivos(req: Request, res: Response) {
+        try {
+            const objetivos = await ObjetivoService.findAll();
+            return res.json(objetivos);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
     // public async deletarObjetivo(req: Request, res: Response) {
     //     try {
     //         const { id } = req.params; 
