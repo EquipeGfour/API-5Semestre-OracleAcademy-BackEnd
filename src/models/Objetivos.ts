@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
-import { PRIORIDADES, STATUS } from "../utils/enum"
-import Tarefas from "./Tarefas"
+import { PRIORIDADES, STATUS } from "../utils/enum";
+import { ITarefa } from './Tarefas';
+
 
 const { Schema } = mongoose;
 
-export default interface IObjetivos {
+interface IObjetivo {
     id?: string | null,
     titulo: string,
     descricao: string,
@@ -16,7 +17,7 @@ export default interface IObjetivos {
     data_conclusao: string,
     data_estimada: string,
     status: STATUS,
-    tarefas: Tarefas []
+    tarefas: ITarefa []
 }
 
 const objetivo = new Schema({
@@ -33,8 +34,14 @@ const objetivo = new Schema({
     data_inicio: String,
     data_conclusao: String,
     data_estimada: String,
-    status: STATUS,
+    status: {
+        type: Number,
+        enum: STATUS,
+        default: STATUS.NAO_INICIADO
+    },
     //tarefas: Tarefas []
 })
 
-export const Objetivo = mongoose.model<IObjetivos>("objetivos", objetivo);
+const Objetivo = mongoose.model<IObjetivo>("objetivos", objetivo);
+
+export { Objetivo, IObjetivo };
