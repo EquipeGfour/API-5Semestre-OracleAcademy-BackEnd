@@ -9,13 +9,12 @@ class ObjetivoController {
         try {
             const { titulo, descricao, data_estimada, prioridade } = req.body;
             console.log(req.body)
-            let novoObjetivo = {
+            let novoObjetivo = new Objetivo({
                 titulo: titulo,
                 descricao: descricao,
                 data_estimada: data_estimada,
                 prioridade: prioridade,
-                data_criacao: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0],
-            };
+            });
             const objetivo = await ObjetivoService.createObjetivo(novoObjetivo);
             return res.json(objetivo);
         } catch (error){
@@ -36,7 +35,7 @@ class ObjetivoController {
         try{
             const { id } = req.params;
             if(!idEhValido(id)){
-                throw`id ${id} não é valido...`;
+                throw `id ${id} não é valido...`;
             }
             const objetivo = await ObjetivoService.getObjetivoById(id);
             res.status(200).json(objetivo);

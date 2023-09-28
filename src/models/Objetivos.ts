@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { PRIORIDADES, STATUS } from "../utils/enum";
+import { ITarefa, Tarefa } from './Tarefas';
 
 
 const { Schema } = mongoose;
@@ -15,7 +16,8 @@ interface IObjetivo {
     data_inicio: string,
     data_conclusao: string,
     data_estimada: string,
-    status: STATUS
+    status: STATUS,
+    tarefas: ITarefa[]
 }
 
 const objetivo = new Schema({
@@ -62,7 +64,11 @@ const objetivo = new Schema({
         enum: STATUS,
         default: STATUS.NAO_INICIADO,
         require: false
-    }
+    },
+    tarefas:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:Tarefa
+    }]
 })
 
 const Objetivo = mongoose.model<IObjetivo>("objetivos", objetivo);

@@ -15,7 +15,7 @@ class ObjetivoService{
 
     public async findAll():Promise<IObjetivo[]>{
         try{
-            const objetivos = await Objetivo.find({},'-__v');
+            const objetivos = await Objetivo.find({},'-__v').populate("tarefas", "-__v").exec();
             return objetivos;
         }catch(error){
             throw error;
@@ -23,9 +23,9 @@ class ObjetivoService{
     }
     public async getObjetivoById(id: string):Promise<IObjetivo> {
         try {
-            const objetivo = await Objetivo.findById(id, '-__v');
+            const objetivo = await Objetivo.findById(id, '-__v').populate("tarefas", "-__v").exec();
             if(!objetivo){
-                throw  `usuario ${id} não encontrado....`;
+                throw  `objetivo ${id} não encontrado....`;
             }
             return objetivo;
         } catch (error) {

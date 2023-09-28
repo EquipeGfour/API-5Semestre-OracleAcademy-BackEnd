@@ -17,7 +17,7 @@ interface ITarefa {
     status: STATUS,
     anexo: Boolean,
     arquivos: Arquivos,
-    objetivo_id: IObjetivo
+    // objetivo_id: IObjetivo
 }
 
 const tarefa = new Schema({
@@ -28,21 +28,35 @@ const tarefa = new Schema({
         enum: PRIORIDADES,
         default: PRIORIDADES.BAIXO
     },
-    data_criacao: String,
-    data_inicio: String,
-    data_conclusao: String,
+    data_criacao: {
+        type: String, 
+        require: false,
+        default: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0],
+    },
+    data_inicio: {
+        type: String, 
+        require: false,
+        default:""
+    },
+    data_conclusao: {
+        type: String, 
+        require: false,
+        default:""
+    },
     data_estimada: String,
     status: {
         type: Number,
         enum: STATUS,
-        default: STATUS.NAO_INICIADO
+        default: STATUS.NAO_INICIADO,
+        require:false
     },
     anexo: Boolean,
     //arquivos: Arquivos,
-    objetivo_id: {
-        type: mongoose.Types.ObjectId,
-        ref: Objetivo
-    }
+    // objetivo_id: {
+    //     type: mongoose.Types.ObjectId,
+    //     ref: Objetivo,
+    //     require: false
+    // }
 });
 
 const Tarefa = mongoose.model<ITarefa>("tarefas", tarefa);
