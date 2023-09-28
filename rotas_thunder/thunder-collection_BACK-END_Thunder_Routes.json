@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "[BACK-END]  Thunder Routes",
-    "dateExported": "2023-09-28T22:05:54.415Z",
+    "dateExported": "2023-09-28T23:06:19.884Z",
     "version": "1.1",
     "folders": [
         {
@@ -84,13 +84,32 @@
             "colId": "395121dc-e42e-462d-981e-2d701ceaa90e",
             "containerId": "37afd2b6-24ed-4165-a012-463e6cdc97b8",
             "name": "Buscar por um objetivo",
-            "url": "localhost:3004/objetivo/buscar/6514ae22386d4ad093062b11",
+            "url": "localhost:3004/objetivo/buscar/651605947ef51760094fa669",
             "method": "GET",
             "sortNum": 40000,
             "created": "2023-09-28T22:05:01.263Z",
-            "modified": "2023-09-28T22:05:41.915Z",
+            "modified": "2023-09-28T23:03:15.066Z",
             "headers": [],
             "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ba9cb924-d6af-4e80-8c82-2fa5b83816e5",
+            "colId": "395121dc-e42e-462d-981e-2d701ceaa90e",
+            "containerId": "534c6d6c-7dc3-42e8-a2fd-123220bd0886",
+            "name": "Cadastrar Tarefa",
+            "url": "http://localhost:3004/tarefa/criar/651605947ef51760094fa669",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-09-28T22:31:51.230Z",
+            "modified": "2023-09-28T23:00:41.922Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"titulo\":\"Teste da tarefa\",\n  \"descricao\":\"Apenas um teste da tarefa\",\n  \"prioridade\": 2,\n  \"data_estimada\":\"29/07/2024\"\n}",
+                "form": []
+            },
             "tests": []
         }
     ]
