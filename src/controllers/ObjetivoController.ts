@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import { ObjetivoService } from "../services";
 import { Objetivo, IObjetivo } from "../models";
 import { PRIORIDADES, STATUS } from "../utils/enum";
+import { idEhValido } from "../utils/utils";
 
 class ObjetivoController {
-    public async cadastrarObjetivos(req: Request, res: Response) {
+    public async cadastrarObjetivo(req: Request, res: Response) {
         try {
             const { titulo, descricao, data_estimada, prioridade } = req.body;
             console.log(req.body)
@@ -31,6 +32,18 @@ class ObjetivoController {
         }
     }
 
+    public async buscarPorUmObjetivo(req: Request, res: Response){
+        try{
+            const { id } = req.params;
+            if(!idEhValido(id)){
+                throw`id ${id} não é valido...`;
+            }
+            const objetivo = await ObjetivoService.getObjetivoById(id);
+            res.status(200).json(objetivo);
+        }catch(error){
+            res.status(500).json({message:error});
+        }
+    }
     // public async deletarObjetivo(req: Request, res: Response) {
     //     try {
     //         const { id } = req.params; 

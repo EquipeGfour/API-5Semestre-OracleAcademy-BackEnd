@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "[BACK-END]  Thunder Routes",
-    "dateExported": "2023-09-27T23:09:42.744Z",
+    "dateExported": "2023-09-28T22:05:54.415Z",
     "version": "1.1",
     "folders": [
         {
@@ -77,6 +77,20 @@
                 "raw": "{\n  \"titulo\":\"Teste\",\n  \"descricao\":\"Apenas um teste\",\n  \"prioridade\": 2,\n  \"data_estimada\":\"29/07/2024\"\n}",
                 "form": []
             },
+            "tests": []
+        },
+        {
+            "_id": "2b6f8605-0fe3-42dd-a9cd-cb25384cfb26",
+            "colId": "395121dc-e42e-462d-981e-2d701ceaa90e",
+            "containerId": "37afd2b6-24ed-4165-a012-463e6cdc97b8",
+            "name": "Buscar por um objetivo",
+            "url": "localhost:3004/objetivo/buscar/6514ae22386d4ad093062b11",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-09-28T22:05:01.263Z",
+            "modified": "2023-09-28T22:05:41.915Z",
+            "headers": [],
+            "params": [],
             "tests": []
         }
     ]

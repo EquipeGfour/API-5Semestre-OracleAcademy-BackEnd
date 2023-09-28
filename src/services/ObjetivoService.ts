@@ -13,7 +13,7 @@ class ObjetivoService{
         }
     }
 
-    public async findAll(){
+    public async findAll():Promise<IObjetivo[]>{
         try{
             const objetivos = await Objetivo.find({},'-__v');
             return objetivos;
@@ -21,19 +21,17 @@ class ObjetivoService{
             throw error;
         }
     }
-    // public async getObjetivoById(id: string):Promise<IObjetivos> {
-    //     try {
-    //         const objetivoRef = connection.collection("objetivos").doc(id);
-    //         const objetivoDoc = await objetivoRef.get();
-    //         if (!objetivoDoc.exists) {
-    //             throw (`Objetivo com ID ${id} não encontrado!!.`);
-    //         }
-    //         const objetivoData: IObjetivos = (objetivoDoc.data()) as IObjetivos;
-    //         return objetivoData;
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // }
+    public async getObjetivoById(id: string):Promise<IObjetivo> {
+        try {
+            const objetivo = await Objetivo.findById(id, '-__v');
+            if(!objetivo){
+                throw  `usuario ${id} não encontrado....`;
+            }
+            return objetivo;
+        } catch (error) {
+            throw error;
+        }
+    }
     // public async deleteObjetivo(id: string) {
     //     try {
     //         const objetivoByID = connection.collection("objetivos").doc(id);
