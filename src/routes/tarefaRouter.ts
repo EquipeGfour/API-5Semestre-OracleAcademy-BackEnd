@@ -8,7 +8,7 @@ routes.post("/criar/:id", TarefaController.criarTarefa);
 // routes.get("/buscarTarefas/:id", TarefaController.BuscarTarefas);
 // routes.put("/editar/:id", TarefaController.EditarTarefa);
 // routes.delete("/deletar/:id/:idtarefa", TarefaController.DeletarTarefa);
-// routes.get("/buscarTarefa/:id", TarefaController.BuscarTarefaID);
+routes.get("/buscarTarefa/:id", TarefaController.buscarTarefaPorIds);
 // routes.put("/mudarPrioridade/:id", TarefaController.MudarPrioridadeDaTarefa);
 
 export default routes;

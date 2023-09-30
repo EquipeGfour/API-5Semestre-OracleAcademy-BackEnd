@@ -9,7 +9,7 @@ routes.get("/buscar/:id", ObjetivoController.buscarPorUmObjetivo);
 routes.post("/criar", ObjetivoController.cadastrarObjetivo);
 // routes.delete("/deletar/:id", ObjetivoController.deletarObjetivo);
 // routes.put("/mudarPrioridade/:id", ObjetivoController.alterarPrioridade);
-// routes.put("/editar/:id", ObjetivoController.editarObjetivo);
+routes.put("/editar/:id", ObjetivoController.editarObjetivo);
 
 
 export default routes;

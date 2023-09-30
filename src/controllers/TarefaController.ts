@@ -15,14 +15,31 @@ class TarefaController{
             }
             const objetivo = await ObjetivoService.getObjetivoById(id);
             const { titulo, descricao, data_estimada, prioridade } = req.body;
-
             const response = await  TarefaService.createTarefa(titulo, descricao, data_estimada, prioridade, objetivo);
             return res.status(200).json(response);
         }catch(error){
             res.status(500).json(error);
         }
     }
-
+    public async buscarTarefaPorIds(req: Request, res: Response) {
+        try {
+            const { objetivoId } = req.params; 
+            const { tarefaId } = req.body;
+            const tarefa = await TarefaService.findTarefaById(objetivoId, tarefaId);
+            return res.json(tarefa);
+        } catch (error) {
+            res.status(500).json({ error: error.message || "Ocorreu um erro durante a busca da tarefa." });
+        }
+    }
+    public async BuscarTarefas(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const tarefas = await TarefaService.findTarefasByObjetivoId(id);
+            return res.json(tarefas);
+        } catch (error) {
+            res.status(500).json({ error: error.message || "Ocorreu um erro durante a busca das tarefas do objetivo." });
+        }
+    }
     // public async BuscarTarefas(req: Request, res: Response) {
     //     try {
     //         const { id } = req.params; 
@@ -57,21 +74,6 @@ class TarefaController{
     //     } catch (error) {
 
     //         res.status(500).json(error)
-    //     }
-    // }
-    // public async BuscarTarefaID(req: Request, res: Response) {
-    //     try {
-    //         const { id } = req.params; 
-    //         const { id:taskId } = req.body;
-    //         const tarefas: Tarefas[] = await TarefaService.findtaskID(id); 
-    //         const taskEncontrada = tarefas.find((task) => task.id === taskId);
-    //         if (taskEncontrada) {
-    //             res.json(taskEncontrada);
-    //         } else {
-    //             res.status(404).json({ message: `Tarefa com ID ${taskId} não encontrada no objetivo ${id}` });
-    //         }
-    //     } catch (error) {
-    //         res.status(500).json(error);
     //     }
     // }
     // public async MudarPrioridadeDaTarefa(req: Request, res: Response){

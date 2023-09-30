@@ -43,26 +43,21 @@ class ObjetivoController {
             res.status(500).json({message:error});
         }
     }
+    public async editarObjetivo(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const objetivoData = req.body;
+            const updatedObjetivo = await ObjetivoService.updateObjetivo(id, objetivoData);
+            return res.json(updatedObjetivo);
+        } catch (error) {
+            res.status(500).json({ error: error.message || "Ocorreu um erro durante a atualização do objetivo." });
+        }
+    }
     // public async deletarObjetivo(req: Request, res: Response) {
     //     try {
     //         const { id } = req.params; 
     //         await ObjetivoService.deleteObjetivo(id);
     //         return res.json({ message: `Objetivo com ID ${id} deletado com sucesso` });
-    //     } catch (error) {
-    //         res.status(500).json(error);
-    //     }
-    // }
-    // public async editarObjetivo(req: Request, res: Response) {
-    //     try {
-    //         const { id } = req.params; 
-    //         const { titulo, descricao, data_estimada } = req.body;
-    //         const objetivo: IObjetivos = await ObjetivoService.getObjetivoById(id);
-    //         objetivo.id = id
-    //         objetivo.titulo = titulo
-    //         objetivo.data_estimada = data_estimada
-    //         objetivo.descricao = descricao
-    //         await ObjetivoService.updateObjetivo(id, titulo, descricao, data_estimada)
-    //         return res.json(objetivo)
     //     } catch (error) {
     //         res.status(500).json(error);
     //     }

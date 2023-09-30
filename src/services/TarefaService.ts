@@ -18,19 +18,36 @@ class TarefaService {
             throw error
         }
     }
-
-    // public async findtaskID(id: string): Promise<Tarefas[]> {
-    //     try {
-    //         const response = await connection.collection("objetivos").doc(id).get();
-    //         if (!response.exists) {
-    //             throw `Objetivo ${id} não encontrado...`;
-    //         }
-    //         const listaObjetivos: Tarefas[] = (response.data() as IObjetivos).tarefas;
-    //         return listaObjetivos;
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // }
+    public async findTarefaById(objetivoId: string, tarefaId: string) {
+        try {
+            const tarefa = await Tarefa.findOne({ _id: tarefaId, objetivo: objetivoId });
+            if (!tarefa) {
+                throw `Tarefa com ID ${tarefaId} não encontrada no objetivo ${objetivoId}.`;
+            }
+            return tarefa;
+        } catch (error) {
+            throw error;
+        }
+    }
+    public async findallTarefa(objetivoId: string, tarefaId: string) {
+        try {
+            const tarefa = await Tarefa.find({ _id: tarefaId, objetivo: objetivoId });
+            if (!tarefa) {
+                throw `Tarefa com ID ${tarefaId} não encontrada no objetivo ${objetivoId}.`;
+            }
+            return tarefa;
+        } catch (error) {
+            throw error;
+        }
+    }
+    public async findTarefasByObjetivoId(objetivoId: string) {
+        try {
+            const tarefas = await Tarefa.find({ objetivo: objetivoId });
+            return tarefas;
+        } catch (error) {
+            throw error;
+        }
+    }
     // public async editTask(objetivoId: string, taskIdFromBody: string, updatedTask: Tarefas): Promise<Tarefas[]> {
     //     try {
     //         const listaObjetivos = await this.findtaskID(objetivoId);
