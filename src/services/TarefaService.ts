@@ -48,6 +48,14 @@ class TarefaService {
             throw error;
         }
     }
+    public async deleteTarefa(id:string) {
+        try {
+            const deleteTarefa = await Tarefa.findByIdAndDelete(id)
+            return deleteTarefa
+        } catch(error) {
+
+        }
+    }
     // public async editTask(objetivoId: string, taskIdFromBody: string, updatedTask: Tarefas): Promise<Tarefas[]> {
     //     try {
     //         const listaObjetivos = await this.findtaskID(objetivoId);

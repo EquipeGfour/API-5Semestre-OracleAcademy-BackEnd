@@ -40,6 +40,15 @@ class TarefaController{
             res.status(500).json({ error: error.message || "Ocorreu um erro durante a busca das tarefas do objetivo." });
         }
     }
+    public async excluirTarefa(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const deletedTarefa = await TarefaService.deleteTarefa(id)
+            return res.json(deletedTarefa)
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
     // public async BuscarTarefas(req: Request, res: Response) {
     //     try {
     //         const { id } = req.params; 
