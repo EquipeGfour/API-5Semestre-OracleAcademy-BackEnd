@@ -62,7 +62,7 @@ class TarefaService {
         try {
             const tarefas = await Tarefa.findById(id)
             if (!tarefas) {
-                throw new Error(`Tarefa ${id} não encontrada.`);
+                throw`Tarefa ${id} não encontrada.`;
             }
             return tarefas;
         } catch (error) {
@@ -73,7 +73,7 @@ class TarefaService {
         try {
             const tarefa = await Tarefa.findById(id)
             if (!tarefa) {
-                throw new Error(`Tarefa ${id} não encontrada.`);
+                throw `Tarefa ${id} não encontrada.`;
             }
             const prioridadeTarefa = await tarefa.updateOne({ prioridade: novaPrioridade })
             return prioridadeTarefa

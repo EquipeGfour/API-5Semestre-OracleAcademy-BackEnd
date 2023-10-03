@@ -56,8 +56,9 @@ class ObjetivoController {
     public async excluirObjetivo(req: Request, res: Response) {
         try {
             const { id } = req.params;
+            await ObjetivoService.getObjetivoById(id);
             const deletedObjetivo = await ObjetivoService.deleteObjetivo(id);
-            return res.json(deletedObjetivo);
+            return res.json(`objetivo ${id} excluido com sucesso...`);
         } catch (error) {
             res.status(500).json(error);
         }

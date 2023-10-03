@@ -34,9 +34,10 @@ class TarefaController {
 
     public async excluirTarefa(req: Request, res: Response) {
         try {
-            const { id } = req.params
+            const { id } = req.params;
+            await TarefaService.findTaskByID(id);
             const deletedTarefa = await TarefaService.deleteTarefa(id)
-            return res.json(deletedTarefa)
+            return res.json(`tarefa ${id} excluida com sucesso...`)
         } catch (error) {
             res.status(500).json(error)
         }

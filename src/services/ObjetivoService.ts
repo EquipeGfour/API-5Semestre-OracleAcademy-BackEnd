@@ -51,7 +51,7 @@ class ObjetivoService{
     }
     public async deleteObjetivo(id:string) {
         try {
-            const deleteObjetivo = await Objetivo.findByIdAndDelete(id)
+            const deleteObjetivo = await Objetivo.findByIdAndDelete(id);
             return deleteObjetivo
         } catch (error) {
             throw error
