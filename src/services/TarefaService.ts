@@ -1,8 +1,8 @@
-import {Tarefa} from "../models"
-
+import { Tarefa } from "../models"
+import ObjetivoService from "./ObjetivoService";
 
 class TarefaService {
-    public async createTarefa(titulo, descricao, data_estimada, prioridade, objetivo ) {
+    public async createTarefa(titulo, descricao, data_estimada, prioridade, objetivo) {
         try {
             const tarefa = new Tarefa({
                 titulo: titulo,
@@ -24,40 +24,53 @@ class TarefaService {
             if (!tarefa) {
                 throw `Tarefa com ID ${tarefaId} não encontrada no objetivo ${objetivoId}.`;
             }
-            return tarefa;
+            const atualizado = await tarefa.updateOne()
+            return atualizado;
         } catch (error) {
             throw error;
         }
     }
-    public async findallTarefa(objetivoId: string, tarefaId: string) {
+    public async findallTarefa() {
         try {
-            const tarefa = await Tarefa.find({ _id: tarefaId, objetivo: objetivoId });
+            const tarefa = await Tarefa.find();
             if (!tarefa) {
-                throw `Tarefa com ID ${tarefaId} não encontrada no objetivo ${objetivoId}.`;
+                throw `tarefas nao encontradas`;
             }
             return tarefa;
         } catch (error) {
             throw error;
         }
     }
-    public async findTarefasByObjetivoId(objetivoId: string) {
+    public async findTarefasByObjetivoId(id) {
         try {
-            const tarefas = await Tarefa.find({ objetivo: objetivoId });
+            const objetivo = await ObjetivoService.getObjetivoById(id);
+            const tarefas = objetivo.tarefas
             return tarefas;
         } catch (error) {
             throw error;
         }
     }
-    public async deleteTarefa(id:string) {
+    public async deleteTarefa(id: string) {
         try {
             const deleteTarefa = await Tarefa.findByIdAndDelete(id)
             return deleteTarefa
-        } catch(error) {
+        } catch (error) {
 
         }
     }
-    public async changePriority(id:string, novaPrioridade:any) {
-        try{
+    public async findTaskByID(id) {
+        try {
+            const tarefas = await Tarefa.findById(id)
+            if (!tarefas) {
+                throw new Error(`Tarefa ${id} não encontrada.`);
+            }
+            return tarefas;
+        } catch (error) {
+            throw error;
+        }
+    }
+    public async changePriority(id: string, novaPrioridade: any) {
+        try {
             const tarefa = await Tarefa.findById(id)
             if (!tarefa) {
                 throw new Error(`Tarefa ${id} não encontrada.`);
@@ -66,6 +79,25 @@ class TarefaService {
             return prioridadeTarefa
         } catch (error) {
             throw error
+        }
+    }
+
+    public async editarTarefa(tarefaId: string, titulo: string, descricao: string, data_estimada:string, prioridade: number) {
+        try {
+            const tarefa = await Tarefa.findById(tarefaId);
+
+            if (!tarefa) {
+                throw `Tarefa com ID ${tarefaId} não encontrada.`;
+            }
+            tarefa.titulo = titulo;
+            tarefa.descricao = descricao;
+            tarefa.data_estimada = data_estimada;
+            tarefa.prioridade = prioridade;
+            const tarefaAtualizada = await tarefa.save();
+
+            return tarefaAtualizada;
+        } catch (error) {
+            throw error;
         }
     }
     // public async editTask(objetivoId: string, taskIdFromBody: string, updatedTask: Tarefas): Promise<Tarefas[]> {
