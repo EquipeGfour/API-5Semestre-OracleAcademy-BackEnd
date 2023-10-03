@@ -1,6 +1,6 @@
 import Arquivos from "./Arquivos";
-import Objetivos from "./Objetivos";
-import Tarefas from "./Tarefas";
+import { Objetivo, IObjetivo } from "./Objetivos";
+import { Tarefa, ITarefa } from "./Tarefas";
 import Usuario from "./Usuario";
 
-export { Objetivos, Tarefas, Usuario, Arquivos}
+export { Objetivo, IObjetivo, Tarefa, ITarefa, Usuario, Arquivos}

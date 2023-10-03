@@ -1,22 +1,22 @@
-import { initializeApp, applicationDefault, cert } from 'firebase-admin/app'
-import { getFirestore } from 'firebase-admin/firestore'
+import mongoose from "mongoose";
+import * as dotenv from "dotenv";
 
 
-const serviceAccount = require('../../token.json');
+dotenv.config()
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
+const URI = process.env.URI || '';
 
-const db = async () =>{
-  try{
-    getFirestore();
-    console.log('Banco de dados conectado com sucesso!!!');
-  }catch(error){
-      console.log(error)
+const startDb = async () => {
+  try {
+    if (URI != "") {
+      await mongoose.connect(URI);
+      console.log("Conectado ao banco...");
+    } else {
+      console.log("URI de conexão necessaria...");
+    }
+  } catch (error) {
+    console.log(error);
   }
-}
+};
 
-export const connection = getFirestore();
-
-export default db;
+export default startDb;
