@@ -9,6 +9,6 @@ routes.post("/criar/:id", TarefaController.criarTarefa);
 // routes.put("/editar/:id", TarefaController.EditarTarefa);
 routes.delete("/deletar/:id", TarefaController.excluirTarefa);
 routes.get("/buscarTarefa/:id", TarefaController.buscarTarefaPorIds);
-// routes.put("/mudarPrioridade/:id", TarefaController.MudarPrioridadeDaTarefa);
+routes.put("/mudarPrioridade/:id", TarefaController.alterarPrioridade);
 
 export default routes;

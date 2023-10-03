@@ -57,16 +57,14 @@ class ObjetivoService{
             throw error
         }
     }
-    public async changePriority(id:string, novaPrioridade:PRIORIDADES) {
+    public async changePriority(id:string, novaPrioridade:any) {
         try{
-            if (![1, 2, 3, 4].includes(novaPrioridade)) {
-                throw ("Valor de prioridade inválido. A prioridade deve ser 1, 2, 3 ou 4!!.");
-            }
-            const objetivo = await Objetivo.findByIdAndUpdate(id)
-            if (objetivo) {
+            const objetivo = await Objetivo.findById(id)
+            if (!objetivo) {
                 throw new Error(`Objetivo ${id} não encontrado.`);
             }
-            return objetivo
+            const prioridadeObjetivo = await objetivo.updateOne({ prioridade: novaPrioridade })
+            return prioridadeObjetivo
         } catch (error) {
             throw error
         }

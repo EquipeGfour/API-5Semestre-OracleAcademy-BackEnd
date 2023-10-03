@@ -65,11 +65,8 @@ class ObjetivoController {
     public async alterarPrioridade(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const { novaPrioridade } = req.body
-            const prioridadeInt = parseInt(novaPrioridade)
-            if (![1, 2, 3, 4].includes(prioridadeInt)) {
-                return res.status(400).json({ error: "Valor de prioridade inválido. A prioridade deve ser 1, 2, 3 ou 4" });
-            }
+            const { prioridade } = req.body
+            const prioridadeInt = parseInt(prioridade)
             const result = await ObjetivoService.changePriority(id, prioridadeInt)
             return res.json(result)
         } catch (error) {

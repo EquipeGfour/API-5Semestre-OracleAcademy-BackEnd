@@ -49,6 +49,17 @@ class TarefaController{
             res.status(500).json(error)
         }
     }
+    public async alterarPrioridade(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const { prioridade } = req.body
+            const prioridadeInt = parseInt(prioridade)
+            const result = await TarefaService.changePriority(id, prioridadeInt)
+            return res.json(result)
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
     // public async BuscarTarefas(req: Request, res: Response) {
     //     try {
     //         const { id } = req.params; 

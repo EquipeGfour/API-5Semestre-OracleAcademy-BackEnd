@@ -56,6 +56,18 @@ class TarefaService {
 
         }
     }
+    public async changePriority(id:string, novaPrioridade:any) {
+        try{
+            const tarefa = await Tarefa.findById(id)
+            if (!tarefa) {
+                throw new Error(`Tarefa ${id} não encontrada.`);
+            }
+            const prioridadeTarefa = await tarefa.updateOne({ prioridade: novaPrioridade })
+            return prioridadeTarefa
+        } catch (error) {
+            throw error
+        }
+    }
     // public async editTask(objetivoId: string, taskIdFromBody: string, updatedTask: Tarefas): Promise<Tarefas[]> {
     //     try {
     //         const listaObjetivos = await this.findtaskID(objetivoId);
