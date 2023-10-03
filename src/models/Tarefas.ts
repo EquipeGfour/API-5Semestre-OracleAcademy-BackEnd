@@ -1,6 +1,6 @@
-import mongoose from "mongoose"
-import { PRIORIDADES, STATUS } from "../utils/enum"
-import { Arquivos, IArquivos } from "./Arquivos"
+import mongoose from "mongoose";
+import { PRIORIDADES, STATUS } from "../utils/enum";
+import { Arquivos, IArquivos } from "./Arquivos";
 import { IObjetivo, Objetivo } from "./Objetivos";
 
 
