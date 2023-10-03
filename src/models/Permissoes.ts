@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
 import { PERMISSAO } from "../utils/enum";
+import { IUsuarios, Usuarios } from "../models"
 
 
 const { Schema } = mongoose;
 
 interface IPermissoes {
-    //usuario:
+    usuario: IUsuarios
     permissao:PERMISSAO
 }
 
 const Permissoes = new Schema({
-    //usuario
+    usuario:Usuarios,
     permissao: {
         type: Number,
         enum: PERMISSAO,

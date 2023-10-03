@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import { PRIORIDADES, STATUS } from "../utils/enum"
-import Arquivos from "./Arquivos"
+import { Arquivos, IArquivos } from "./Arquivos"
 import { IObjetivo, Objetivo } from "./Objetivos";
 
 
@@ -16,7 +16,7 @@ interface ITarefa {
     data_estimada: string,
     status: STATUS,
     anexo: Boolean,
-    arquivos: Arquivos,
+    arquivos: IArquivos,
     // objetivo_id: IObjetivo
 }
 
