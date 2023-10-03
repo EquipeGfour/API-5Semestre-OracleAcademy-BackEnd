@@ -12,5 +12,11 @@ enum PRIORIDADES{
     BAIXO = 4
 }
 
+enum PERMISSAO{
+    ADM = 1,
+    EDICAO_E_CRIACAO = 2,
+    LEITURA = 3
+}
 
-export {STATUS, PRIORIDADES}
+
+export { STATUS, PRIORIDADES, PERMISSAO }
