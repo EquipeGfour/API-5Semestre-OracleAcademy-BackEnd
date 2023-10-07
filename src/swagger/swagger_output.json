@@ -21,35 +21,68 @@
         }
       }
     },
+    "/objetivo/buscar": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/objetivo/buscar/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/objetivo/criar": {
       "post": {
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
             "schema": {
               "type": "object",
               "properties": {
-                "data_criacao": {
+                "titulo": {
                   "example": "any"
                 },
-                "status": {
+                "descricao": {
                   "example": "any"
                 },
-                "progresso": {
+                "data_estimada": {
                   "example": "any"
                 },
-                "tarefas": {
+                "prioridade": {
                   "example": "any"
                 },
-                "total_tarefas": {
-                  "example": "any"
-                },
-                "data_conclusao": {
-                  "example": "any"
-                },
-                "data_inicio": {
+                "workspace": {
                   "example": "any"
                 }
               }
@@ -59,6 +92,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "500": {
             "description": "Internal Server Error"
@@ -87,19 +123,6 @@
         }
       }
     },
-    "/objetivo/buscar": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/objetivo/mudarPrioridade/{id}": {
       "put": {
         "description": "",
@@ -116,7 +139,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "novaPrioridade": {
+                "prioridade": {
                   "example": "any"
                 }
               }
@@ -127,8 +150,26 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/objetivo/editar/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -152,25 +193,16 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
+                "titulo": {
                   "example": "any"
                 },
-                "data_criacao": {
+                "descricao": {
                   "example": "any"
                 },
                 "data_estimada": {
                   "example": "any"
                 },
-                "data_inicio": {
-                  "example": "any"
-                },
-                "status": {
-                  "example": "any"
-                },
-                "anexo": {
-                  "example": "any"
-                },
-                "arquivos": {
+                "prioridade": {
                   "example": "any"
                 }
               }
@@ -208,6 +240,27 @@
         }
       }
     },
+    "/tarefa/buscarTarefaID/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/tarefa/editar/{id}": {
       "put": {
         "description": "",
@@ -224,10 +277,16 @@
             "schema": {
               "type": "object",
               "properties": {
-                "updatedTask": {
+                "titulo": {
                   "example": "any"
                 },
-                "taskId": {
+                "descricao": {
+                  "example": "any"
+                },
+                "data_estimada": {
+                  "example": "any"
+                },
+                "prioridade": {
                   "example": "any"
                 }
               }
@@ -237,9 +296,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -256,18 +312,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "idTarefa": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -295,9 +339,6 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Not Found"
-          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -320,14 +361,109 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "example": "any"
-                },
                 "prioridade": {
                   "example": "any"
                 }
               }
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/usuario/criar": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "senha": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/usuario/buscar": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/usuario/buscar/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/usuario/editar/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
