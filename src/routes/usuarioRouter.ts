@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { UsuarioController } from "../controllers";
+import { authenticate } from "../middlewares";
+
 
 
 const routes = Router();
 
 routes.post("/criar", UsuarioController.cadastrarUsuario);
-routes.get("/buscar", UsuarioController.buscarTodosUsuarios);
+routes.get("/buscar", authenticate, UsuarioController.buscarTodosUsuarios);
 routes.get("/buscar/:id", UsuarioController.buscarPorUmUsuario);
 routes.put("/editar/:id", UsuarioController.editarUsuario);
 
