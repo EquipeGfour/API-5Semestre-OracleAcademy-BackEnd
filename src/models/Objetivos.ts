@@ -94,6 +94,6 @@ const objetivo = new Schema({
     }]
 })
 
-const Objetivo = mongoose.model("objetivos", objetivo);
+const Objetivo = mongoose.model<IObjetivo>("objetivos", objetivo);
 
 export { Objetivo, IObjetivo };
