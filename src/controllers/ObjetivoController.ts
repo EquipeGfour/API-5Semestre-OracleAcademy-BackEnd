@@ -1,19 +1,22 @@
 import { Request, Response } from "express";
 import { ObjetivoService } from "../services";
-import { Objetivo, IObjetivo } from "../models";
+import { Objetivo, IObjetivo, IUsuarios } from "../models";
 import { PRIORIDADES, STATUS } from "../utils/enum";
 import { idEhValido } from "../utils/utils";
 
 class ObjetivoController {
     public async cadastrarObjetivo(req: Request, res: Response) {
         try {
-            const { titulo, descricao, data_estimada, prioridade } = req.body;
-            console.log(req.body)
+            const usuario = res.locals.jwtPayload;
+            const { titulo, descricao, data_estimada, prioridade, workspace } = req.body;
+            const workspaceValue = workspace || false;
             let novoObjetivo = new Objetivo({
                 titulo: titulo,
                 descricao: descricao,
                 data_estimada: data_estimada,
                 prioridade: prioridade,
+                proprietario: usuario._id,
+                workspace:workspaceValue
             });
             const objetivo = await ObjetivoService.createObjetivo(novoObjetivo);
             return res.json(objetivo);
