@@ -84,7 +84,7 @@ const objetivo = new Schema({
     usuarios:[{
         usuario: {
             type: Schema.Types.Mixed,
-            required: true // Defina como requerido se necessário
+            required: true
         },
         permissao: {
             type: Number,

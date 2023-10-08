@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PRIORIDADES, STATUS } from "../utils/enum";
 import { ObjetivoService } from "../services";
-import { idEhValido } from "../utils/utils";
+import { idEhValido, verificarStatus } from "../utils/utils";
 import { Tarefa } from "../models";
 import TarefaService from "../services/TarefaService";
 
@@ -21,14 +21,25 @@ class TarefaController {
             res.status(500).json(error);
         }
     }
-    public async buscarTarefaPorIds(req: Request, res: Response) {
+
+    public async buscarTarefas(req: Request, res: Response) {
         try {
-            const { objetivoId } = req.params;
-            const { tarefaId } = req.body;
-            const tarefa = await TarefaService.findTarefaById(objetivoId, tarefaId);
-            return res.json(tarefa);
+            const { id } = req.params;
+            const tarefas = await TarefaService.findTarefasByObjetivoId(id);
+            return res.json(tarefas);
         } catch (error) {
-            res.status(500).json({ error: error.message || "Ocorreu um erro durante a busca da tarefa." });
+            res.status(500).json({ error: error || "Ocorreu um erro durante a busca das tarefas do objetivo." });
+        }
+    }
+
+    public async buscarTarefaPorId(req:Request , res:Response){
+        try{
+            const { id } = req.params;
+            const tarefas = await TarefaService.findTaskByID(id);
+            return res.json(tarefas);
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: error || "Ocorreu um erro durante a busca das tarefas do objetivo." });
         }
     }
 
@@ -69,24 +80,21 @@ class TarefaController {
             res.status(500).json(error);
         }
     }
-    public async buscarTarefaID(req:Request , res:Response){
+
+    public async mudarStatusDaTarefa(req:Request, res:Response){
         try{
             const { id } = req.params;
-            const tarefas = await TarefaService.findTaskByID(id);
-            return res.json(tarefas);
-        } catch (error) {
-            res.status(500).json({ error: error.message || "Ocorreu um erro durante a busca das tarefas do objetivo." });
+            const { status } = req.body;
+            if(!verificarStatus(status)){
+                return res.status(422).json("O valor do status não é válido.");
+            }
+            const tarefa = await TarefaService.changeTaskStatus(id, status);
+            return res.json(tarefa);
+        }catch(error){
+            res.status(500).json(error);
         }
     }
-    public async buscarTarefas(req: Request, res: Response) {
-        try {
-            const { id } = req.params;
-            const tarefas = await TarefaService.findTarefasByObjetivoId(id);
-            return res.json(tarefas);
-        } catch (error) {
-            res.status(500).json({ error: error.message || "Ocorreu um erro durante a busca das tarefas do objetivo." });
-        }
-    }
+
     // public async BuscarTarefas(req: Request, res: Response) {
     //     try {
     //         const { id } = req.params; 
