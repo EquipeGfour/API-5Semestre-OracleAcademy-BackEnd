@@ -11,5 +11,6 @@ routes.put("/editar/:id", TarefaController.editarTarefa);
 routes.delete("/deletar/:id", TarefaController.excluirTarefa);
 routes.get("/buscarTarefa/:id", TarefaController.buscarTarefaPorIds);
 routes.put("/mudarPrioridade/:id", TarefaController.alterarPrioridade);
+routes.put("/adicionarUser/:id", TarefaController.adicionarUsuariosTarefa);
 
 export default routes;

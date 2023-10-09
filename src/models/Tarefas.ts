@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
-import { PRIORIDADES, STATUS } from "../utils/enum";
 import { Arquivos, IArquivos } from "./Arquivos";
 import { IObjetivo, Objetivo } from "./Objetivos";
+import IUsuarios, { Usuarios } from './Usuarios';
+import { PERMISSAO, PRIORIDADES, STATUS } from "../utils/enum";
 
 
 const { Schema } = mongoose;
@@ -18,6 +19,7 @@ interface ITarefa {
     anexo: Boolean,
     arquivos: IArquivos,
     // objetivo_id: IObjetivo
+    usuarios:IUsuarios[]
 }
 
 const tarefa = new Schema({
@@ -51,6 +53,17 @@ const tarefa = new Schema({
         require:false
     },
     anexo: Boolean,
+    usuarios:[{
+        usuario: {
+            type: Schema.Types.Mixed,
+            required: true // Defina como requerido se necessário
+        },
+        permissao: {
+            type: Number,
+            enum: PERMISSAO,
+            default: PERMISSAO.LEITURA
+        }
+    }]
     //arquivos: Arquivos,
     // objetivo_id: {
     //     type: mongoose.Types.ObjectId,

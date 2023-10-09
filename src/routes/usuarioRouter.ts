@@ -9,6 +9,7 @@ const routes = Router();
 routes.post("/criar", UsuarioController.cadastrarUsuario);
 routes.get("/buscar", authenticate, UsuarioController.buscarTodosUsuarios);
 routes.get("/buscar/:id", UsuarioController.buscarPorUmUsuario);
+routes.get("/buscarUsuario/:nome",authenticate, UsuarioController.buscarUsuariosPorNome);
 routes.put("/editar/:id", UsuarioController.editarUsuario);
 
 export default routes;
