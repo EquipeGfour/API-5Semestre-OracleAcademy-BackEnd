@@ -68,6 +68,14 @@ class TarefaController {
         try {
             const { id } = req.params;
             const { titulo, descricao, data_estimada, prioridade } = req.body;
+            if (
+                !titulo ||
+                !descricao ||
+                !data_estimada ||
+                !prioridade
+            ) {
+                return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos.' });
+            } 
             const tarefa = await TarefaService.editarTarefa(
                 id,
                 titulo,
