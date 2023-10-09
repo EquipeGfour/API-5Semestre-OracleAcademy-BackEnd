@@ -57,6 +57,14 @@ class TarefaController {
         try {
             const { id } = req.params;
             const { titulo, descricao, data_estimada, prioridade } = req.body;
+            if (
+                !titulo ||
+                !descricao ||
+                !data_estimada ||
+                !prioridade
+            ) {
+                return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos.' });
+            } 
             const tarefa = await TarefaService.editarTarefa(
                 id,
                 titulo,
@@ -69,8 +77,8 @@ class TarefaController {
             res.status(500).json(error);
         }
     }
-    public async buscarTarefaID(req:Request , res:Response){
-        try{
+    public async buscarTarefaID(req: Request, res: Response) {
+        try {
             const { id } = req.params;
             const tarefas = await TarefaService.findTaskByID(id);
             return res.json(tarefas);

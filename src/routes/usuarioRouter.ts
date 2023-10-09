@@ -11,5 +11,6 @@ routes.get("/buscar", authenticate, UsuarioController.buscarTodosUsuarios);
 routes.get("/buscar/:id", UsuarioController.buscarPorUmUsuario);
 routes.get("/buscarUsuario/:nome",authenticate, UsuarioController.buscarUsuariosPorNome);
 routes.put("/editar/:id", UsuarioController.editarUsuario);
+routes.delete("/excluir/:id", UsuarioController.excluirUsuario);
 
 export default routes;
