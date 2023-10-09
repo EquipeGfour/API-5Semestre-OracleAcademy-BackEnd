@@ -30,6 +30,18 @@ class UsuarioService {
             throw error
         }
     }
+    public async findUsuariosByName(name: string): Promise<IUsuarios[]> {
+        try {
+            const usuarios = await Usuarios.find({ nome:name });
+            if (usuarios.length === 0) {
+                throw `Nenhum usuário encontrado com o nome ${name}...`;
+            }
+            return usuarios;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
 
     public async updateUsuarios(id: string, usuariosData: any) {
         try {

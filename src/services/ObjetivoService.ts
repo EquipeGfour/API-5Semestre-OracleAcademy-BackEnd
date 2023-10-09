@@ -1,9 +1,8 @@
-
-import { Objetivo, IObjetivo } from "../models"
+import { Objetivo, IObjetivo, IUsuarios } from "../models"
 import { PRIORIDADES } from "../utils/enum";
 
 
-class ObjetivoService{
+class ObjetivoService {
     public async createObjetivo(objetivo) {
         try {
             const response = await Objetivo.create(objetivo);
@@ -13,19 +12,19 @@ class ObjetivoService{
         }
     }
 
-    public async findAll(){
-        try{
-            const objetivos = await Objetivo.find({},'-__v').populate("tarefas proprietario", "-__v").exec();
+    public async findAll() {
+        try {
+            const objetivos = await Objetivo.find({}, '-__v').populate("tarefas proprietario", "-__v").exec();
             return objetivos;
-        }catch(error){
+        } catch (error) {
             throw error;
         }
     }
     public async getObjetivoById(id: string) {
         try {
             const objetivo = await Objetivo.findById(id, '-__v').populate("tarefas proprietario", "-__v").exec();
-            if(!objetivo){
-                throw  `objetivo ${id} não encontrado....`;
+            if (!objetivo) {
+                throw `objetivo ${id} não encontrado....`;
             }
             return objetivo;
         } catch (error) {
@@ -39,17 +38,15 @@ class ObjetivoService{
                 objetivoData,
                 { new: true }
             );
-
             if (!updatedObjetivo) {
                 throw new Error(`Objetivo ${id} não encontrado.`);
             }
-
             return updatedObjetivo;
         } catch (error) {
             throw error;
         }
     }
-    public async deleteObjetivo(id:string) {
+    public async deleteObjetivo(id: string) {
         try {
             const deleteObjetivo = await Objetivo.findByIdAndDelete(id);
             return deleteObjetivo
@@ -57,8 +54,22 @@ class ObjetivoService{
             throw error
         }
     }
-    public async changePriority(id:string, novaPrioridade:any) {
-        try{
+    public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
+        try {
+            const objetivo = await Objetivo.findById(id);
+            if (!objetivo) {
+                throw new Error(`Objetivo ${id} não encontrado.`);
+            }
+            objetivo.usuarios = novosUsuarios;
+            await objetivo.save();
+
+            return objetivo;
+        } catch (error) {
+            throw error;
+        }
+    }
+    public async changePriority(id: string, novaPrioridade: any) {
+        try {
             const objetivo = await Objetivo.findById(id)
             if (!objetivo) {
                 throw new Error(`Objetivo ${id} não encontrado.`);

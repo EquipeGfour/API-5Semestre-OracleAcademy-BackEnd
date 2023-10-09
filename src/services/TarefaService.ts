@@ -1,4 +1,4 @@
-import { Tarefa } from "../models"
+import { IUsuarios, Tarefa } from "../models"
 import ObjetivoService from "./ObjetivoService";
 
 class TarefaService {
@@ -100,54 +100,20 @@ class TarefaService {
             throw error;
         }
     }
-    // public async editTask(objetivoId: string, taskIdFromBody: string, updatedTask: Tarefas): Promise<Tarefas[]> {
-    //     try {
-    //         const listaObjetivos = await this.findtaskID(objetivoId);
-    //         const taskIndex = listaObjetivos.findIndex((task) => task.id === taskIdFromBody);
-    //         if (taskIndex === -1) {
-    //             throw `Tarefa com ID ${taskIdFromBody} não encontrada no objetivo ${objetivoId}...`;
-    //         }
-    //         listaObjetivos[taskIndex] = { ...listaObjetivos[taskIndex], ...updatedTask };
-    //         await connection.collection("objetivos").doc(objetivoId).update({ tarefas: listaObjetivos });
-    //         return listaObjetivos;
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // }
-    // public async deleteTafefa(id: string, taskIdFromBody: string) {
-    //     try{
-    //         const response = await connection.collection("objetivos").doc(id).get();
-    //         if (!response.exists) {
-    //             throw `Objetivo ${id} não encontrado...`
-    //         }
-    //         const Tarefa = (response.data() as IObjetivos).tarefas;
-    //         let total_tarefas = (response.data() as IObjetivos).total_tarefas;          
-    //         const taskIndex = Tarefa.filter((T) => T.id != taskIdFromBody)
-    //         total_tarefas--;
-    //         await connection.collection("objetivos").doc(id).update({ tarefas: taskIndex});
-    //         return `Tarefa de ID ${id} excluída`;
-    //     } catch (error) {
-    //         throw error
-    //     }
-    // }
-    // public async changeTaskPriority(idObjetivo: string, idTarefa: string, prioridade): Promise<string> {
-    //     try{
-    //         const response = await connection.collection("objetivos").doc(idObjetivo).get();
-    //         if (!response.exists) {
-    //             throw `Objetivo ${idObjetivo} não encontrado...`
-    //         }
-    //         const tarefas = (response.data() as IObjetivos).tarefas;
-    //         tarefas.forEach((tarefa) => {
-    //             if(tarefa.id === idTarefa){
-    //                 tarefa.prioridade = prioridade;
-    //             }
-    //         })
-    //         await connection.collection("objetivos").doc(idObjetivo).update({tarefas: tarefas})
-    //         return `Prioridade da tarefa com ID ${idTarefa} foi atualizada com sucesso!!.`
-    //     }catch(error){
-    //         throw error
-    //     }
-    // }
+    public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
+        try {
+            const tarefa = await Tarefa.findById(id);
+            if (!tarefa) {
+                throw new Error(`tarefa ${id} não encontrado.`);
+            }
+            tarefa.usuarios = novosUsuarios;
+            await tarefa.save();
+
+            return tarefa;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 

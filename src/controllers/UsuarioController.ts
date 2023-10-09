@@ -51,6 +51,27 @@ class UsuarioController {
             res.status(500).json(error);
         }
     }
+    public async filtroUsuarioUnico (req:Request, res:Response) {
+        try{
+            const { id } = req.params
+            const usuario = await  UsuarioService.findUsuariosById(id)
+            res.json(usuario)
+        }catch(error){
+            res.status(500).json(error);
+        }
+    }
+    public async buscarUsuariosPorNome(req: Request, res: Response) {
+        try {
+            const { nome } = req.params;
+            if (!nome) {
+                throw "Nome não fornecido na consulta.";
+            }
+            const usuarios = await UsuarioService.findUsuariosByName(nome.toString());
+            return res.json(usuarios);
+        } catch (error) {
+            res.status(500).json({ message: error });
+        }
+    }
 }
 
 export default new UsuarioController()

@@ -11,6 +11,7 @@ routes.post("/criar", authenticate, ObjetivoController.cadastrarObjetivo);
 routes.delete("/deletar/:id", ObjetivoController.excluirObjetivo);
 routes.put("/mudarPrioridade/:id", ObjetivoController.alterarPrioridade);
 routes.put("/editar/:id", ObjetivoController.editarObjetivo);
+routes.put("/adicionarUser/:id",authenticate, ObjetivoController.adicionarUsuariosWork);
 
 
 export default routes;

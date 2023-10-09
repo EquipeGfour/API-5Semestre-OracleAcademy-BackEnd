@@ -25,8 +25,25 @@ class ObjetivoController {
         }
     }
 
+    public async adicionarUsuariosWork(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const novosUsuarios: IUsuarios[] = req.body.usuarios;            
+            const objetivo = await ObjetivoService.getObjetivoById(id);
+            if (objetivo && objetivo.workspace === true) {
+                const updatedObjetivo = await ObjetivoService.updateUsuarios(id, novosUsuarios);
+                return res.status(200).json(updatedObjetivo);
+            } else {
+                return res.status(400).json({ message: "O campo 'workspace' precisa ser true para adicionar usuários." });
+            }
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+    
     public async buscarTodosOsObjetivos(req: Request, res: Response) {
         try {
+            const usuario = res.locals.jwtPayload;
             const objetivos = await ObjetivoService.findAll();
             return res.json(objetivos);
         } catch (error) {
