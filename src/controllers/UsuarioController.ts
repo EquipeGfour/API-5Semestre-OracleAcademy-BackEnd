@@ -45,10 +45,30 @@ class UsuarioController {
         try {
             const { id } = req.params
             const usuarioData = req.body
+
+            if (
+                !usuarioData?.nome ||
+                !usuarioData?.email ||
+                !usuarioData?.senha
+            ) {
+                return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos.' });
+            }
+            
             const updatedUsuario = await UsuarioService.updateUsuarios(id, usuarioData)
             return res.json(updatedUsuario)
         } catch (error) {
             res.status(500).json(error);
+        }
+    }
+    
+    public async excluirUsuario(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            await UsuarioService.findUsuariosById(id)
+            const deletedUsuario = await UsuarioService.deleteUsuario(id)
+            return res.json(`objetivo ${id} excluido com sucesso...`);
+        } catch (error) {
+            res.status(500).json(error)
         }
     }
 }
