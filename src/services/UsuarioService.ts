@@ -10,38 +10,44 @@ class UsuarioService {
         }
     }
 
-    public async findAll():Promise<IUsuarios[]>{
-        try{
+    public async findAll(): Promise<IUsuarios[]> {
+        try {
             const usuarios = await Usuarios.find()
             return usuarios;
-        }catch(error){
+        } catch (error) {
             throw error;
         }
     }
 
-    public async findUsuariosById(id: string):Promise<IUsuarios> {
+    public async findUsuariosById(id: string): Promise<IUsuarios> {
         try {
             const usuarios = await Usuarios.findById(id, '-__v')
-            if(!usuarios){
-                throw  `objetivo ${id} não encontrado....`;
+            if (!usuarios) {
+                throw `objetivo ${id} não encontrado....`;
             }
             return usuarios
         } catch (error) {
             throw error
         }
     }
-    public async findUsuariosByName(name: string): Promise<IUsuarios[]> {
+    public async findUsuariosByName(keyword: string): Promise<IUsuarios[]> {
         try {
-            const usuarios = await Usuarios.find({ nome:name });
+            const usuarios = await Usuarios.find({
+                $or: [
+                    { nome: { $regex: keyword, $options: 'i' } },
+                    { email: { $regex: keyword, $options: 'i' } },
+                ],
+            });
             if (usuarios.length === 0) {
-                throw `Nenhum usuário encontrado com o nome ${name}...`;
+                throw `Nenhum usuário encontrado com o nome ${keyword}...`;
             }
             return usuarios;
         } catch (error) {
+            console.log(error)
             throw error;
         }
     }
-    
+
 
     public async updateUsuarios(id: string, usuariosData: any) {
         try {
@@ -58,9 +64,9 @@ class UsuarioService {
             return updatedUsuario
         } catch (error) {
             throw error
-        }   
+        }
     }
-    public async deleteUsuario(id:string) {
+    public async deleteUsuario(id: string) {
         try {
             const deleteUsuario = await Usuarios.findByIdAndDelete(id)
             return deleteUsuario

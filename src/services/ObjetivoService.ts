@@ -54,15 +54,13 @@ class ObjetivoService {
             throw error
         }
     }
-    public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
-        try {
+    public async addUserWorkspace(id: string) {
+        try { 
             const objetivo = await Objetivo.findById(id);
             if (!objetivo) {
                 throw new Error(`Objetivo ${id} não encontrado.`);
             }
-            objetivo.usuarios = novosUsuarios;
             await objetivo.save();
-
             return objetivo;
         } catch (error) {
             throw error;
