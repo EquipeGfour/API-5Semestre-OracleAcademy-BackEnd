@@ -43,7 +43,7 @@ class ObjetivoController {
     public async buscarTodosOsObjetivos(req: Request, res: Response) {
         try {
             const usuario = res.locals.jwtPayload;
-            const objetivos = await ObjetivoService.findAll();
+            const objetivos = await ObjetivoService.findAllObjetivosByUser(usuario);
             return res.json(objetivos);
         } catch (error) {
             res.status(500).json(error);

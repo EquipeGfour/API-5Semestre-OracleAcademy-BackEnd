@@ -1,4 +1,4 @@
-import { Objetivo } from "../models"
+import { IUsuarios, Objetivo } from "../models"
 
 
 class ObjetivoService {
@@ -11,9 +11,9 @@ class ObjetivoService {
         }
     }
 
-    public async findAll() {
+    public async findAllObjetivosByUser(usuario) {
         try {
-            const objetivos = await Objetivo.find({}, '-__v').populate("tarefas proprietario", "-__v").exec();
+            const objetivos = await Objetivo.find({proprietario:usuario._id}, '-__v').populate("tarefas proprietario", "-__v").exec();
             return objetivos;
         } catch (error) {
             throw error;
@@ -28,6 +28,7 @@ class ObjetivoService {
             }
             return objetivo;
         } catch (error) {
+            console.log(error)
             throw error;
         }
     }
