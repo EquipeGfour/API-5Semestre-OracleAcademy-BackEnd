@@ -1,5 +1,4 @@
-import { Objetivo, IObjetivo, IUsuarios } from "../models"
-import { PRIORIDADES } from "../utils/enum";
+import { Objetivo } from "../models"
 
 
 class ObjetivoService {
@@ -20,6 +19,7 @@ class ObjetivoService {
             throw error;
         }
     }
+
     public async getObjetivoById(id: string) {
         try {
             const objetivo = await Objetivo.findById(id, '-__v').populate("tarefas proprietario", "-__v").exec();
@@ -31,6 +31,7 @@ class ObjetivoService {
             throw error;
         }
     }
+
     public async updateObjetivo(id: string, objetivoData: any) {
         try {
             const updatedObjetivo = await Objetivo.findByIdAndUpdate(
@@ -46,6 +47,7 @@ class ObjetivoService {
             throw error;
         }
     }
+
     public async deleteObjetivo(id: string) {
         try {
             const deleteObjetivo = await Objetivo.findByIdAndDelete(id);
@@ -54,6 +56,7 @@ class ObjetivoService {
             throw error
         }
     }
+
     public async addUserWorkspace(id: string) {
         try { 
             const objetivo = await Objetivo.findById(id);
@@ -66,16 +69,17 @@ class ObjetivoService {
             throw error;
         }
     }
+
     public async changePriority(id: string, novaPrioridade: any) {
         try {
-            const objetivo = await Objetivo.findById(id)
+            const objetivo = await Objetivo.findById(id);
             if (!objetivo) {
                 throw new Error(`Objetivo ${id} não encontrado.`);
             }
-            const prioridadeObjetivo = await objetivo.updateOne({ prioridade: novaPrioridade })
-            return prioridadeObjetivo
+            const prioridadeObjetivo = await objetivo.updateOne({ prioridade: novaPrioridade });
+            return prioridadeObjetivo;
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 
