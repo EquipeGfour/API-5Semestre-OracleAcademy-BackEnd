@@ -15,7 +15,6 @@
 <br>
 
 <h2> :gear: Executando o Back </h2>
-Obs.: Será preciso ter o tokken do Firebase para rodar o Back-End
 
 ```bash
 
