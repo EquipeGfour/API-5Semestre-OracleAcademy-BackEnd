@@ -8,7 +8,7 @@
 <br>
 
 <img src="https://img.shields.io/badge/TypeScript-CED4DA?style=for-the-badge&logo=typescript&logoColor=007ACC"/>
-<img src="https://img.shields.io/badge/Firebase-CED4DA?style=for-the-badge&logo=firebase&logoColor=3670A0" alt="Firebase" />
+<img src="https://img.shields.io/badge/MongoDB-CED4DA?style=for-the-badge&logo=mongodb&logoColor=3670A0" alt="Mongodb" />
 
  
 </p>
