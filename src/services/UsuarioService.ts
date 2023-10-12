@@ -1,5 +1,6 @@
 import { Usuarios, IUsuarios } from "../models"
 
+
 class UsuarioService {
     public async createUsuarios(usuarios) {
         try {

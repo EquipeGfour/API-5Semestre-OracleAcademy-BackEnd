@@ -5,7 +5,7 @@ import { authenticate } from "../middlewares";
 
 const routes = Router();
 
-routes.get("/buscar", ObjetivoController.buscarTodosOsObjetivos);
+routes.get("/buscar", authenticate, ObjetivoController.buscarTodosOsObjetivos);
 routes.get("/buscar/:id", ObjetivoController.buscarPorUmObjetivo);
 routes.post("/criar", authenticate, ObjetivoController.cadastrarObjetivo);
 routes.delete("/deletar/:id", ObjetivoController.excluirObjetivo);

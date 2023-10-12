@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import { Arquivos, IArquivos } from "./Arquivos";
-import { IObjetivo, Objetivo } from "./Objetivos";
-import IUsuarios, { Usuarios } from './Usuarios';
+import { IArquivos } from "./Arquivos";
+import IUsuarios from './Usuarios';
 import { PERMISSAO, PRIORIDADES, STATUS } from "../utils/enum";
 
 
@@ -45,7 +44,11 @@ const tarefa = new Schema({
         require: false,
         default:""
     },
-    data_estimada: String,
+    data_estimada: {
+        type: String, 
+        require: true,
+        default: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0],
+    },
     status: {
         type: Number,
         enum: STATUS,

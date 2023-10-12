@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { PRIORIDADES, STATUS } from "../utils/enum";
 import { ObjetivoService } from "../services";
 import { IUsuarios, Tarefa } from "../models";
-import { idEhValido, verificarStatus } from "../utils/utils";
+import { idEhValido, verificarPrioridade, verificarStatus } from "../utils/utils";
 import TarefaService from "../services/TarefaService";
 
 
@@ -47,7 +46,7 @@ class TarefaController {
         try {
             const { id } = req.params;
             await TarefaService.findTaskByID(id);
-            const deletedTarefa = await TarefaService.deleteTarefa(id)
+            await TarefaService.deleteTarefa(id)
             return res.json(`tarefa ${id} excluida com sucesso...`)
         } catch (error) {
             res.status(500).json(error)
@@ -57,8 +56,10 @@ class TarefaController {
         try {
             const { id } = req.params
             const { prioridade } = req.body
-            const prioridadeInt = parseInt(prioridade)
-            const result = await TarefaService.changePriority(id, prioridadeInt)
+            if(!verificarPrioridade(prioridade)){
+                return res.status(422).json("O valor da prioridade não é válido.");
+            }
+            const result = await TarefaService.changePriority(id, prioridade)
             return res.json(result)
         } catch (error) {
             res.status(500).json(error)

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { ObjetivoService } from "../services";
-import { Objetivo, IObjetivo, IUsuarios } from "../models";
-import { PRIORIDADES, STATUS } from "../utils/enum";
-import { idEhValido } from "../utils/utils";
+import { Objetivo, IUsuarios } from "../models";
+import { idEhValido, verificarPrioridade } from "../utils/utils";
 
 class ObjetivoController {
     public async cadastrarObjetivo(req: Request, res: Response) {
@@ -40,11 +39,11 @@ class ObjetivoController {
             res.status(500).json({ message: error.message });
         }
     }
-    
+
     public async buscarTodosOsObjetivos(req: Request, res: Response) {
         try {
             const usuario = res.locals.jwtPayload;
-            const objetivos = await ObjetivoService.findAll();
+            const objetivos = await ObjetivoService.findAllObjetivosByUser(usuario);
             return res.json(objetivos);
         } catch (error) {
             res.status(500).json(error);
@@ -63,6 +62,7 @@ class ObjetivoController {
             res.status(500).json({message:error});
         }
     }
+
     public async editarObjetivo(req: Request, res: Response) {
         try {
             const { id } = req.params;
@@ -73,41 +73,32 @@ class ObjetivoController {
             res.status(500).json({ error: error.message || "Ocorreu um erro durante a atualização do objetivo." });
         }
     }
+
     public async excluirObjetivo(req: Request, res: Response) {
         try {
             const { id } = req.params;
             await ObjetivoService.getObjetivoById(id);
-            const deletedObjetivo = await ObjetivoService.deleteObjetivo(id);
+            await ObjetivoService.deleteObjetivo(id);
             return res.json(`objetivo ${id} excluido com sucesso...`);
         } catch (error) {
             res.status(500).json(error);
         }
     }
+
     public async alterarPrioridade(req: Request, res: Response) {
         try {
             const { id } = req.params
             const { prioridade } = req.body
-            const prioridadeInt = parseInt(prioridade)
-            const result = await ObjetivoService.changePriority(id, prioridadeInt)
+            if(!verificarPrioridade(prioridade)){
+                return res.status(422).json("O valor da prioridade não é válido.");
+            }
+            const result = await ObjetivoService.changePriority(id, prioridade);
             return res.json(result)
         } catch (error) {
             res.status(500).json(error)
         }
     }
-    // public async alterarPrioridade(req: Request, res: Response) {
-    //     try {
-    //         const { id } = req.params;
-    //         const { novaPrioridade } = req.body;
-    //         const prioridadeInt = parseInt(novaPrioridade);
-    //         if (![1, 2, 3, 4].includes(prioridadeInt)) {
-    //             return res.status(400).json({ error: "Valor de prioridade inválido. A prioridade deve ser 1, 2, 3 ou 4" });
-    //         }
-    //         const result = await ObjetivoService.changePriority(id, prioridadeInt);
-    //         return res.json(result);
-    //     } catch (error) {
-    //         res.status(500).json(error);
-    //     }
-    // }
+
 }
 
 
