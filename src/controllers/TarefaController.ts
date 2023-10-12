@@ -103,10 +103,11 @@ class TarefaController {
             res.status(500).json(error);
         }
     }
+
     public async adicionarUsuariosTarefa(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const novosUsuarios: IUsuarios[] = req.body.usuarios; 
+            const novosUsuarios: IUsuarios[] = req.body; 
             const updatetarefa = await TarefaService.updateUsuarios(id, novosUsuarios);
             return res.status(200).json(updatetarefa);
         } catch (error) {

@@ -6,6 +6,7 @@ const { Schema } = mongoose;
 
 
 export default interface IUsuarios {
+    _id: string;
     nome: string,
     senha: string,
     email: string,

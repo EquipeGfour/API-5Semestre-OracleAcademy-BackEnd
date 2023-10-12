@@ -1,4 +1,6 @@
-import { IUsuarios, Objetivo } from "../models"
+import { IUsuarios, Objetivo, Tarefa, Usuarios } from "../models"
+import { PERMISSAO } from "../utils/enum";
+import mongoose from "mongoose";
 
 
 class ObjetivoService {
@@ -13,7 +15,7 @@ class ObjetivoService {
 
     public async findAllObjetivosByUser(usuario) {
         try {
-            const objetivos = await Objetivo.find({proprietario:usuario._id}, '-__v').populate("tarefas proprietario", "-__v").exec();
+            const objetivos = await Objetivo.find({proprietario:usuario._id}, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
             return objetivos;
         } catch (error) {
             throw error;
@@ -22,7 +24,13 @@ class ObjetivoService {
 
     public async getObjetivoById(id: string) {
         try {
-            const objetivo = await Objetivo.findById(id, '-__v').populate("tarefas proprietario", "-__v").exec();
+            const objetivo = await Objetivo.findById(id, '-__v').populate({
+                path: 'tarefas',
+                populate: {
+                    path: 'usuarios',populate:{path: 'usuario'}
+                }
+            })
+            .populate('proprietario', '-__v').exec();
             if (!objetivo) {
                 throw `objetivo ${id} não encontrado....`;
             }
@@ -58,13 +66,22 @@ class ObjetivoService {
         }
     }
 
-    public async addUserWorkspace(id: string) {
-        try { 
+    public async addUserWorkspace(id, usuarios) {
+        try {
+            const novaLista = usuarios.map((usuario) => {
+                return {usuario: usuario._id, permissao:PERMISSAO.LEITURA}
+            })
             const objetivo = await Objetivo.findById(id);
-            if (!objetivo) {
-                throw new Error(`Objetivo ${id} não encontrado.`);
+            if (objetivo) {
+                const usuariosParaAdicionar = novaLista.filter((novoUsuario) => {
+                    return !objetivo.usuarios.some((usuarioNaTarefa) => usuarioNaTarefa.usuario.equals(novoUsuario.usuario));
+                });
+                if (usuariosParaAdicionar.length > 0) {
+                    objetivo.usuarios.push(...usuariosParaAdicionar);
+                    await objetivo.save();
+                }
             }
-            await objetivo.save();
+
             return objetivo;
         } catch (error) {
             throw error;
@@ -80,6 +97,16 @@ class ObjetivoService {
             const prioridadeObjetivo = await objetivo.updateOne({ prioridade: novaPrioridade });
             return prioridadeObjetivo;
         } catch (error) {
+            throw error;
+        }
+    }
+
+    public async findAllWorkspacesByUser(id){
+        try{
+            const workspaces = await Objetivo.find({workspace:true, usuarios:{$elemMatch:{usuario:id}}}).populate('proprietario usuarios.usuario').exec();
+            return workspaces;
+        }catch(error){
+            console.log(error)
             throw error;
         }
     }
