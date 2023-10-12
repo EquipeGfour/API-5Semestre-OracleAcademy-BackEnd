@@ -8,7 +8,7 @@ import { IPermissoes } from './Permissoes';
 const { Schema } = mongoose;
 
 interface IObjetivo {
-    id?: string | null,
+    _id?: mongoose.Types.ObjectId,
     titulo: string,
     descricao: string,
     progresso: number,

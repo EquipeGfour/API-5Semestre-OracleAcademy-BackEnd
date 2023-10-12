@@ -1,5 +1,7 @@
 import { IUsuarios, ITarefa, Tarefa } from "../models";
+import { PERMISSAO } from "../utils/enum";
 import ObjetivoService from "./ObjetivoService";
+import mongoose from "mongoose";
 
 
 class TarefaService {
@@ -97,14 +99,33 @@ class TarefaService {
             throw error;
         }
     }
+
     public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
         try {
+            const novaLista = novosUsuarios.map((usuario) => {
+                return { usuario: new mongoose.Types.ObjectId(usuario._id) , permissao: PERMISSAO.LEITURA };
+            });
+            
             const tarefa = await Tarefa.findById(id);
-            if (!tarefa) {
-                throw new Error(`tarefa ${id} não encontrado.`);
+            
+            if (tarefa) {
+                // Verifique se o usuário já está na lista
+                const usuariosParaAdicionar = novaLista.filter((novoUsuario) => {
+                    return !tarefa.usuarios.some((usuarioNaTarefa) => usuarioNaTarefa.usuario.equals(novoUsuario.usuario));
+                });
+            
+                if (usuariosParaAdicionar.length > 0) {
+                    // Adicione os novos usuários à lista
+                    tarefa.usuarios.push(...usuariosParaAdicionar);
+                    await tarefa.save();
+                }
             }
-            tarefa.usuarios = novosUsuarios;
-            await tarefa.save();
+            if (!tarefa) {
+                throw `tarefa ${id} não encontrado.`;
+            }
+
+            // tarefa.usuarios = novosUsuarios;
+            //await tarefa.save();
             return tarefa;
         } catch (error) {
             throw error;
