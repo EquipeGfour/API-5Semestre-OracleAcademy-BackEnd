@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { PERMISSAO, PRIORIDADES, STATUS } from "../utils/enum";
 import { ITarefa, Tarefa } from './Tarefas';
 import IUsuarios, { Usuarios } from './Usuarios';
+import { IPermissoes } from './Permissoes';
 
 
 const { Schema } = mongoose;
@@ -21,7 +22,10 @@ interface IObjetivo {
     tarefas: ITarefa[],
     workspace: Boolean,
     proprietario: IUsuarios,
-    usuarios:IUsuarios[]
+    usuarios:[{
+        usuario: mongoose.Types.ObjectId,
+        permissao: PERMISSAO
+    }]
 }
 
 const objetivo = new Schema({
@@ -83,8 +87,9 @@ const objetivo = new Schema({
     },
     usuarios:[{
         usuario: {
-            type: Schema.Types.Mixed,
-            required: true
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref:Usuarios
         },
         permissao: {
             type: Number,

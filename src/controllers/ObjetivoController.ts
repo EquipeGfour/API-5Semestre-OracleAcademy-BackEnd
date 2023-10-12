@@ -27,10 +27,10 @@ class ObjetivoController {
     public async adicionarUsuariosWork(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const novosUsuarios: IUsuarios[] = req.body.usuarios;            
+            const usuarios = req.body.usuarios;
             const objetivo = await ObjetivoService.getObjetivoById(id);
             if (objetivo && objetivo.workspace === true) {
-                const updatedObjetivo = await ObjetivoService.addUserWorkspace(id);
+                const updatedObjetivo = await ObjetivoService.addUserWorkspace(id, usuarios);
                 return res.status(200).json(updatedObjetivo);
             } else {
                 return res.status(400).json({ message: "O campo 'workspace' precisa ser true para adicionar usuários." });

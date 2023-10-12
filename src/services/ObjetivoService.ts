@@ -1,4 +1,6 @@
-import { IUsuarios, Objetivo } from "../models"
+import { IUsuarios, Objetivo, Tarefa } from "../models"
+import { PERMISSAO } from "../utils/enum";
+import mongoose from "mongoose";
 
 
 class ObjetivoService {
@@ -13,7 +15,7 @@ class ObjetivoService {
 
     public async findAllObjetivosByUser(usuario) {
         try {
-            const objetivos = await Objetivo.find({proprietario:usuario._id}, '-__v').populate("tarefas proprietario", "-__v").exec();
+            const objetivos = await Objetivo.find({proprietario:usuario._id}, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
             return objetivos;
         } catch (error) {
             throw error;
@@ -58,11 +60,24 @@ class ObjetivoService {
         }
     }
 
-    public async addUserWorkspace(id: string) {
-        try { 
+    public async addUserWorkspace(id, usuarios) {
+        try {
             const objetivo = await Objetivo.findById(id);
             if (!objetivo) {
                 throw new Error(`Objetivo ${id} não encontrado.`);
+            }
+            const usuariosSet = new Set(objetivo.usuarios.map(objUsuario => objUsuario.usuario.toString()));
+            for (const usuario of usuarios) {
+                const usuarioId = new mongoose.Types.ObjectId(usuario._id);
+                if (!usuariosSet.has(usuarioId.toString())) {
+                    objetivo.usuarios.push({
+                        usuario: usuarioId,
+                        permissao: PERMISSAO.LEITURA
+                    });
+                    usuariosSet.add(usuarioId.toString());
+                } else {
+                    console.log(`O usuário com _id ${usuario._id} já existe na lista de objetivos.`);
+                }
             }
             await objetivo.save();
             return objetivo;
