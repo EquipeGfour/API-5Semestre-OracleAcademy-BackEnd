@@ -103,7 +103,6 @@ class ObjetivoController {
         try{
             const usuario = res.locals.jwtPayload;
             const workspaces = await ObjetivoService.findAllWorkspacesByUser(usuario._id);
-            console.log("aqui")
             return res.json(workspaces);
         }catch(error){
             return res.status(500).json(error)
