@@ -51,7 +51,7 @@ class TarefaService {
 
     public async findTaskByID(id): Promise<ITarefa> {
         try {
-            const tarefas = await Tarefa.findById(id)
+            const tarefas = await Tarefa.findOne({_id:id}).populate('usuarios.usuario')
             if (!tarefas) {
                 throw `Tarefa ${id} não encontrada.`;
             }

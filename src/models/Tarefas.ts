@@ -7,6 +7,7 @@ import { PERMISSAO, PRIORIDADES, STATUS } from "../utils/enum";
 const { Schema } = mongoose;
 
 interface ITarefa {
+    _id?: mongoose.Types.ObjectId,
     titulo: string,
     descricao: string,
     prioridade: PRIORIDADES
