@@ -15,7 +15,7 @@ class ObjetivoService {
 
     public async findAllObjetivosByUser(usuario) {
         try {
-            const objetivos = await Objetivo.find({proprietario:usuario._id}, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
+            const objetivos = await Objetivo.find({$and:[{proprietario:usuario._id}, {workspace:false}]}, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
             return objetivos;
         } catch (error) {
             throw error;
@@ -103,7 +103,7 @@ class ObjetivoService {
 
     public async findAllWorkspacesByUser(id){
         try{
-            const workspaces = await Objetivo.find({workspace:true, usuarios:{$elemMatch:{usuario:id}}}).populate('proprietario usuarios.usuario').exec();
+            const workspaces = await Objetivo.find({$and: [{workspace: true}, {$or: [{proprietario: id}, {"usuarios.usuario": id}]}]}).populate('proprietario usuarios.usuario').exec();
             return workspaces;
         }catch(error){
             console.log(error)
