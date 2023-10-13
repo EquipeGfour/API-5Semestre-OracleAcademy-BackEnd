@@ -25,21 +25,23 @@ class TarefaService {
     public async findTarefasByObjetivoId(id) {
         try {
             const objetivo = await ObjetivoService.getObjetivoById(id);
-            const tarefas = objetivo.tarefas
-            tarefas.sort((a, b) => {
-                const dataEstimadaA = new Date(a.data_estimada.split('/').reverse().join('-')).getTime();
-                const dataEstimadaB = new Date(b.data_estimada.split('/').reverse().join('-')).getTime();
-                const dataAtual = new Date().getTime();
+            let tarefas = objetivo.tarefas
+            if(tarefas.length > 1){
+                tarefas.sort((a, b) => {
+                    const dataEstimadaA = new Date(a.data_estimada.split('/').reverse().join('-')).getTime();
+                    const dataEstimadaB = new Date(b.data_estimada.split('/').reverse().join('-')).getTime();
+                    const dataAtual = new Date().getTime();
 
-                const diferencaA = Math.abs(dataEstimadaA - dataAtual);
-                const diferencaB = Math.abs(dataEstimadaB - dataAtual);
+                    const diferencaA = Math.abs(dataEstimadaA - dataAtual);
+                    const diferencaB = Math.abs(dataEstimadaB - dataAtual);
 
-                if (a.prioridade === b.prioridade) {
-                    return diferencaA - diferencaB;
-                } else {
-                    return a.prioridade - b.prioridade;
-                }
-            });
+                    if (a.prioridade === b.prioridade) {
+                        return diferencaA - diferencaB;
+                    } else {
+                        return a.prioridade - b.prioridade;
+                    }
+                });
+            }
 
             return tarefas;
         } catch (error) {
