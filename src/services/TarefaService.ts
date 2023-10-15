@@ -1,83 +1,147 @@
-import { connection } from "../config/db";
-import { Objetivos, Tarefas } from "../models";
+import { IUsuarios, ITarefa, Tarefa } from "../models";
+import { PERMISSAO } from "../utils/enum";
+import ObjetivoService from "./ObjetivoService";
+import mongoose from "mongoose";
 
 
 class TarefaService {
-    public async createTarefa(id: string, tarefa: Tarefas): Promise<Tarefas[]> {
+    public async createTarefa(titulo, descricao, data_estimada, prioridade, objetivo) {
         try {
-            const response = await connection.collection("objetivos").doc(id).get();
-            if (!response.exists) {
-                throw `Objetivo ${id} não encontrado...`
-            }
-            let total_tarefas: number = (response.data() as Objetivos).total_tarefas;
-            total_tarefas++;
-            const listaObjetivos: Tarefas[] = (response.data() as Objetivos).tarefas;
-            listaObjetivos.push(tarefa);
-            await connection.collection("objetivos").doc(id).update({ tarefas: listaObjetivos, total_tarefas:total_tarefas });
-            return listaObjetivos;
+            const tarefa = new Tarefa({
+                titulo: titulo,
+                descricao: descricao,
+                data_estimada: data_estimada,
+                prioridade: prioridade
+            })
+            const response = await tarefa.save();
+            objetivo.tarefas.push(response);
+            await objetivo.save();
+            return response;
         } catch (error) {
             throw error
         }
     }
 
-    public async findtaskID(id: string): Promise<Tarefas[]> {
+    public async findTarefasByObjetivoId(id) {
         try {
-            const response = await connection.collection("objetivos").doc(id).get();
-            if (!response.exists) {
-                throw `Objetivo ${id} não encontrado...`;
+            const objetivo = await ObjetivoService.getObjetivoById(id);
+            let tarefas = objetivo.tarefas
+            if(tarefas.length > 1){
+                tarefas.sort((a, b) => {
+                    const dataEstimadaA = new Date(a.data_estimada.split('/').reverse().join('-')).getTime();
+                    const dataEstimadaB = new Date(b.data_estimada.split('/').reverse().join('-')).getTime();
+                    const dataAtual = new Date().getTime();
+
+                    const diferencaA = Math.abs(dataEstimadaA - dataAtual);
+                    const diferencaB = Math.abs(dataEstimadaB - dataAtual);
+
+                    if (a.prioridade === b.prioridade) {
+                        return diferencaA - diferencaB;
+                    } else {
+                        return a.prioridade - b.prioridade;
+                    }
+                });
             }
-            const listaObjetivos: Tarefas[] = (response.data() as Objetivos).tarefas;
-            return listaObjetivos;
+
+            return tarefas;
         } catch (error) {
             throw error;
         }
     }
-    public async editTask(objetivoId: string, taskIdFromBody: string, updatedTask: Tarefas): Promise<Tarefas[]> {
+
+    public async findTaskByID(id): Promise<ITarefa> {
         try {
-            const listaObjetivos = await this.findtaskID(objetivoId);
-            const taskIndex = listaObjetivos.findIndex((task) => task.id === taskIdFromBody);
-            if (taskIndex === -1) {
-                throw `Tarefa com ID ${taskIdFromBody} não encontrada no objetivo ${objetivoId}...`;
+            const tarefas = await Tarefa.findOne({_id:id}).populate('usuarios.usuario')
+            if (!tarefas) {
+                throw `Tarefa ${id} não encontrada.`;
             }
-            listaObjetivos[taskIndex] = { ...listaObjetivos[taskIndex], ...updatedTask };
-            await connection.collection("objetivos").doc(objetivoId).update({ tarefas: listaObjetivos });
-            return listaObjetivos;
+            return tarefas;
         } catch (error) {
             throw error;
         }
     }
-    public async deleteTafefa(id: string, taskIdFromBody: string) {
-        try{
-            const response = await connection.collection("objetivos").doc(id).get();
-            if (!response.exists) {
-                throw `Objetivo ${id} não encontrado...`
+
+    public async deleteTarefa(id: string) {
+        try {
+            const deleteTarefa = await Tarefa.findByIdAndDelete(id)
+            return deleteTarefa
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async changePriority(id: string, novaPrioridade: any) {
+        try {
+            const tarefa = await Tarefa.findById(id)
+            if (!tarefa) {
+                throw `Tarefa ${id} não encontrada.`;
             }
-            const Tarefa = (response.data() as Objetivos).tarefas;
-            let total_tarefas = (response.data() as Objetivos).total_tarefas;          
-            const taskIndex = Tarefa.filter((T) => T.id != taskIdFromBody)
-            total_tarefas--;
-            await connection.collection("objetivos").doc(id).update({ tarefas: taskIndex});
-            return `Tarefa de ID ${id} excluída`;
+            const prioridadeTarefa = await tarefa.updateOne({ prioridade: novaPrioridade })
+            return prioridadeTarefa
         } catch (error) {
             throw error
         }
     }
-    public async changeTaskPriority(idObjetivo: string, idTarefa: string, prioridade): Promise<string> {
-        try{
-            const response = await connection.collection("objetivos").doc(idObjetivo).get();
-            if (!response.exists) {
-                throw `Objetivo ${idObjetivo} não encontrado...`
+
+    public async editarTarefa(tarefaId: string, titulo: string, descricao: string, data_estimada: string, prioridade: number) {
+        try {
+            const tarefa = await Tarefa.findById(tarefaId);
+
+            if (!tarefa) {
+                throw `Tarefa com ID ${tarefaId} não encontrada.`;
             }
-            const tarefas = (response.data() as Objetivos).tarefas;
-            tarefas.forEach((tarefa) => {
-                if(tarefa.id === idTarefa){
-                    tarefa.prioridade = prioridade;
+            tarefa.titulo = titulo;
+            tarefa.descricao = descricao;
+            tarefa.data_estimada = data_estimada;
+            tarefa.prioridade = prioridade;
+            const tarefaAtualizada = await tarefa.save();
+
+            return tarefaAtualizada;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
+        try {
+            const novaLista = novosUsuarios.map((usuario) => {
+                return { usuario: new mongoose.Types.ObjectId(usuario._id) , permissao: PERMISSAO.LEITURA };
+            });
+            
+            const tarefa = await Tarefa.findById(id);
+            
+            if (tarefa) {
+                // Verifique se o usuário já está na lista
+                const usuariosParaAdicionar = novaLista.filter((novoUsuario) => {
+                    return !tarefa.usuarios.some((usuarioNaTarefa) => usuarioNaTarefa.usuario.equals(novoUsuario.usuario));
+                });
+            
+                if (usuariosParaAdicionar.length > 0) {
+                    // Adicione os novos usuários à lista
+                    tarefa.usuarios.push(...usuariosParaAdicionar);
+                    await tarefa.save();
                 }
-            })
-            await connection.collection("objetivos").doc(idObjetivo).update({tarefas: tarefas})
-            return `Prioridade da tarefa com ID ${idTarefa} foi atualizada com sucesso!!.`
-        }catch(error){
-            throw error
+            }
+            if (!tarefa) {
+                throw `tarefa ${id} não encontrado.`;
+            }
+
+            // tarefa.usuarios = novosUsuarios;
+            //await tarefa.save();
+            return tarefa;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async changeTaskStatus(id, status) {
+        try {
+            const task = await this.findTaskByID(id);
+            task.status = status;
+            await Tarefa.findByIdAndUpdate(id, task);
+            return task;
+        } catch (error) {
+            throw error;
         }
     }
 }

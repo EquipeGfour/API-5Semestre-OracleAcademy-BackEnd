@@ -1,0 +1,280 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "[BACK-END]  Thunder Routes",
+    "dateExported": "2023-10-07T15:06:09.966Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "c5c4e6af-82c6-428e-a908-cf28b236ed02",
+            "name": "Tarefa",
+            "containerId": "",
+            "created": "2023-10-07T14:27:25.303Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "8945f2bb-822d-4b06-8a6b-90f165ee3fb2",
+            "name": "Objetivo",
+            "containerId": "",
+            "created": "2023-10-07T14:27:25.304Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "6474779a-93a8-4197-87cb-5ed95613708c",
+            "name": "Usuario",
+            "containerId": "",
+            "created": "2023-10-07T14:27:44.046Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "f233349f-6e65-491e-984f-1928be0236da",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "8945f2bb-822d-4b06-8a6b-90f165ee3fb2",
+            "name": "Mudar Prioridade",
+            "url": "",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-07T14:27:25.303Z",
+            "modified": "2023-10-07T14:27:25.303Z",
+            "headers": []
+        },
+        {
+            "_id": "d4a4fe51-9056-40fb-b74d-991a89115bb0",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "8945f2bb-822d-4b06-8a6b-90f165ee3fb2",
+            "name": "Deletar Objetivo",
+            "url": "http://localhost:3004/objetivo/deletar/651c2d013445b4ad1713583e",
+            "method": "DELETE",
+            "sortNum": 15000,
+            "created": "2023-10-07T14:27:25.305Z",
+            "modified": "2023-10-07T14:27:25.305Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "78217c35-c839-4e30-bfa0-1f39d191bf65",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "8945f2bb-822d-4b06-8a6b-90f165ee3fb2",
+            "name": "Buscar Objetivos",
+            "url": "http://localhost:3004/objetivo/buscar",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-10-07T14:27:25.304Z",
+            "modified": "2023-10-07T14:27:25.304Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "77d98646-146f-486b-97d5-326e696e492e",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "8945f2bb-822d-4b06-8a6b-90f165ee3fb2",
+            "name": "Criar Objetivo",
+            "url": "http://localhost:3004/objetivo/criar",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-10-07T14:27:25.306Z",
+            "modified": "2023-10-07T15:04:58.365Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"titulo\":\"Teste 2\",\n  \"descricao\":\"Apenas um teste 2\",\n  \"prioridade\": 2,\n  \"data_estimada\":\"29/07/2024\"\n\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTIxNmI0MmFmOWZiNzc4Y2RjYTZmOGIiLCJub21lIjoiTmljb2xhcyIsInNlbmhhIjoic2VuaGEiLCJlbWFpbCI6Im5pY2hvbGxhc2xpbW1hNzM0QGdtYWlsLmNvbSIsImFuZXhvIjpmYWxzZSwiaWF0IjoxNjk2NjkwMTgzfQ.yJ8lixNiatS4XKTiqLq1WJLp2-_xDmi6Of4Kz6d935w"
+            },
+            "tests": []
+        },
+        {
+            "_id": "807e359c-ea8a-4ef1-a486-208fb9c6d3d3",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "8945f2bb-822d-4b06-8a6b-90f165ee3fb2",
+            "name": "Buscar por um objetivo",
+            "url": "localhost:3004/objetivo/buscar/651605997ef51760094fa66c",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-10-07T14:27:25.307Z",
+            "modified": "2023-10-07T14:27:25.307Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\":\"651605997ef51760094fa66c\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "74da451d-f85f-4792-9f13-dc02118631cd",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "c5c4e6af-82c6-428e-a908-cf28b236ed02",
+            "name": "Cadastrar Tarefa",
+            "url": "http://localhost:3004/tarefa/criar/651605947ef51760094fa669",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-10-07T14:27:25.308Z",
+            "modified": "2023-10-07T14:27:25.308Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"titulo\":\"Teste da tarefa\",\n  \"descricao\":\"Apenas um teste da tarefa\",\n  \"prioridade\": 2,\n  \"data_estimada\":\"29/07/2024\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6dd5c9f3-f0d7-4575-b072-1869fabb56e2",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "8945f2bb-822d-4b06-8a6b-90f165ee3fb2",
+            "name": "Atualizar Objetivo",
+            "url": "localhost:3004/objetivo/editar/651605947ef51760094fa669",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2023-10-07T14:27:25.309Z",
+            "modified": "2023-10-07T14:27:25.309Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"titulo\": \"Testando Atualizar\",\r\n  \"descricao\": \"Nova Descrição\",\r\n  \"progresso\": 10,\r\n  \"prioridade\": 1\r\n}\r\n",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "88866b6e-04a9-47cd-9ecf-316bdee1873e",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "c5c4e6af-82c6-428e-a908-cf28b236ed02",
+            "name": "Buscar Tarefa ID",
+            "url": "http://localhost:3004/tarefa/buscarTarefa/651605947ef51760094fa669",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-10-07T14:27:25.310Z",
+            "modified": "2023-10-07T14:27:25.310Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"tarefaId\":\"651605997ef51760094fa66c\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f476012f-12f8-41e4-a4f9-4efb60d81d36",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "c5c4e6af-82c6-428e-a908-cf28b236ed02",
+            "name": "buscar todas Tarefas",
+            "url": "http://localhost:3004/tarefa/buscarTarefas/651ac3713601d519122d4e3e",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2023-10-07T14:27:25.311Z",
+            "modified": "2023-10-07T14:27:25.311Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a3ffde9d-36ea-4132-86bf-91f7082ce7eb",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "c5c4e6af-82c6-428e-a908-cf28b236ed02",
+            "name": "Excluir tarefa",
+            "url": "localhost:3004/tarefa/deletar/651bf5d055f046c67f017b57",
+            "method": "DELETE",
+            "sortNum": 80000,
+            "created": "2023-10-07T14:27:25.313Z",
+            "modified": "2023-10-07T14:27:25.313Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6f6200cf-fb40-4dc2-89dd-bf6b52591c1f",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "6474779a-93a8-4197-87cb-5ed95613708c",
+            "name": "Buscar todos os usuarios",
+            "url": "localhost:3004/usuario/buscar",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-10-07T14:27:54.122Z",
+            "modified": "2023-10-07T14:52:18.873Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTIxNmI0MmFmOWZiNzc4Y2RjYTZmOGIiLCJub21lIjoiTmljb2xhcyIsInNlbmhhIjoic2VuaGEiLCJlbWFpbCI6Im5pY2hvbGxhc2xpbW1hNzM0QGdtYWlsLmNvbSIsImFuZXhvIjpmYWxzZSwiaWF0IjoxNjk2NjkwMTgzfQ.yJ8lixNiatS4XKTiqLq1WJLp2-_xDmi6Of4Kz6d935w"
+            },
+            "tests": []
+        },
+        {
+            "_id": "13518a8c-bfde-4dc5-afb7-62f4eb4930fd",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "6474779a-93a8-4197-87cb-5ed95613708c",
+            "name": "criar usuario",
+            "url": "localhost:3004/usuario/criar",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2023-10-07T14:28:21.517Z",
+            "modified": "2023-10-07T14:29:22.315Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nome\":\"Nicolas\",\n  \"email\":\"nichollaslimma734@gmail.com\",\n  \"senha\":\"senha\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "89a9801b-554a-403d-96fb-3ee6cea324cd",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "6474779a-93a8-4197-87cb-5ed95613708c",
+            "name": "Buscar usuario por id",
+            "url": "localhost:3004/usuario/buscar/65216b42af9fb778cdca6f8b",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-10-07T14:30:15.314Z",
+            "modified": "2023-10-07T14:30:29.884Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "079ee80f-b29e-4e45-a2d9-c8d5b39ae625",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "6474779a-93a8-4197-87cb-5ed95613708c",
+            "name": "Editar usuario",
+            "url": "",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2023-10-07T14:30:59.722Z",
+            "modified": "2023-10-07T14:30:59.722Z",
+            "headers": []
+        },
+        {
+            "_id": "d51d0a6a-83d4-4d4e-8136-edfe29086fb2",
+            "colId": "349c0691-df9d-4ee4-9a94-eb1b93cbe9a5",
+            "containerId": "6474779a-93a8-4197-87cb-5ed95613708c",
+            "name": "Login",
+            "url": "localhost:3004/login",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2023-10-07T14:49:05.885Z",
+            "modified": "2023-10-07T14:49:43.037Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"nichollaslimma734@gmail.com\",\n  \"senha\":\"senha\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
