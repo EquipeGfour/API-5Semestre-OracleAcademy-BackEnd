@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ObjetivoService } from "../services";
+import { ObjetivoService, WorkspaceService } from "../services";
 import { Objetivo } from "../models";
 import { idEhValido, verificarPrioridade } from "../utils/utils";
 
@@ -31,7 +31,7 @@ class ObjetivoController {
             const usuarios = req.body;
             const objetivo = await ObjetivoService.getObjetivoById(id);
             if (objetivo && objetivo.workspace === true) {
-                const updatedObjetivo = await ObjetivoService.addUserWorkspace(id, usuarios);
+                const updatedObjetivo = await WorkspaceService.addUserToWorkspace(id, usuarios);
                 return res.status(200).json(updatedObjetivo);
             } else {
                 return res.status(400).json({ message: "O campo 'workspace' precisa ser true para adicionar usuários." });

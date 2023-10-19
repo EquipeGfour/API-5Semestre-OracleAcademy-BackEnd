@@ -66,28 +66,6 @@ class ObjetivoService {
         }
     }
 
-    public async addUserWorkspace(id, usuarios) {
-        try {
-            const novaLista = usuarios.map((usuario) => {
-                return {usuario: usuario._id, permissao:PERMISSAO.LEITURA}
-            })
-            const objetivo = await Objetivo.findById(id);
-            if (objetivo) {
-                const usuariosParaAdicionar = novaLista.filter((novoUsuario) => {
-                    return !objetivo.usuarios.some((usuarioNaTarefa) => usuarioNaTarefa.usuario.equals(novoUsuario.usuario));
-                });
-                if (usuariosParaAdicionar.length > 0) {
-                    objetivo.usuarios.push(...usuariosParaAdicionar);
-                    await objetivo.save();
-                }
-            }
-
-            return objetivo;
-        } catch (error) {
-            throw error;
-        }
-    }
-
     public async changePriority(id: string, novaPrioridade: any) {
         try {
             const objetivo = await Objetivo.findById(id);
