@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { ObjetivoService } from "../services";
-import { IUsuarios, Tarefa } from "../models";
+import { IUsuarios } from "../models";
 import { idEhValido, verificarPrioridade, verificarStatus } from "../utils/utils";
-import TarefaService from "../services/TarefaService";
+import { TarefaService } from "../services"
 
 
 class TarefaController {
