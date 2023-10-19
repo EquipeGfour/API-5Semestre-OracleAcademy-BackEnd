@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { ObjetivoService } from "../services";
-import { Objetivo, IUsuarios } from "../models";
+import { Objetivo } from "../models";
 import { idEhValido, verificarPrioridade } from "../utils/utils";
+
 
 class ObjetivoController {
     public async cadastrarObjetivo(req: Request, res: Response) {
@@ -96,16 +97,6 @@ class ObjetivoController {
             return res.json(result)
         } catch (error) {
             res.status(500).json(error)
-        }
-    }
-
-    public async buscarWorkspaces(req: Request, res: Response){
-        try{
-            const usuario = res.locals.jwtPayload;
-            const workspaces = await ObjetivoService.findAllWorkspacesByUser(usuario._id);
-            return res.json(workspaces);
-        }catch(error){
-            return res.status(500).json(error)
         }
     }
 
