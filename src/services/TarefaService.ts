@@ -144,6 +144,22 @@ class TarefaService {
             throw error;
         }
     }
+
+    public async onDeleteObjetivoDeleteAllTarefas(tarefas){
+        const session = await mongoose.startSession();
+        session.startTransaction()
+        try{
+            const options = { session };
+            const filtro = { _id: { $in: tarefas } };
+            await Tarefa.deleteMany(filtro, options);
+            const result = await session.commitTransaction()
+            return result;
+        }catch(error){
+            await session.abortTransaction();
+            session.endSession()
+            throw error;
+        }
+    }
 }
 
 

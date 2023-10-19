@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ObjetivoService, WorkspaceService } from "../services";
+import { ObjetivoService, TarefaService, WorkspaceService } from "../services";
 import { Objetivo } from "../models";
 import { idEhValido, verificarPrioridade } from "../utils/utils";
 
@@ -78,10 +78,12 @@ class ObjetivoController {
     public async excluirObjetivo(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            await ObjetivoService.getObjetivoById(id);
+            const objetivo = await ObjetivoService.getObjetivoById(id);
+            await TarefaService.onDeleteObjetivoDeleteAllTarefas(objetivo.tarefas)
             await ObjetivoService.deleteObjetivo(id);
             return res.json(`objetivo ${id} excluido com sucesso...`);
         } catch (error) {
+            console.log(error)
             res.status(500).json(error);
         }
     }
