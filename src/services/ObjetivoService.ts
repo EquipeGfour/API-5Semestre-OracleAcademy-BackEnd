@@ -66,28 +66,6 @@ class ObjetivoService {
         }
     }
 
-    public async addUserWorkspace(id, usuarios) {
-        try {
-            const novaLista = usuarios.map((usuario) => {
-                return {usuario: usuario._id, permissao:PERMISSAO.LEITURA}
-            })
-            const objetivo = await Objetivo.findById(id);
-            if (objetivo) {
-                const usuariosParaAdicionar = novaLista.filter((novoUsuario) => {
-                    return !objetivo.usuarios.some((usuarioNaTarefa) => usuarioNaTarefa.usuario.equals(novoUsuario.usuario));
-                });
-                if (usuariosParaAdicionar.length > 0) {
-                    objetivo.usuarios.push(...usuariosParaAdicionar);
-                    await objetivo.save();
-                }
-            }
-
-            return objetivo;
-        } catch (error) {
-            throw error;
-        }
-    }
-
     public async changePriority(id: string, novaPrioridade: any) {
         try {
             const objetivo = await Objetivo.findById(id);
@@ -97,21 +75,6 @@ class ObjetivoService {
             const prioridadeObjetivo = await objetivo.updateOne({ prioridade: novaPrioridade });
             return prioridadeObjetivo;
         } catch (error) {
-            throw error;
-        }
-    }
-
-    public async findAllWorkspacesByUser(id){
-        try{
-            const workspaces = await Objetivo.find({$and: [{workspace: true}, {$or: [{proprietario: id}, {"usuarios.usuario": id}]}]}).populate('tarefas proprietario usuarios.usuario').populate({
-                path: 'tarefas',
-                populate: {
-                    path: 'usuarios',populate:{path: 'usuario'}
-                }
-            }).exec();
-            return workspaces;
-        }catch(error){
-            console.log(error)
             throw error;
         }
     }

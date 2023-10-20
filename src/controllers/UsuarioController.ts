@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import UsuarioService from "../services/UsuarioService";
-import { Usuarios, IUsuarios } from "../models";
+import { Usuarios } from "../models";
 import { idEhValido } from "../utils/utils";
+import { UsuarioService } from "../services";
+
 
 class UsuarioController {
     public async cadastrarUsuario(req: Request, res: Response) {
