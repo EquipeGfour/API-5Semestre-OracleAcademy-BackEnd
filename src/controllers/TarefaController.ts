@@ -114,6 +114,20 @@ class TarefaController {
             res.status(500).json({ message: error.message });
         }
     }
+
+    public async buscarTarefaStatus(req: Request, res: Response) {
+        try {
+            const { status } = req.body;
+            const usuario   = res.locals.jwtPayload;
+
+            const tarefas = await TarefaService.findTarefaByStatus(usuario, status);
+            
+            return res.json(tarefas);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error || "Ocorreu um erro durante a busca de tarefas por filtro." })
+        }
+    }
 }
 
 export default new TarefaController();
