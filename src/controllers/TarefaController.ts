@@ -75,6 +75,7 @@ class TarefaController {
                 !data_estimada ||
                 !prioridade
             ) {
+                console.log(titulo, descricao, data_estimada, prioridade)
                 return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos.' });
             } 
             const tarefa = await TarefaService.editarTarefa(
