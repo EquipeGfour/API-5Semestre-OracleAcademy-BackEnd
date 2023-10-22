@@ -22,14 +22,10 @@ class DriveController {
         return this._driveInstance;
     }
 
-    private setGoogleApiCredencial(refreshToken: string){
-        this._googleApiClient.setCredentials({refresh_token: refreshToken})
-    }
-
     private createGoogleApiClient(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): OAuth2Client{
         try{
         let googleApiClient = new OAuth2Client(clientId, clientSecret, redirectUri);
-        this.setGoogleApiCredencial(refreshToken);
+        googleApiClient.setCredentials({refresh_token: refreshToken})
         return googleApiClient;
         }catch(error){
             return error;
@@ -42,6 +38,33 @@ class DriveController {
             return driveClient;
         }catch(error){
             console.error(error);
+        }
+    }
+
+    public async searchFolder(folder: string){
+        try{
+            const folders = await this._googleDriveClient.files.list({
+                q: `mimeType='application/vnd.google-apps.folder' and name='${folder}' and trashed=false`,
+                fields: 'files(id, name, createdTime)',
+            })
+            return folders.data.files;
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    public async createFolder(folder: string){
+        try{
+            const response = await this._googleDriveClient.files.create({
+                requestBody: {
+                    name: folder,
+                    mimeType: 'application/vnd.google-apps.folder',
+                },
+                fields: 'id, name',
+            })
+            return response.data;
+        }catch(error){
+            console.log(error)
         }
     }
 
