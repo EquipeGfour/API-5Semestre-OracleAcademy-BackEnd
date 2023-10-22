@@ -4,6 +4,7 @@ import UsuarioController from "./UsuarioController";
 import LoginController from "./LoginController";
 import WorkspaceController from "./WorkspaceController";
 import DriveController from "./DriveController";
+import UploadController from "./UploadController";
 
 
-export { ObjetivoController, TarefaController, UsuarioController, LoginController, WorkspaceController, DriveController };
+export { ObjetivoController, TarefaController, UsuarioController, LoginController, WorkspaceController, DriveController, UploadController };
