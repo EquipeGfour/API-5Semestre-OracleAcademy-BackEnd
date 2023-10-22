@@ -1,14 +1,17 @@
 import { google } from "googleapis";
 import { OAuth2Client } from 'google-auth-library';
 import { Readable } from "stream"
+import { drive_v3 } from "googleapis/build/src/apis/drive/v3"
 
 
 class DriveController {
     private static _driveInstance: DriveController;
-    private _googleDriveClient: OAuth2Client;
+    private _googleApiClient: OAuth2Client;
+    private _googleDriveClient: drive_v3.Drive;
 
     public constructor(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string) {
-        this._googleDriveClient = this.createGoogleDriveClient(clientId, clientSecret, redirectUri, refreshToken);
+        this._googleApiClient = this.createGoogleApiClient(clientId, clientSecret, redirectUri, refreshToken);
+        this._googleDriveClient = this.createGoogleDriveClient();
     }
 
     public static initialize(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): DriveController {
@@ -19,18 +22,27 @@ class DriveController {
         return this._driveInstance;
     }
 
-    private createGoogleDriveClient(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): OAuth2Client {
+    private setGoogleApiCredencial(refreshToken: string){
+        this._googleApiClient.setCredentials({refresh_token: refreshToken})
+    }
+
+    private createGoogleApiClient(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): OAuth2Client{
         try{
-            let auth = new OAuth2Client(clientId, clientSecret, redirectUri);
-            this.setGoogleApiCredencial(refreshToken);
-            return auth;
+        let googleApiClient = new OAuth2Client(clientId, clientSecret, redirectUri);
+        this.setGoogleApiCredencial(refreshToken);
+        return googleApiClient;
         }catch(error){
-            console.error(error);
+            return error;
         }
     }
 
-    private setGoogleApiCredencial(refreshToken: string){
-        this._googleDriveClient.setCredentials({refresh_token: refreshToken})
+    private createGoogleDriveClient(): drive_v3.Drive {
+        try{
+            let driveClient = google.drive({ version: 'v3', auth: this._googleApiClient })
+            return driveClient;
+        }catch(error){
+            console.error(error);
+        }
     }
 
     public static get DriveInstance(): DriveController {
