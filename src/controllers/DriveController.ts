@@ -7,30 +7,31 @@ class DriveController {
     private static _driveInstance: DriveController;
     private _googleDriveClient: OAuth2Client;
 
-    public constructor(clientId: string, clientSecret: string, redirectUri: string) {
-        this._googleDriveClient = this.createGoogleDriveClient(clientId, clientSecret, redirectUri);
+    public constructor(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string) {
+        this._googleDriveClient = this.createGoogleDriveClient(clientId, clientSecret, redirectUri, refreshToken);
     }
 
-    public static initialize(clientId: string, clientSecret: string, redirectUri: string): DriveController {
+    public static initialize(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): DriveController {
         if (!this._driveInstance) {
-            this._driveInstance = new DriveController(clientId, clientSecret, redirectUri);
+            this._driveInstance = new DriveController(clientId, clientSecret, redirectUri, refreshToken);
             console.log("")
         }
         return this._driveInstance;
     }
 
-    private createGoogleDriveClient(clientId, clientSecret, redirectUri): OAuth2Client {
+    private createGoogleDriveClient(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): OAuth2Client {
         try{
             let auth = new OAuth2Client(clientId, clientSecret, redirectUri);
+            this.setGoogleApiCredencial(refreshToken);
             return auth;
         }catch(error){
             console.error(error);
         }
     }
 
-    // private setGoogleApiCredencial(){
-
-    // }
+    private setGoogleApiCredencial(refreshToken: string){
+        this._googleDriveClient.setCredentials({refresh_token: refreshToken})
+    }
 
     public static get DriveInstance(): DriveController {
         if (!this._driveInstance) {
