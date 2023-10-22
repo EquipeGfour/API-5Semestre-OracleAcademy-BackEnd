@@ -22,39 +22,39 @@ class DriveController {
         return this._driveInstance;
     }
 
-    private createGoogleApiClient(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): OAuth2Client{
-        try{
-        let googleApiClient = new OAuth2Client(clientId, clientSecret, redirectUri);
-        googleApiClient.setCredentials({refresh_token: refreshToken})
-        return googleApiClient;
-        }catch(error){
+    private createGoogleApiClient(clientId: string, clientSecret: string, redirectUri: string, refreshToken: string): OAuth2Client {
+        try {
+            let googleApiClient = new OAuth2Client(clientId, clientSecret, redirectUri);
+            googleApiClient.setCredentials({ refresh_token: refreshToken })
+            return googleApiClient;
+        } catch (error) {
             return error;
         }
     }
 
     private createGoogleDriveClient(): drive_v3.Drive {
-        try{
+        try {
             let driveClient = google.drive({ version: 'v3', auth: this._googleApiClient })
             return driveClient;
-        }catch(error){
+        } catch (error) {
             console.error(error);
         }
     }
 
-    public async searchFolder(folder: string){
-        try{
+    public async searchFolder(folder: string) {
+        try {
             const folders = await this._googleDriveClient.files.list({
                 q: `mimeType='application/vnd.google-apps.folder' and name='${folder}' and trashed=false`,
                 fields: 'files(id, name, createdTime)',
             })
             return folders.data.files;
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
     }
 
-    public async createFolder(folder: string){
-        try{
+    public async createFolder(folder: string) {
+        try {
             const response = await this._googleDriveClient.files.create({
                 requestBody: {
                     name: folder,
@@ -63,8 +63,50 @@ class DriveController {
                 fields: 'id, name',
             })
             return response.data;
-        }catch(error){
+        } catch (error) {
             console.log(error)
+        }
+    }
+
+    public async sendFile(filename: string, mimetype: string, fileContent, folderId: string) {
+        try {
+            const fileMetadata = {
+                name: filename,
+                parents: [folderId] // ID da pasta onde o arquivo será salvo
+            };
+            const media = {
+                mimeType: mimetype,
+                body: Readable.from(fileContent)
+            };
+
+            const response = await this._googleDriveClient.files.create({
+                requestBody: fileMetadata,
+                media: media,
+                fields: 'id, name',
+                supportsAllDrives: true,
+            })
+
+            const fileId = response.data.id;
+            await this.setFilePermissions(fileId);
+
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    private async setFilePermissions(fileId: string) {
+        try {
+            await this._googleDriveClient.permissions.create({
+                fileId: fileId,
+                requestBody: {
+                    role: 'reader',
+                    type: 'anyone',
+                },
+            });
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
     }
 
@@ -75,7 +117,7 @@ class DriveController {
         return this._driveInstance;
     }
 
-    get googleDriveClient(){
+    get googleDriveClient() {
         return this._googleDriveClient;
     }
 }
