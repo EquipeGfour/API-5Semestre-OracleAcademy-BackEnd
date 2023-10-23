@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { TarefaController } from "../controllers";
+import { authenticate } from "../middlewares";
 
 
 const routes = Router();
@@ -12,5 +13,6 @@ routes.delete("/deletar/:id", TarefaController.excluirTarefa);
 routes.put("/mudarPrioridade/:id", TarefaController.alterarPrioridade);
 routes.put("/adicionarUser/:id", TarefaController.adicionarUsuariosTarefa);
 routes.put("/mudarStatus/:id", TarefaController.mudarStatusDaTarefa);
+routes.get("/buscarTarefasStatus", authenticate, TarefaController.buscarTarefaStatus);
 
 export default routes;

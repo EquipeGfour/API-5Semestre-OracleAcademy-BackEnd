@@ -160,7 +160,34 @@ class TarefaService {
             throw error;
         }
     }
-}
 
+    public async findTarefaByStatus(usuario, status): Promise<ITarefa[]> {
+        try {
+            //Encontra todos os objetivos do usuário logado
+            const objetivos = await ObjetivoService.findAllObjetivosByUser(usuario);
+            
+            //Prepara array de resultado
+            const tarefas: ITarefa[] = [];
+    
+            //Passa por todos as tarefas de todos os objetivos encontrados antes
+            for (const objetivo of objetivos) {
+                for (const tarefa of objetivo.tarefas) {
+                    //Guarda apenas tarefas com status que foi requisitado antes
+                    if (tarefa.status === status) {
+                        tarefas.push(tarefa);
+                    }
+                }
+            }
+    
+            if (tarefas.length === 0) {
+                throw `Tarefas de status ${status} não encontradas.`;
+            }
+    
+            return tarefas;
+        } catch (error) {
+            throw error;
+        }
+    }
+}
 
 export default new TarefaService();
