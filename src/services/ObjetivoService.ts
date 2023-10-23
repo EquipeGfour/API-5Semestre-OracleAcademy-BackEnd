@@ -15,7 +15,7 @@ class ObjetivoService {
 
     public async findAllObjetivosByUser(usuario) {
         try {
-            const objetivos = await Objetivo.find({$and:[{proprietario:usuario._id}, {workspace:false}]}, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
+            const objetivos = await Objetivo.find({ $and: [{ proprietario: usuario._id }, { workspace: false }] }, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
             return objetivos;
         } catch (error) {
             throw error;
@@ -27,10 +27,10 @@ class ObjetivoService {
             const objetivo = await Objetivo.findById(id, '-__v').populate({
                 path: 'tarefas',
                 populate: {
-                    path: 'usuarios',populate:{path: 'usuario'}
+                    path: 'usuarios', populate: { path: 'usuario' }
                 }
             })
-            .populate('proprietario', '-__v').exec();
+                .populate('proprietario', '-__v').exec();
             if (!objetivo) {
                 throw `objetivo ${id} não encontrado....`;
             }
@@ -78,6 +78,7 @@ class ObjetivoService {
             throw error;
         }
     }
+
 
 }
 

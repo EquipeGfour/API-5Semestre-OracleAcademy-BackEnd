@@ -40,6 +40,20 @@ class WorkspaceService{
             throw error;
         }
     }
+    public async findworkspaceByStatus(usuario, status) {
+        try {
+            const objetivos = await Objetivo.find({
+                $and: [
+                    { proprietario: usuario._id },
+                    { workspace: true },
+                    { status: status } 
+                ]
+            }, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
+            return objetivos;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 
