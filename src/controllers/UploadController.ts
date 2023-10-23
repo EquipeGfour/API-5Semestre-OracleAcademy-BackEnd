@@ -27,7 +27,7 @@ class UploadController{
         }
     }
 
-    
+
     public async uploadFileFromTask(req: Request, res: Response) {
         try {
             const { id } = req.params;
@@ -46,6 +46,10 @@ class UploadController{
 
             //extrai as informações do arquivo
             const fileData = extractDataFromFile(file);
+            if(fileData.ext !== "png" && fileData.ext !== "jpg" && fileData.ext !== "pdf"){
+                return res.status(400).json("O arquivo com extensão incorreta.");
+            }
+
             const drive = DriveController.DriveInstance;
 
             //busca pasta "task" no drive e verifica se ela foi encontrada
