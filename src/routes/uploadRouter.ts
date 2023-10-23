@@ -5,7 +5,7 @@ import uploadDrive from "../middlewares/uploadMiddleware";
 
 const routes = Router();
 
-routes.post("/usuario", uploadDrive.single('file'), UploadController.uploadFile);
+routes.post("/usuario", UploadController.uploadUserFile);
 
 
 export default routes;
