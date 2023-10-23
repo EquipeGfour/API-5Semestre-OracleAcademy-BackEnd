@@ -105,7 +105,7 @@ class TarefaService {
     public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
         try {
             const novaLista = novosUsuarios.map((usuario) => {
-                return { usuario: new mongoose.Types.ObjectId(usuario._id) , permissao: PERMISSAO.LEITURA };
+                return { usuario: new mongoose.Types.ObjectId(usuario._id) , permissao: PERMISSAO.MEMBRO };
             });
             
             const tarefa = await Tarefa.findById(id);

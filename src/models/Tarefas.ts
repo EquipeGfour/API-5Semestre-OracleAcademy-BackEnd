@@ -69,7 +69,7 @@ const tarefa = new Schema({
         permissao: {
             type: Number,
             enum: PERMISSAO,
-            default: PERMISSAO.LEITURA
+            default: PERMISSAO.MEMBRO
         }
     }]
     //arquivos: Arquivos,

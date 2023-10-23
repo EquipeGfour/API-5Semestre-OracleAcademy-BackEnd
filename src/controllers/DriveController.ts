@@ -72,7 +72,7 @@ class DriveController {
         try {
             const fileMetadata = {
                 name: filename,
-                parents: [folderId] // ID da pasta onde o arquivo será salvo
+                parents: [folderId]
             };
             const media = {
                 mimeType: mimetype,
