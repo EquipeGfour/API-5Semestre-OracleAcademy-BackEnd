@@ -6,7 +6,7 @@ import { WorkspaceController } from "../controllers";
 const routes = Router();
 
 routes.get("/buscar", authenticate, WorkspaceController.buscarWorkspaces);
-routes.get("/buscarWorkspaceStatus", authenticate, WorkspaceController.buscarObjetivoStatus);
+routes.get("/buscarWorkspaceStatus", authenticate, WorkspaceController.buscarWorkspaceStatus);
 
 
 

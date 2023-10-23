@@ -13,14 +13,13 @@ class WorkspaceController {
         }
     }
 
-    public async buscarObjetivoStatus(req: Request, res: Response) {
+    public async buscarWorkspaceStatus(req: Request, res: Response) {
         try {
             const { status } = req.body;
             const usuario = res.locals.jwtPayload;
+            const workspaces = await WorkspaceService.findworkspaceByStatus(usuario, status);
 
-            const objetivos = await WorkspaceService.findObjetivoByStatus(usuario, status);
-
-            return res.json(objetivos);
+            return res.json(workspaces);
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: error || "Ocorreu um erro durante a busca de objetivos por filtro." });
