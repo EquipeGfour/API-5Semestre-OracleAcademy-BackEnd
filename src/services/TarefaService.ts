@@ -26,7 +26,7 @@ class TarefaService {
         try {
             const objetivo = await ObjetivoService.getObjetivoById(id);
             let tarefas = objetivo.tarefas
-            if(tarefas.length > 1){
+            if (tarefas.length > 1) {
                 tarefas.sort((a, b) => {
                     const dataEstimadaA = new Date(a.data_estimada.split('/').reverse().join('-')).getTime();
                     const dataEstimadaB = new Date(b.data_estimada.split('/').reverse().join('-')).getTime();
@@ -51,7 +51,7 @@ class TarefaService {
 
     public async findTaskByID(id): Promise<ITarefa> {
         try {
-            const tarefas = await Tarefa.findOne({_id:id}).populate('usuarios.usuario')
+            const tarefas = await Tarefa.findOne({ _id: id }).populate('usuarios.usuario')
             if (!tarefas) {
                 throw `Tarefa ${id} não encontrada.`;
             }
@@ -105,17 +105,17 @@ class TarefaService {
     public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
         try {
             const novaLista = novosUsuarios.map((usuario) => {
-                return { usuario: new mongoose.Types.ObjectId(usuario._id) , permissao: PERMISSAO.LEITURA };
+                return { usuario: new mongoose.Types.ObjectId(usuario._id), permissao: PERMISSAO.LEITURA };
             });
-            
+
             const tarefa = await Tarefa.findById(id);
-            
+
             if (tarefa) {
                 // Verifique se o usuário já está na lista
                 const usuariosParaAdicionar = novaLista.filter((novoUsuario) => {
                     return !tarefa.usuarios.some((usuarioNaTarefa) => usuarioNaTarefa.usuario.equals(novoUsuario.usuario));
                 });
-            
+
                 if (usuariosParaAdicionar.length > 0) {
                     // Adicione os novos usuários à lista
                     tarefa.usuarios.push(...usuariosParaAdicionar);
@@ -145,16 +145,16 @@ class TarefaService {
         }
     }
 
-    public async onDeleteObjetivoDeleteAllTarefas(tarefas){
+    public async onDeleteObjetivoDeleteAllTarefas(tarefas) {
         const session = await mongoose.startSession();
         session.startTransaction()
-        try{
+        try {
             const options = { session };
             const filtro = { _id: { $in: tarefas } };
             await Tarefa.deleteMany(filtro, options);
             const result = await session.commitTransaction()
             return result;
-        }catch(error){
+        } catch (error) {
             await session.abortTransaction();
             session.endSession()
             throw error;
@@ -165,10 +165,10 @@ class TarefaService {
         try {
             //Encontra todos os objetivos do usuário logado
             const objetivos = await ObjetivoService.findAllObjetivosByUser(usuario);
-            
+
             //Prepara array de resultado
             const tarefas: ITarefa[] = [];
-    
+
             //Passa por todos as tarefas de todos os objetivos encontrados antes
             for (const objetivo of objetivos) {
                 for (const tarefa of objetivo.tarefas) {
@@ -178,12 +178,56 @@ class TarefaService {
                     }
                 }
             }
-    
+
             if (tarefas.length === 0) {
                 throw `Tarefas de status ${status} não encontradas.`;
             }
-    
+
             return tarefas;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async findTarefasExpiradasUsuario(usuario): Promise<ITarefa[]> {
+        try {
+            const objetivos = await ObjetivoService.findAllObjetivosByUser(usuario)
+
+            const tarefas: ITarefa[] = [].concat(...objetivos.map(objetivo => objetivo.tarefas));
+
+            tarefas.sort((a, b) => {
+                const dataA = new Date(a.data_estimada);
+                const dataB = new Date(b.data_estimada);
+
+                //Verificação para ver se alguma das datas é inválida
+                if(!this.isCorrectDate(dataA))
+                    console.warn(`TAREFA DE ID ${a._id} POSSUI DATA INVALIDA {${dataA}} `);
+                if(!this.isCorrectDate(dataB))
+                    console.warn(`TAREFA DE ID ${b._id} POSSUI DATA INVALIDA {${dataB}} `);
+                
+                return dataB.getDate() - dataA.getDate();
+            });
+
+            return tarefas;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    /**
+     * @param date data a testar
+     * @returns Verdadeiro caso a data seja válida para o new Date(). Falso caso seja NaN ou invalida
+     */
+    public isCorrectDate = (date: Date): boolean => {
+        return date instanceof Date && isFinite(+date);
+    };
+
+    public async isTarefaExpired(tarefa: ITarefa): Promise<Boolean> {
+        try {
+            const dataAtual = new Date();
+            const deadlineTarefa = new Date(tarefa.data_estimada);
+
+            return dataAtual > deadlineTarefa;
         } catch (error) {
             throw error;
         }

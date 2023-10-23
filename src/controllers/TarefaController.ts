@@ -128,6 +128,19 @@ class TarefaController {
             res.status(500).json({ error: error || "Ocorreu um erro durante a busca de tarefas por filtro." })
         }
     }
+
+    public async buscarTarefasExpiradas(req: Request, res: Response){
+        try{
+            const usuario   = res.locals.jwtPayload;
+
+            const tarefasExpiradas = await TarefaService.findTarefasExpiradasUsuario(usuario);
+
+            return res.json(tarefasExpiradas)
+        }catch (error) {
+            console.log(error);
+            res.status(500).json({ error: error || "Ocorreu um erro durante a busca de tarefas expiradas"})
+        }
+    }
 }
 
 export default new TarefaController();

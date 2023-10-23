@@ -14,5 +14,6 @@ routes.put("/mudarPrioridade/:id", TarefaController.alterarPrioridade);
 routes.put("/adicionarUser/:id", TarefaController.adicionarUsuariosTarefa);
 routes.put("/mudarStatus/:id", TarefaController.mudarStatusDaTarefa);
 routes.get("/buscarTarefasStatus", authenticate, TarefaController.buscarTarefaStatus);
+routes.get("/buscarTarefasExpiradas", authenticate, TarefaController.buscarTarefasExpiradas);
 
 export default routes;
