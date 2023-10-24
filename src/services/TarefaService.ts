@@ -1,5 +1,6 @@
 import { IUsuarios, ITarefa, Tarefa } from "../models";
-import { PERMISSAO } from "../utils/enum";
+import { parseDate } from "../utils/crontab";
+import { PERMISSAO, STATUS } from "../utils/enum";
 import ObjetivoService from "./ObjetivoService";
 import mongoose from "mongoose";
 
@@ -105,7 +106,7 @@ class TarefaService {
     public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
         try {
             const novaLista = novosUsuarios.map((usuario) => {
-                return { usuario: new mongoose.Types.ObjectId(usuario._id) , permissao: PERMISSAO.MEMBRO };
+                return { usuario: new mongoose.Types.ObjectId(usuario._id), permissao: PERMISSAO.MEMBRO };
             });
 
             const tarefa = await Tarefa.findById(id);
@@ -200,11 +201,11 @@ class TarefaService {
                 const dataB = new Date(b.data_estimada);
 
                 //Verificação para ver se alguma das datas é inválida
-                if(!this.isCorrectDate(dataA))
+                if (!this.isCorrectDate(dataA))
                     console.warn(`TAREFA DE ID ${a._id} POSSUI DATA INVALIDA {${dataA}} `);
-                if(!this.isCorrectDate(dataB))
+                if (!this.isCorrectDate(dataB))
                     console.warn(`TAREFA DE ID ${b._id} POSSUI DATA INVALIDA {${dataB}} `);
-                
+
                 return dataB.getDate() - dataA.getDate();
             });
 
@@ -230,6 +231,31 @@ class TarefaService {
             return dataAtual > deadlineTarefa;
         } catch (error) {
             throw error;
+        }
+    }
+
+    public async verifyIfTarefaIsExpired() {
+        try {
+            const tarefas = await Tarefa.find();
+            let ids = []
+            if (tarefas.length) {
+                const today: Date = new Date();
+                for (let i = 0; i < tarefas.length; i++) {
+                    const data_estimada = parseDate(tarefas[i].data_estimada);
+                    if (data_estimada) {
+                        if (data_estimada < today) {
+                            if (tarefas[i].status != STATUS.ATRASADO) {
+                                ids.push(tarefas[i]._id)
+                            }
+                        }
+                    }
+                    if (ids.length) {
+                        await Tarefa.updateMany({ _id: { $in: ids } }, { $set: { status: STATUS.ATRASADO } });
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 }
