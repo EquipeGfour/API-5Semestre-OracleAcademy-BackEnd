@@ -22,7 +22,7 @@ class WorkspaceService{
     public async addUserToWorkspace(id, usuarios) {
         try {
             const novaLista = usuarios.map((usuario) => {
-                return {usuario: usuario._id, permissao:PERMISSAO.LEITURA}
+                return {usuario: usuario._id, permissao:PERMISSAO.MEMBRO}
             })
             const objetivo = await Objetivo.findById(id);
             if (objetivo) {

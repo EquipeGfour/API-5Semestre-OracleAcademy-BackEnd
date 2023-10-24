@@ -1,3 +1,3 @@
-import { authenticate, generateToken } from "./auth";
+import { authenticate, generateToken } from "./authMiddleware";
 
 export { authenticate, generateToken };

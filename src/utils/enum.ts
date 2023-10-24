@@ -15,8 +15,7 @@ enum PRIORIDADES{
 
 enum PERMISSAO{
     ADM = 1,
-    EDICAO_E_CRIACAO = 2,
-    LEITURA = 3
+    MEMBRO = 2
 }
 
 

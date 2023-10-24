@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { Arquivos, IArquivos } from "./Arquivos";
+import { Arquivo, IArquivos } from "./Arquivos";
 
 
 const { Schema } = mongoose;
@@ -23,7 +23,7 @@ const usuarios = new Schema({
         default: false
     },
     foto: {
-        type: Arquivos,
+        type: Arquivo,
         require:false
     }
 });

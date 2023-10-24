@@ -9,10 +9,10 @@ interface IArquivos {
     url: string
 }
 
-const Arquivos = new Schema({
+const Arquivo = new Schema({
     nome: String,
     ext: String,
     url: String
 })
 
-export { IArquivos, Arquivos };
+export { IArquivos, Arquivo };
