@@ -258,6 +258,34 @@ class TarefaService {
             console.log(error);
         }
     }
+    public async updateChronometer(id: string, novoCronometro: number) {
+        try {
+            const tarefa = await Tarefa.findById(id);
+            if (!tarefa) {
+                throw `Tarefa com ID ${id} não encontrada.`;
+            }
+            tarefa.cronometro += novoCronometro;
+            const tarefaAtualizada = await tarefa.save();
+            return tarefaAtualizada;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+
+    public async findChronometer(id: string) {
+        try {
+            const tarefa = await Tarefa.findById(id);
+            if (!tarefa) {
+                throw `Tarefa com ID ${id} não encontrada.`;
+            }
+            const cronometro = tarefa.cronometro;
+            return cronometro;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
 
 export default new TarefaService();
