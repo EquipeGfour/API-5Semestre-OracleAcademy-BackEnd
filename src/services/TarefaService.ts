@@ -268,7 +268,7 @@ class TarefaService {
             if (!regex.test(novoCronometro)) {
                 throw 'O formato do novo cronômetro não é válido. Deve estar no formato "HH:MM:SS".';
             }
-            const [horasExistentes, minutosExistentes, segundosExistentes] = tarefa.Cronometro.split(":").map(Number);
+            const [horasExistentes, minutosExistentes, segundosExistentes] = tarefa.cronometro.split(":").map(Number);
             // Divida o valor novoCronometro em horas, minutos e segundos
             const [novasHoras, novosMinutos, novosSegundos] = novoCronometro.split(":").map(Number);
             // Calcule o valor atualizado do Cronômetro
@@ -287,7 +287,7 @@ class TarefaService {
             }
             // Formate o valor atualizado do Cronômetro como "HH:MM:SS"
             const cronometroFormatado = `${horasAtualizadas.toString().padStart(2, "0")}:${minutosAtualizados.toString().padStart(2, "0")}:${segundosAtualizados.toString().padStart(2, "0")}`;
-            tarefa.Cronometro = cronometroFormatado;
+            tarefa.cronometro = cronometroFormatado;
             const tarefaAtualizada = await tarefa.save();
             return tarefaAtualizada;
         } catch (error) {
@@ -301,7 +301,7 @@ class TarefaService {
             if (!tarefa) {
                 throw `Tarefa com ID ${id} não encontrada.`;
             }
-            const cronometro = tarefa.Cronometro;
+            const cronometro = tarefa.cronometro;
             return cronometro;
         } catch (error) {
             throw error;

@@ -16,7 +16,7 @@ interface ITarefa {
     data_inicio: string,
     data_conclusao: string,
     data_estimada: string,
-    Cronometro: string,
+    cronometro: string,
     status: STATUS,
     anexo: Boolean,
     arquivos: [IArquivos],
@@ -55,7 +55,7 @@ const tarefa = new Schema({
         require: true,
         default: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0],
     },
-    Cronometro: {
+    cronometro: {
         type: String,
         require: false,
         default: "00:00:00"
