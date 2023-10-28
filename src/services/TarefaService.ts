@@ -258,6 +258,51 @@ class TarefaService {
             console.log(error);
         }
     }
+    public async updateChronometer(id: string, novoCronometro: string) {
+        try {
+            const tarefa = await Tarefa.findById(id);
+            if (!tarefa) {
+                throw `Tarefa com ID ${id} não encontrada.`;
+            }
+            // Divida o valor Cronômetro existente em horas, minutos e segundos
+            const [horasExistentes, minutosExistentes, segundosExistentes] = tarefa.Cronometro.split(":").map(Number);
+            // Divida o valor novoCronometro em horas, minutos e segundos
+            const [novasHoras, novosMinutos, novosSegundos] = novoCronometro.split(":").map(Number);
+            // Calcule o valor atualizado do Cronômetro
+            let horasAtualizadas = horasExistentes + novasHoras;
+            let minutosAtualizados = minutosExistentes + novosMinutos;
+            let segundosAtualizados = segundosExistentes + novosSegundos;
+            // verifica se der 59 pra nao dar erros
+            if (segundosAtualizados > 59) {
+                segundosAtualizados -= 60;
+                minutosAtualizados++;
+            }
+            if (minutosAtualizados > 59) {
+                minutosAtualizados -= 60;
+                horasAtualizadas++;
+            }
+            // Formate o valor atualizado do Cronômetro como "HH:MM:SS"
+            const cronometroFormatado = `${horasAtualizadas.toString().padStart(2, "0")}:${minutosAtualizados.toString().padStart(2, "0")}:${segundosAtualizados.toString().padStart(2, "0")}`;
+            tarefa.Cronometro = cronometroFormatado;
+            const tarefaAtualizada = await tarefa.save();
+            return tarefaAtualizada;
+        } catch (error) {
+            throw error;
+        }
+    }
+    public async findChronometer(id: string) {
+        try {
+            const tarefa = await Tarefa.findById(id);
+            if (!tarefa) {
+                throw `Tarefa com ID ${id} não encontrada.`;
+            }
+            const cronometro = tarefa.Cronometro;
+            return cronometro;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
 
 export default new TarefaService();
