@@ -42,20 +42,30 @@ class ObjetivoService {
     }
 
     public async updateObjetivo(id: string, objetivoData: any) {
-        try {
-            const updatedObjetivo = await Objetivo.findByIdAndUpdate(
-                id,
-                objetivoData,
-                { new: true }
-            );
-            if (!updatedObjetivo) {
-                throw new Error(`Objetivo ${id} não encontrado.`);
-            }
-            return updatedObjetivo;
-        } catch (error) {
-            throw error;
+    try {
+        const objetivo = await Objetivo.findByIdAndUpdate(id, {}, { new: true });
+        if (!objetivo) {
+            throw new Error(`Objetivo ${id} não encontrado.`);
         }
+        if (objetivoData.titulo) {
+            objetivo.titulo = objetivoData.titulo;
+        }
+        if (objetivoData.descricao) {
+            objetivo.descricao = objetivoData.descricao;
+        }
+        if (objetivoData.data_estimada) {
+            objetivo.data_estimada = objetivoData.data_estimada;
+        }
+        if (objetivoData.prioridade) {
+            objetivo.prioridade = objetivoData.prioridade;
+        }
+        const updatedObjetivo = await objetivo.save();
+        return updatedObjetivo;
+    } catch (error) {
+        throw error;
     }
+}
+
 
     public async deleteObjetivo(id: string) {
         try {
