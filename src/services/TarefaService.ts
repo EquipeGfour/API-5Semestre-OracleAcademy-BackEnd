@@ -258,42 +258,20 @@ class TarefaService {
             console.log(error);
         }
     }
-    public async updateChronometer(id: string, novoCronometro: string) {
+    public async updateChronometer(id: string, novoCronometro: number) {
         try {
             const tarefa = await Tarefa.findById(id);
             if (!tarefa) {
                 throw `Tarefa com ID ${id} não encontrada.`;
             }
-            const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/;
-            if (!regex.test(novoCronometro)) {
-                throw 'O formato do novo cronômetro não é válido. Deve estar no formato "HH:MM:SS".';
-            }
-            const [horasExistentes, minutosExistentes, segundosExistentes] = tarefa.cronometro.split(":").map(Number);
-            // Divida o valor novoCronometro em horas, minutos e segundos
-            const [novasHoras, novosMinutos, novosSegundos] = novoCronometro.split(":").map(Number);
-            // Calcule o valor atualizado do Cronômetro
-            let horasAtualizadas = horasExistentes + novasHoras;
-            let minutosAtualizados = minutosExistentes + novosMinutos;
-            let segundosAtualizados = segundosExistentes + novosSegundos;
-            // Verifique se os segundos excedem 59
-            if (segundosAtualizados > 59) {
-                segundosAtualizados -= 60;
-                minutosAtualizados++;
-            }
-            // Verifique se os minutos excedem 59
-            if (minutosAtualizados > 59) {
-                minutosAtualizados -= 60;
-                horasAtualizadas++;
-            }
-            // Formate o valor atualizado do Cronômetro como "HH:MM:SS"
-            const cronometroFormatado = `${horasAtualizadas.toString().padStart(2, "0")}:${minutosAtualizados.toString().padStart(2, "0")}:${segundosAtualizados.toString().padStart(2, "0")}`;
-            tarefa.cronometro = cronometroFormatado;
+            tarefa.cronometro += novoCronometro;
             const tarefaAtualizada = await tarefa.save();
             return tarefaAtualizada;
         } catch (error) {
             throw error;
         }
     }
+    
 
     public async findChronometer(id: string) {
         try {

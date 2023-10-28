@@ -150,12 +150,17 @@ class TarefaController {
             if (!cronometro) {
                 return res.status(400).json({ error: 'O campo "cronometro" é obrigatório.' });
             }
-            const tarefaAtualizada = await TarefaService.updateChronometer(id, cronometro);
+            const cronometroNumber = parseInt(cronometro, 10); 
+            if (isNaN(cronometroNumber)) {
+                return res.status(400).json({ error: 'O formato do novo cronômetro não é válido. Deve ser um número.' });
+            }
+            const tarefaAtualizada = await TarefaService.updateChronometer(id, cronometroNumber);
             return res.json(tarefaAtualizada);
         } catch (error) {
             res.status(500).json(error);
         }
     }
+
     public async buscarCronometro(req: Request, res: Response) {
         try {
             const { id } = req.params;
