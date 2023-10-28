@@ -69,15 +69,6 @@ class TarefaController {
         try {
             const { id } = req.params;
             const { titulo, descricao, data_estimada, prioridade } = req.body;
-            if (
-                !titulo ||
-                !descricao ||
-                !data_estimada ||
-                !prioridade
-            ) {
-                console.log(titulo, descricao, data_estimada, prioridade)
-                return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos.' });
-            }
             const tarefa = await TarefaService.editarTarefa(
                 id,
                 titulo,
@@ -90,6 +81,7 @@ class TarefaController {
             res.status(500).json(error);
         }
     }
+
 
     public async mudarStatusDaTarefa(req: Request, res: Response) {
         try {
@@ -150,7 +142,7 @@ class TarefaController {
             if (!cronometro) {
                 return res.status(400).json({ error: 'O campo "cronometro" é obrigatório.' });
             }
-            const cronometroNumber = parseInt(cronometro, 10); 
+            const cronometroNumber = parseInt(cronometro, 10);
             if (isNaN(cronometroNumber)) {
                 return res.status(400).json({ error: 'O formato do novo cronômetro não é válido. Deve ser um número.' });
             }

@@ -87,21 +87,29 @@ class TarefaService {
     public async editarTarefa(tarefaId: string, titulo: string, descricao: string, data_estimada: string, prioridade: number) {
         try {
             const tarefa = await Tarefa.findById(tarefaId);
-
             if (!tarefa) {
                 throw `Tarefa com ID ${tarefaId} não encontrada.`;
             }
-            tarefa.titulo = titulo;
-            tarefa.descricao = descricao;
-            tarefa.data_estimada = data_estimada;
-            tarefa.prioridade = prioridade;
+            if (titulo) {
+                tarefa.titulo = titulo;
+            }
+            if (descricao) {
+                tarefa.descricao = descricao;
+            }
+            if (data_estimada) {
+                tarefa.data_estimada = data_estimada;
+            }
+            if (prioridade) {
+                tarefa.prioridade = prioridade;
+            }
             const tarefaAtualizada = await tarefa.save();
-
             return tarefaAtualizada;
         } catch (error) {
             throw error;
         }
     }
+
+
 
     public async updateUsuarios(id: string, novosUsuarios: IUsuarios[]) {
         try {
@@ -271,7 +279,7 @@ class TarefaService {
             throw error;
         }
     }
-    
+
 
     public async findChronometer(id: string) {
         try {
