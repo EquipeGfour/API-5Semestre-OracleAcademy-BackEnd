@@ -16,6 +16,6 @@ routes.put("/mudarStatus/:id", TarefaController.mudarStatusDaTarefa);
 routes.get("/buscarTarefasStatus", authenticate, TarefaController.buscarTarefaStatus);
 routes.get("/buscarTarefasExpiradas", authenticate, TarefaController.buscarTarefasExpiradas);
 routes.put("/atualizarCronometro/:id", TarefaController.atualizarCronometro);
-routes.get('/cronometro/buscar/:id', TarefaController.buscarCronometro);
+routes.get('/buscarCronometro/:id', TarefaController.buscarCronometro);
 
 export default routes;
