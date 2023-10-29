@@ -166,6 +166,19 @@ class TarefaController {
             res.status(500).json(error);
         }
     }
+
+    public async salvarDiferencaDoCronometro(req: Request, res: Response){
+        try {
+            const { id } = req.params;
+            if (!id) {
+                return res.status(400).json({ error: 'O campo "id" é obrigatório.' });
+            }
+            const response = await TarefaService.changePlayTimeAndCalcDiff(id);
+            return res.json(response);
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 }
 
 export default new TarefaController();

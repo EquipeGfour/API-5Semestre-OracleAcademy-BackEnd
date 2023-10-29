@@ -17,6 +17,8 @@ interface ITarefa {
     data_conclusao: string,
     data_estimada: string,
     cronometro: number,
+    play: Boolean,
+    lastPlayTime:number,
     status: STATUS,
     anexo: Boolean,
     arquivos: [IArquivos],
@@ -58,7 +60,7 @@ const tarefa = new Schema({
     cronometro: {
         type: Number,
         require: false,
-        default:'000000'
+        default:0
     },
     status: {
         type: Number,
@@ -80,6 +82,14 @@ const tarefa = new Schema({
         }
     }],
     arquivos: [Arquivo],
+    play:{
+        type:Boolean,
+        default:false
+    },
+    lastPlayTime:{
+        type:Number,
+        default: 0
+    }
     // objetivo_id: {
     //     type: mongoose.Types.ObjectId,
     //     ref: Objetivo,

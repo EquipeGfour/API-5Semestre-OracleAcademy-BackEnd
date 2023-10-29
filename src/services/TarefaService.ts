@@ -266,6 +266,8 @@ class TarefaService {
             console.log(error);
         }
     }
+
+
     public async updateChronometer(id: string, novoCronometro: number) {
         try {
             const tarefa = await Tarefa.findById(id);
@@ -290,6 +292,33 @@ class TarefaService {
             const cronometro = tarefa.cronometro;
             return cronometro;
         } catch (error) {
+            throw error;
+        }
+    }
+
+
+// A ideia é criar uma rota onde a fazer uma requisição ela verifique se o botão de play foi apertado
+// caso o botão ja tenha sido apertado retornar a diferença de tempo entre o primeiro play e o segundo
+// obtendo assim o tempo decorrido dentre um play e o outro, podendo assim o usuario desligar o dispositivo
+// e a cada diferença coletada somar o tempo total decorrido
+
+//true == botão play apertado e o cronometro rodando
+//false == botão play não iniciado
+
+    public async changePlayTimeAndCalcDiff(id: string) {
+        try{
+            const tarefa = await Tarefa.findById(id);
+            if(!tarefa.play){
+                //pega o valor de agora e altera play para false, ira sempre cair aqui primeiro pois o campo paly é false por default
+                tarefa.lastPlayTime = Date.now();
+                tarefa.play = !tarefa.play
+            }else{
+                const diff = Date.now() - tarefa.lastPlayTime;
+                tarefa.cronometro += diff;
+                tarefa.play = !tarefa.play;
+            }
+            return await tarefa.save();
+        }catch(error){
             throw error;
         }
     }
