@@ -272,7 +272,7 @@ class TarefaService {
             if (!tarefa) {
                 throw `Tarefa com ID ${id} não encontrada.`;
             }
-            tarefa.cronometro += novoCronometro;
+            tarefa.cronometro = novoCronometro;
             const tarefaAtualizada = await tarefa.save();
             return tarefaAtualizada;
         } catch (error) {

@@ -139,9 +139,10 @@ class TarefaController {
         try {
             const { id } = req.params;
             const { cronometro } = req.body;
-            if (!cronometro) {
-                return res.status(400).json({ error: 'O campo "cronometro" é obrigatório.' });
-            }
+            
+            // if (!cronometro) {
+            //     return res.status(400).json({ error: 'O campo "cronometro" é obrigatório.' });
+            // }
             const cronometroNumber = parseInt(cronometro, 10);
             if (isNaN(cronometroNumber)) {
                 return res.status(400).json({ error: 'O formato do novo cronômetro não é válido. Deve ser um número.' });
