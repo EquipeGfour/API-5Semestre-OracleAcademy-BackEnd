@@ -110,8 +110,9 @@ class TarefaController {
 
     public async buscarTarefaStatus(req: Request, res: Response) {
         try {
-            const id = req.params.id;
-            const status = req.params.status;
+            const id = req.query.id as string;
+            const status = req.query.status;
+            
             if(!idEhValido(id)){
                 throw `id ${id} não é valido...`;
             }
