@@ -110,10 +110,14 @@ class TarefaController {
 
     public async buscarTarefaStatus(req: Request, res: Response) {
         try {
-            const { status } = req.body;
-            const usuario = res.locals.jwtPayload;
-
-            const tarefas = await TarefaService.findTarefaByStatus(usuario, status);
+            const id = req.query.id as string;
+            const status = req.query.status;
+            
+            if(!idEhValido(id)){
+                throw `id ${id} não é valido...`;
+            }
+            const objetivo = await ObjetivoService.getObjetivoById(id);
+            const tarefas = await TarefaService.findTarefaByStatus(objetivo, status);
 
             return res.json(tarefas);
         } catch (error) {
