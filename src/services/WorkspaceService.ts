@@ -54,16 +54,13 @@ class WorkspaceService {
             throw error;
         }
     }
-    public async findworkspaceByStatus(usuario, status) {
+    public async findWorkspaceByUser(usuario) {
         try {
-            const objetivos = await Objetivo.find({
-                $and: [
-                    { proprietario: usuario._id },
-                    { workspace: true },
-                    { status: status }
-                ]
-            }, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
-            return objetivos;
+            const { _id } = usuario;
+            console.log(JSON.stringify(_id));
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { "usuarios.usuario": _id }] }).populate('usuarios.usuario').exec();
+
+            return workspaces;
         } catch (error) {
             throw error;
         }
@@ -79,6 +76,15 @@ class WorkspaceService {
             console.log("Tarefa atualizada com sucesso");
             return { message: 'Tarefa atualizada com sucesso' };
         } catch (error) {
+            throw error;
+        }
+    }
+    public async findAllWorkspacesByOwner(id: string) {
+        try {
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }] }] }).populate('tarefas proprietario usuarios.usuario').exec();
+            return workspaces;
+        } catch (error) {
+            console.log(error)
             throw error;
         }
     }

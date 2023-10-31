@@ -15,11 +15,22 @@ class WorkspaceController {
         }
     }
 
-    public async buscarWorkspaceStatus(req: Request, res: Response) {
+    public async buscarWorkspacesByOwner(req: Request, res: Response) {
         try {
-            const { status } = req.body;
             const usuario = res.locals.jwtPayload;
-            const workspaces = await WorkspaceService.findworkspaceByStatus(usuario, status);
+            const workspaces = await WorkspaceService.findAllWorkspacesByOwner(usuario);
+            return res.json(workspaces);
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
+
+    public async buscarWorkspaceUsuario(req: Request, res: Response) {
+        try {
+            const usuario = res.locals.jwtPayload;
+            console.log(JSON.stringify(usuario));
+            const workspaces = await WorkspaceService.findWorkspaceByUser(usuario);
+
             return res.json(workspaces);
         } catch (error) {
             console.log(error);
