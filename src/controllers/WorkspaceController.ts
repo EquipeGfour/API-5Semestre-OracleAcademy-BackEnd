@@ -73,7 +73,6 @@ class WorkspaceController {
                 } else {
                     const result = await WorkspaceService.updateTarefaStatusWork(idTarefa, status);
                     return res.json(result);
-                    return res.json({ message: 'Tarefa atualizada com sucesso' });
                 }
             }
         } catch (error) {
