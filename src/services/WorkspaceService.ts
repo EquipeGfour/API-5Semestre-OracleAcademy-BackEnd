@@ -3,17 +3,17 @@ import { PERMISSAO } from "../utils/enum";
 
 
 
-class WorkspaceService{
-    public async findAllWorkspacesByUser(id : string){
-        try{
-            const workspaces = await Objetivo.find({$and: [{workspace: true}, {$or: [{proprietario: id}, {"usuarios.usuario": id}]}]}).populate('tarefas proprietario usuarios.usuario').populate({
+class WorkspaceService {
+    public async findAllWorkspacesByUser(id: string) {
+        try {
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }, { "usuarios.usuario": id }] }] }).populate('tarefas proprietario usuarios.usuario').populate({
                 path: 'tarefas',
                 populate: {
-                    path: 'usuarios',populate:{path: 'usuario'}
+                    path: 'usuarios', populate: { path: 'usuario' }
                 }
             }).exec();
             return workspaces;
-        }catch(error){
+        } catch (error) {
             console.log(error)
             throw error;
         }
@@ -22,7 +22,7 @@ class WorkspaceService{
     public async addUserToWorkspace(id, usuarios) {
         try {
             const novaLista = usuarios.map((usuario) => {
-                return {usuario: usuario._id, permissao:PERMISSAO.MEMBRO}
+                return { usuario: usuario._id, permissao: PERMISSAO.MEMBRO }
             })
             const objetivo = await Objetivo.findById(id);
             if (objetivo) {
@@ -40,20 +40,28 @@ class WorkspaceService{
             throw error;
         }
     }
-    public async findworkspaceByStatus(usuario, status) {
+    public async findWorkspaceByUser(usuario) {
         try {
-            const objetivos = await Objetivo.find({
-                $and: [
-                    { proprietario: usuario._id },
-                    { workspace: true },
-                    { status: status } 
-                ]
-            }, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
-            return objetivos;
+            const { _id } = usuario;
+            console.log(JSON.stringify(_id));
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { "usuarios.usuario": _id }] }).populate('usuarios.usuario').exec();
+
+            return workspaces;
         } catch (error) {
             throw error;
         }
     }
+
+    public async findAllWorkspacesByOwner(id: string) {
+        try {
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }] }] }).populate('tarefas proprietario usuarios.usuario').exec();
+            return workspaces;
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    }
+
 }
 
 
