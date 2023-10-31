@@ -41,30 +41,37 @@ class WorkspaceController {
     public async changeStatusWorkspace(req: Request, res: Response) {
         try {
             const { status } = req.body;
-            const {id,idTarefa} = req.params;
+            const id = req.query.id as string;
+            const idTarefa = req.query.idTarefa as string;
+            if (!res.locals.jwtPayload) {
+                return res.status(401).json({ error: 'Usuário não autenticado' });
+            }
             const usuario = res.locals.jwtPayload;
             const workspace = await WorkspaceService.findWorkByID(id);
-
-            if (workspace.proprietario._id === usuario._id) {
-                const tarefa = await TarefaService.findTaskByID(idTarefa);
-                tarefa.status = status;
-                const tarefaAtualizada = await Tarefa.updateOne(tarefa);
-                return res.json(tarefaAtualizada);
+            if (workspace.proprietario._id === usuario.id) {
+                await Tarefa.updateOne({ _id: idTarefa }, { status: status });
+                const tarefaAtualizada = await Tarefa.findOne({ _id: idTarefa });
+                if (tarefaAtualizada) {
+                    return res.json(tarefaAtualizada);
+                } else {
+                    return res.status(404).json({ error: 'Tarefa não encontrada' });
+                }
             } else {
                 if (status === STATUS.COMPLETO) {
-                    return res.status(403).json({ error: 'Sem Nivel de Acesso a Funcionalidade' });
+                    return res.status(403).json({ error: 'Sem Nível de Acesso à Funcionalidade' });
                 } else {
-                    const tarefa = await TarefaService.findTaskByID(idTarefa);
-                    tarefa.status = status;
-                    const tarefaAtualizada = await Tarefa.updateOne(tarefa);
-                    return res.json(tarefaAtualizada);
+                    const result = await WorkspaceService.updateTarefaStatusWork(idTarefa, status);
+                    return res.json(result);
+                    return res.json({ message: 'Tarefa atualizada com sucesso' });
                 }
             }
         } catch (error) {
-            console.log(error);
-            res.status(500).json(error);
+            console.error(error);
+            return res.status(500).json({ error: 'Erro interno do servidor' });
         }
     }
+
+
 }
 
 

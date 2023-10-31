@@ -69,7 +69,19 @@ class WorkspaceService {
         }
     }
 
-
+    public async updateTarefaStatusWork(idTarefa: string, status: string) {
+        try {
+            const tarefaExiste = await Tarefa.findById(idTarefa);
+            if (!tarefaExiste) {
+                throw `Tarefa ${idTarefa} não encontrada.`;
+            }
+            await Tarefa.updateOne({ _id: idTarefa }, { status: status });
+            console.log("Tarefa atualizada com sucesso");
+            return { message: 'Tarefa atualizada com sucesso' };
+        } catch (error) {
+            throw error;
+        }
+    }
 
 }
 
