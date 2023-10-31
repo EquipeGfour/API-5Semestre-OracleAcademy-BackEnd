@@ -1,9 +1,23 @@
-import { Objetivo } from "../models";
-import { PERMISSAO } from "../utils/enum";
+import { Objetivo, Tarefa } from "../models";
+import { PERMISSAO, STATUS } from "../utils/enum";
+import TarefaService from "./TarefaService";
 
 
 
 class WorkspaceService {
+
+    public async findWorkByID(id: string) {
+        try {
+            const Workspace = await Objetivo.findOne({ _id: id, workspace: true })
+                .populate('proprietario');
+            if (!Workspace) {
+                throw `Objetivo ${id} não encontrada.`;
+            }
+            return Workspace;
+        } catch (error) {
+            throw error;
+        }
+    }
     public async findAllWorkspacesByUser(id: string) {
         try {
             const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }, { "usuarios.usuario": id }] }] }).populate('tarefas proprietario usuarios.usuario').populate({
@@ -52,6 +66,19 @@ class WorkspaceService {
         }
     }
 
+    public async updateTarefaStatusWork(idTarefa: string, status: string) {
+        try {
+            const tarefaExiste = await Tarefa.findById(idTarefa);
+            if (!tarefaExiste) {
+                throw `Tarefa ${idTarefa} não encontrada.`;
+            }
+            await Tarefa.updateOne({ _id: idTarefa }, { status: status });
+            console.log("Tarefa atualizada com sucesso");
+            return { message: 'Tarefa atualizada com sucesso' };
+        } catch (error) {
+            throw error;
+        }
+    }
     public async findAllWorkspacesByOwner(id: string) {
         try {
             const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }] }] }).populate('tarefas proprietario usuarios.usuario').exec();
