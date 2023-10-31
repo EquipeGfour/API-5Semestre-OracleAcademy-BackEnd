@@ -1,19 +1,33 @@
-import { Objetivo } from "../models";
-import { PERMISSAO } from "../utils/enum";
+import { Objetivo, Tarefa } from "../models";
+import { PERMISSAO, STATUS } from "../utils/enum";
+import TarefaService from "./TarefaService";
 
 
 
-class WorkspaceService{
-    public async findAllWorkspacesByUser(id : string){
-        try{
-            const workspaces = await Objetivo.find({$and: [{workspace: true}, {$or: [{proprietario: id}, {"usuarios.usuario": id}]}]}).populate('tarefas proprietario usuarios.usuario').populate({
+class WorkspaceService {
+
+    public async findWorkByID(id: string) {
+        try {
+            const Workspace = await Objetivo.findOne({ _id: id, workspace: true })
+                .populate('proprietario');
+            if (!Workspace) {
+                throw `Objetivo ${id} não encontrada.`;
+            }
+            return Workspace;
+        } catch (error) {
+            throw error;
+        }
+    }
+    public async findAllWorkspacesByUser(id: string) {
+        try {
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }, { "usuarios.usuario": id }] }] }).populate('tarefas proprietario usuarios.usuario').populate({
                 path: 'tarefas',
                 populate: {
-                    path: 'usuarios',populate:{path: 'usuario'}
+                    path: 'usuarios', populate: { path: 'usuario' }
                 }
             }).exec();
             return workspaces;
-        }catch(error){
+        } catch (error) {
             console.log(error)
             throw error;
         }
@@ -22,7 +36,7 @@ class WorkspaceService{
     public async addUserToWorkspace(id, usuarios) {
         try {
             const novaLista = usuarios.map((usuario) => {
-                return {usuario: usuario._id, permissao:PERMISSAO.MEMBRO}
+                return { usuario: usuario._id, permissao: PERMISSAO.MEMBRO }
             })
             const objetivo = await Objetivo.findById(id);
             if (objetivo) {
@@ -46,7 +60,7 @@ class WorkspaceService{
                 $and: [
                     { proprietario: usuario._id },
                     { workspace: true },
-                    { status: status } 
+                    { status: status }
                 ]
             }, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
             return objetivos;
@@ -54,6 +68,9 @@ class WorkspaceService{
             throw error;
         }
     }
+
+
+
 }
 
 
