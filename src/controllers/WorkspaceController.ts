@@ -59,7 +59,7 @@ class WorkspaceController {
             }
             const usuario = res.locals.jwtPayload;
             const workspace = await WorkspaceService.findWorkByID(id);
-            if (workspace.proprietario._id === usuario.id) {
+            if (workspace.proprietario._id.toString() === usuario._id) {
                 await Tarefa.updateOne({ _id: idTarefa }, { status: status });
                 const tarefaAtualizada = await Tarefa.findOne({ _id: idTarefa });
                 if (tarefaAtualizada) {
