@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
-import { IArquivos } from "./Arquivos";
-import IUsuarios, { Usuarios } from './Usuarios';
+import { IArquivos, Arquivo } from "./Arquivos";
+import { Usuarios } from './Usuarios';
 import { PERMISSAO, PRIORIDADES, STATUS } from "../utils/enum";
+
 
 
 const { Schema } = mongoose;
@@ -15,9 +16,12 @@ interface ITarefa {
     data_inicio: string,
     data_conclusao: string,
     data_estimada: string,
+    cronometro: number,
+    play: Boolean,
+    lastPlayTime:number,
     status: STATUS,
     anexo: Boolean,
-    arquivos: IArquivos,
+    arquivos: [IArquivos],
     // objetivo_id: IObjetivo
     usuarios:[{
         usuario: mongoose.Types.ObjectId,
@@ -53,6 +57,11 @@ const tarefa = new Schema({
         require: true,
         default: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0],
     },
+    cronometro: {
+        type: Number,
+        require: false,
+        default:0
+    },
     status: {
         type: Number,
         enum: STATUS,
@@ -69,10 +78,18 @@ const tarefa = new Schema({
         permissao: {
             type: Number,
             enum: PERMISSAO,
-            default: PERMISSAO.LEITURA
+            default: PERMISSAO.MEMBRO
         }
-    }]
-    //arquivos: Arquivos,
+    }],
+    arquivos: [Arquivo],
+    play:{
+        type:Boolean,
+        default:false
+    },
+    lastPlayTime:{
+        type:Number,
+        default: 0
+    }
     // objetivo_id: {
     //     type: mongoose.Types.ObjectId,
     //     ref: Objetivo,

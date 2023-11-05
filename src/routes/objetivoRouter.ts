@@ -10,7 +10,7 @@ routes.get("/buscar/:id", ObjetivoController.buscarPorUmObjetivo);
 routes.post("/criar", authenticate, ObjetivoController.cadastrarObjetivo);
 routes.delete("/deletar/:id", ObjetivoController.excluirObjetivo);
 routes.put("/mudarPrioridade/:id", ObjetivoController.alterarPrioridade);
-routes.put("/editar/:id", ObjetivoController.editarObjetivo);
+routes.patch("/editar/:id", ObjetivoController.editarObjetivo);
 routes.put("/adicionarUser/:id",authenticate, ObjetivoController.adicionarUsuariosWork);
 
 

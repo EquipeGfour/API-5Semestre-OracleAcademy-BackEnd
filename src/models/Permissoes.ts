@@ -14,7 +14,7 @@ const Permissoes = new Schema<IPermissoes>({
     permissao: {
         type: Number,
         enum: PERMISSAO,
-        default: PERMISSAO.LEITURA
+        default: PERMISSAO.MEMBRO
     }
 });
 

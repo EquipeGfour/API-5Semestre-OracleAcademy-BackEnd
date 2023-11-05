@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { ObjetivoService } from "../services";
-import { Objetivo, IUsuarios } from "../models";
+import { ObjetivoService, TarefaService, WorkspaceService } from "../services";
+import { Objetivo } from "../models";
 import { idEhValido, verificarPrioridade } from "../utils/utils";
+
 
 class ObjetivoController {
     public async cadastrarObjetivo(req: Request, res: Response) {
@@ -30,7 +31,7 @@ class ObjetivoController {
             const usuarios = req.body;
             const objetivo = await ObjetivoService.getObjetivoById(id);
             if (objetivo && objetivo.workspace === true) {
-                const updatedObjetivo = await ObjetivoService.addUserWorkspace(id, usuarios);
+                const updatedObjetivo = await WorkspaceService.addUserToWorkspace(id, usuarios);
                 return res.status(200).json(updatedObjetivo);
             } else {
                 return res.status(400).json({ message: "O campo 'workspace' precisa ser true para adicionar usuários." });
@@ -77,10 +78,12 @@ class ObjetivoController {
     public async excluirObjetivo(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            await ObjetivoService.getObjetivoById(id);
+            const objetivo = await ObjetivoService.getObjetivoById(id);
+            await TarefaService.onDeleteObjetivoDeleteAllTarefas(objetivo.tarefas)
             await ObjetivoService.deleteObjetivo(id);
             return res.json(`objetivo ${id} excluido com sucesso...`);
         } catch (error) {
+            console.log(error)
             res.status(500).json(error);
         }
     }
@@ -96,16 +99,6 @@ class ObjetivoController {
             return res.json(result)
         } catch (error) {
             res.status(500).json(error)
-        }
-    }
-
-    public async buscarWorkspaces(req: Request, res: Response){
-        try{
-            const usuario = res.locals.jwtPayload;
-            const workspaces = await ObjetivoService.findAllWorkspacesByUser(usuario._id);
-            return res.json(workspaces);
-        }catch(error){
-            return res.status(500).json(error)
         }
     }
 
