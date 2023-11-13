@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authenticate } from "../middlewares";
 import { WorkspaceController } from "../controllers";
+import { authenticateAsADM } from "../middlewares/authMiddleware";
 
 
 const routes = Router();

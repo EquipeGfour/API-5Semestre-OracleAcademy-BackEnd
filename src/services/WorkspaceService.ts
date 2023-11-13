@@ -1,4 +1,4 @@
-import { Objetivo, Tarefa } from "../models";
+import { IObjetivo, Objetivo, Tarefa } from "../models";
 import { PERMISSAO, STATUS } from "../utils/enum";
 import TarefaService from "./TarefaService";
 
@@ -13,7 +13,7 @@ class WorkspaceService {
             if (!Workspace) {
                 throw `Objetivo ${id} não encontrada.`;
             }
-            return Workspace;
+            return Workspace as IObjetivo
         } catch (error) {
             throw error;
         }

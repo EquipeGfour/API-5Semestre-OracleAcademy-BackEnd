@@ -1,6 +1,7 @@
 import { ObjetivoController } from "../controllers";
 import { Router } from "express";
 import { authenticate } from "../middlewares";
+import { authenticateAsADM } from "../middlewares/authMiddleware";
 
 
 const routes = Router();
