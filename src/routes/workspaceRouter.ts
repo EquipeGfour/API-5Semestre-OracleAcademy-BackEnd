@@ -11,6 +11,7 @@ routes.get("/buscarID/:id", WorkspaceController.buscarWorkspaceByID);
 routes.put('/changestatus', authenticate, WorkspaceController.changeStatusWorkspace);
 routes.get("/buscarWorkspaceUsuario", authenticate, WorkspaceController.buscarWorkspaceUsuario);
 routes.get("/buscarWorkspaceProprietario", authenticate, WorkspaceController.buscarWorkspacesByOwner);
+routes.get('/buscaStatus/:workspaceId/atrasadas', WorkspaceController.countDelayedTasksWorkspace);
 
 
 export default routes;

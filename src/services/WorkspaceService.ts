@@ -18,6 +18,8 @@ class WorkspaceService {
             throw error;
         }
     }
+
+
     public async findAllWorkspacesByUser(id: string) {
         try {
             const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }, { "usuarios.usuario": id }] }] }).populate('tarefas proprietario usuarios.usuario').populate({
@@ -85,6 +87,23 @@ class WorkspaceService {
             return workspaces;
         } catch (error) {
             console.log(error)
+            throw error;
+        }
+    }
+    public async countDelayedTasksWorkspace(workspaceId: string): Promise<number> {
+        try {
+            const workspace = await Objetivo.findOne({ _id: workspaceId, workspace: true }).populate('tarefas').exec();
+            if (!workspace) {
+                throw new Error(`Workspace ${workspaceId} não encontrado.`);
+            }
+            const delayedTasksCount = workspace.tarefas.reduce((count, tarefa) => {
+                if (tarefa.status === STATUS.ATRASADO) {
+                    count++;
+                }
+                return count;   
+            }, 0);
+            return delayedTasksCount;
+        } catch (error) {
             throw error;
         }
     }

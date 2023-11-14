@@ -82,6 +82,16 @@ class WorkspaceController {
     }
 
 
+    public async countDelayedTasksWorkspace(req: Request, res: Response): Promise<void> {
+        const workspaceId = req.params.workspaceId;
+        try {
+            const delayedTasksCount = await WorkspaceService.countDelayedTasksWorkspace(workspaceId);
+            res.status(200).json({ count: delayedTasksCount });
+        } catch (error) {
+            res.status(500).json({ error: error.message || 'Erro interno do servidor' });
+        }
+    }
+
 }
 
 
