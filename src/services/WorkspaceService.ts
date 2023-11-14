@@ -107,6 +107,19 @@ class WorkspaceService {
             throw error;
         }
     }
+    public async countWorkedHours(workspaceId: string): Promise<any> {
+        try {
+            const workspace = await Objetivo.findOne({ _id: workspaceId, workspace: true }).populate('tarefas').exec();
+            let count = 0;
+            workspace.tarefas.forEach(tarefa => {
+                count += tarefa.cronometro
+            });
+            let hours = count / 3600000
+            
+        } catch (error) {
+            throw error
+        }
+    }
 
 }
 
