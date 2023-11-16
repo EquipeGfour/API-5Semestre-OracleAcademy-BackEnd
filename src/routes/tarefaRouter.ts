@@ -6,7 +6,7 @@ import { authenticateAsADM } from "../middlewares/authMiddleware";
 
 const routes = Router();
 
-routes.post("/criar/:id",authenticate, authenticateAsADM, TarefaController.criarTarefa);
+routes.post("/criar/:id",authenticate, TarefaController.criarTarefa);
 routes.get("/buscarTarefas/:id", TarefaController.buscarTarefas);
 routes.get("/buscarTarefa/:id", TarefaController.buscarTarefaPorId);
 routes.patch("/editar/:id",authenticate, authenticateAsADM, TarefaController.editarTarefa);
