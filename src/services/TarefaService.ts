@@ -237,7 +237,7 @@ class TarefaService {
                     if (data_estimada) {
                         if (data_estimada < today) {
                             if (tarefas[i].status != STATUS.ATRASADO) {
-                                ids.push(tarefas[i]._id)
+                                ids.push(tarefas[i]._id);
                             }
                         }
                     }
