@@ -92,6 +92,16 @@ class WorkspaceController {
         }
     }
 
+    public async countWorkedHours(req: Request, res: Response): Promise<void> {
+        const workspaceId = req.params.workspaceId
+        try {
+            const workedHoursCount = await WorkspaceService.countWorkedHours(workspaceId)
+            res.status(200).json({workedHoursCount})
+        } catch (error) {
+            res.status(500).json({ error: error.message || 'Erro interno do servidor' })
+        }
+    }
+
 }
 
 
