@@ -96,9 +96,19 @@ class WorkspaceController {
         const workspaceId = req.params.workspaceId
         try {
             const workedHoursCount = await WorkspaceService.countWorkedHours(workspaceId)
-            res.status(200).json({workedHoursCount})
+            res.status(200).json({ workedHoursCount })
         } catch (error) {
             res.status(500).json({ error: error.message || 'Erro interno do servidor' })
+        }
+    }
+    public async countInProgressTasks(req: Request, res: Response): Promise<void> {
+        try {
+            const userId = res.locals.jwtPayload._id;
+            const inProgressTasksCount = await WorkspaceService.countInProgressTasks(userId);
+            res.status(200).json({ EmAndamento: inProgressTasksCount });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erro interno do servidor' });
         }
     }
 

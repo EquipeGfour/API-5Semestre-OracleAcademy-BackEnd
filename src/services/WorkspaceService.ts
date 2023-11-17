@@ -100,7 +100,7 @@ class WorkspaceService {
                 if (tarefa.status === STATUS.ATRASADO) {
                     count++;
                 }
-                return count;   
+                return count;
             }, 0);
             return delayedTasksCount;
         } catch (error) {
@@ -116,27 +116,48 @@ class WorkspaceService {
             });
             let sec = count / 1000
 
-            function converte (segundo) {
-                const FATOR_DE_CONVERSAO_HORAS    = 3600;
-                const FATOR_DE_CONVERSAO_MINUTOS  = 60;
+            function converte(segundo) {
+                const FATOR_DE_CONVERSAO_HORAS = 3600;
+                const FATOR_DE_CONVERSAO_MINUTOS = 60;
                 const FATOR_DE_CONVERSAO_SEGUNDOS = 60;
-                const horas = (segundo/FATOR_DE_CONVERSAO_HORAS)
+                const horas = (segundo / FATOR_DE_CONVERSAO_HORAS)
                 const h = {
-                    horas_inteiras: Math.trunc(horas), 
-                    horas_quebradas: (horas % 1), 
+                    horas_inteiras: Math.trunc(horas),
+                    horas_quebradas: (horas % 1),
                 }
-            
+
                 const minutos = (h.horas_quebradas * FATOR_DE_CONVERSAO_MINUTOS)
                 const m = {
                     minutos_inteiros: Math.trunc(minutos),
                     minutos_quebrados: minutos % 1,
                 }
                 const s = Math.floor((m.minutos_quebrados * FATOR_DE_CONVERSAO_SEGUNDOS))
-                return {horas : h.horas_inteiras, minutos : m.minutos_inteiros,segundos : s}
+                return { horas: h.horas_inteiras, minutos: m.minutos_inteiros, segundos: s }
             }
             return converte(sec)
         } catch (error) {
             throw error
+        }
+    }
+    public async countInProgressTasks(userId: string): Promise<number> {
+        try {
+            const workspaces = await Objetivo.find({
+                $or: [
+                    { proprietario: userId },
+                    { "usuarios.usuario": userId }
+                ]
+            }).populate('tarefas');
+            let count = 0;
+            workspaces.forEach(workspace => {
+                workspace.tarefas.forEach(tarefa => {
+                    if (tarefa.status === STATUS.EM_ANDAMENTO && tarefa.usuarios.some(u => u.usuario.toString() === userId)) {
+                        count++;
+                    }
+                });
+            });
+            return count;
+        } catch (error) {
+            throw error;
         }
     }
 

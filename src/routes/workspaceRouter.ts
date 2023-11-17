@@ -13,6 +13,7 @@ routes.get("/buscarWorkspaceUsuario", authenticate, WorkspaceController.buscarWo
 routes.get("/buscarWorkspaceProprietario", authenticate, WorkspaceController.buscarWorkspacesByOwner);
 routes.get('/buscaStatus/:workspaceId/atrasadas', WorkspaceController.countDelayedTasksWorkspace);
 routes.get('/buscaTempo/:workspaceId', WorkspaceController.countWorkedHours);
+routes.get('/buscaEmAndamento', authenticate, WorkspaceController.countInProgressTasks);
 
 
 export default routes;
