@@ -105,13 +105,16 @@ class WorkspaceController {
         try {
             const userId = res.locals.jwtPayload._id;
             const inProgressTasksCount = await WorkspaceService.countInProgressTasks(userId);
-            res.status(200).json({ EmAndamento: inProgressTasksCount });
+            const inCompletedTasksCount = await WorkspaceService.countIncompletedTasks(userId);
+            res.status(200).json({
+                EmAndamento: inProgressTasksCount 
+                ,Concluídos: inCompletedTasksCount
+                });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Erro interno do servidor' });
         }
     }
-
 }
 
 
