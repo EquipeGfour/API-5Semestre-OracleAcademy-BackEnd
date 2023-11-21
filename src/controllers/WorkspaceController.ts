@@ -83,8 +83,8 @@ class WorkspaceController {
     public async getWorkspaceByMonth(req: Request, res: Response) {
         try {
             const usuario = res.locals.jwtPayload;
+            const date = req.query.date as string;
             const id = usuario._id;
-            const { date } = req.body
             const parts = date.split('/');
             const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
 
