@@ -12,7 +12,7 @@ routes.put('/changestatus', authenticate, WorkspaceController.changeStatusWorksp
 routes.get("/buscarWorkspaceUsuario", authenticate, WorkspaceController.buscarWorkspaceUsuario);
 routes.get("/buscarWorkspaceProprietario", authenticate, WorkspaceController.buscarWorkspacesByOwner);
 routes.get('/buscaStatus/:workspaceId/atrasadas', WorkspaceController.countDelayedTasksWorkspace);
-routes.get('/buscaTempo/:workspaceId', WorkspaceController.countWorkedHours);
+routes.get('/buscaTempo', authenticate, WorkspaceController.countWorkedHours);
 routes.get('/buscaEmAndamento', authenticate, WorkspaceController.countInProgressTasks);
 
 
