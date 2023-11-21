@@ -3,7 +3,6 @@ import { PERMISSAO, STATUS } from "../utils/enum";
 import TarefaService from "./TarefaService";
 
 
-
 class WorkspaceService {
 
     public async findWorkByID(id: string) {
@@ -35,6 +34,7 @@ class WorkspaceService {
         }
     }
 
+
     public async addUserToWorkspace(id, usuarios) {
         try {
             const novaLista = usuarios.map((usuario) => {
@@ -56,6 +56,8 @@ class WorkspaceService {
             throw error;
         }
     }
+
+
     public async findWorkspaceByUser(usuario) {
         try {
             const { _id } = usuario;
@@ -67,6 +69,7 @@ class WorkspaceService {
             throw error;
         }
     }
+
 
     public async updateTarefaStatusWork(idTarefa: string, status: string) {
         try {
@@ -81,6 +84,8 @@ class WorkspaceService {
             throw error;
         }
     }
+
+
     public async findAllWorkspacesByOwner(id: string) {
         try {
             const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }] }] }).populate('tarefas proprietario usuarios.usuario').exec();
@@ -90,6 +95,8 @@ class WorkspaceService {
             throw error;
         }
     }
+
+
     public async countDelayedTasksWorkspace(workspaceId: string): Promise<number> {
         try {
             const workspace = await Objetivo.findOne({ _id: workspaceId, workspace: true }).populate('tarefas').exec();
@@ -107,6 +114,31 @@ class WorkspaceService {
             throw error;
         }
     }
+
+
+    public async countTasksWorkspace(userId: string): Promise<number> {
+        try {
+            const workspaces = await Objetivo.find({ $or: [{ proprietario: userId }, { "usuarios.usuario": userId }] }).populate('tarefas').exec();
+            if (!workspaces) {
+                throw new Error(`Worspaces do Usuário ${userId} não encontrados.`);
+            }
+            let TasksCount = 0
+            workspaces.forEach(workspaces => {
+                workspaces.tarefas.forEach((tarefa , i) => {
+                    if (tarefa.status === STATUS.COMPLETO && tarefa.usuarios.some(u => u.usuario.toString() === userId) || 
+                    tarefa.status === STATUS.EM_ANDAMENTO && tarefa.usuarios.some(u => u.usuario.toString() === userId) || 
+                    tarefa.status === STATUS.ATRASADO && tarefa.usuarios.some(u => u.usuario.toString() === userId)) {
+                        TasksCount += workspaces.total_tarefas
+                    }
+                })
+            })
+            return TasksCount;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
     public async countWorkedHours(userId: string): Promise<any> {
         try {
             const workspace = await Objetivo.findOne({ $or: [{ proprietario: userId }, { "usuarios.usuario": userId }] }).populate('tarefas').exec();
@@ -139,6 +171,8 @@ class WorkspaceService {
             throw error
         }
     }
+
+
     public async countInProgressTasks(userId: string): Promise<number> {
         try {
             const workspaces = await Objetivo.find({
@@ -160,6 +194,8 @@ class WorkspaceService {
             throw error;
         }
     }
+
+
     public async countIncompletedTasks(userId: string): Promise<number> {
         try {
             const workspaces = await Objetivo.find({

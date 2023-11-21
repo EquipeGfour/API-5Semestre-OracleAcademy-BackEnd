@@ -107,10 +107,12 @@ class WorkspaceController {
             const inProgressTasksCount = await WorkspaceService.countInProgressTasks(userId);
             const inCompletedTasksCount = await WorkspaceService.countIncompletedTasks(userId);
             const workedHoursCount = await WorkspaceService.countWorkedHours(userId)
+            const TasksWorkspaceCount = await WorkspaceService.countTasksWorkspace(userId)
             res.status(200).json({
                 EmAndamento: inProgressTasksCount 
                 ,Concluídos: inCompletedTasksCount
                 ,HorasTrabalhadas: workedHoursCount
+                ,TarefasTotais: TasksWorkspaceCount
                 });
         } catch (error) {
             console.error(error);
