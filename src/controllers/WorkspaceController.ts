@@ -28,7 +28,6 @@ class WorkspaceController {
     public async buscarWorkspaceUsuario(req: Request, res: Response) {
         try {
             const usuario = res.locals.jwtPayload;
-            console.log(JSON.stringify(usuario));
             const workspaces = await WorkspaceService.findWorkspaceByUser(usuario);
 
             return res.json(workspaces);
@@ -81,6 +80,21 @@ class WorkspaceController {
         }
     }
 
+    public async getWorkspaceByMonth(req: Request, res: Response) {
+        try {
+            const usuario = res.locals.jwtPayload;
+            const date = req.query.date as string;
+            const id = usuario._id;
+            const parts = date.split('/');
+            const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+
+            const result = await WorkspaceService.getDataByMonth(formattedDate, id)
+
+            return res.json(result)
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
 
     public async countDelayedTasksWorkspace(req: Request, res: Response): Promise<void> {
         const workspaceId = req.params.workspaceId;

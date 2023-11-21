@@ -15,5 +15,6 @@ routes.get('/buscaStatus/:workspaceId/atrasadas', WorkspaceController.countDelay
 routes.get('/buscaTempo', authenticate, WorkspaceController.countWorkedHours);
 routes.get('/buscaEmAndamento', authenticate, WorkspaceController.countInProgressTasks);
 
+routes.get("/buscarWorkspaceByMonth", authenticate, WorkspaceController.getWorkspaceByMonth);
 
 export default routes;

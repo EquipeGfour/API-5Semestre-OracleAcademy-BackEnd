@@ -1,5 +1,6 @@
 import { IObjetivo, Objetivo, Tarefa } from "../models";
 import { PERMISSAO, STATUS } from "../utils/enum";
+import { startOfMonth, endOfMonth } from 'date-fns';
 import TarefaService from "./TarefaService";
 
 
@@ -62,7 +63,7 @@ class WorkspaceService {
         try {
             const { _id } = usuario;
             console.log(JSON.stringify(_id));
-            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { "usuarios.usuario": _id }] }).populate('usuarios.usuario').exec();
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { "usuarios.usuario": _id }] }).populate('usuarios.usuario proprietario').exec();
 
             return workspaces;
         } catch (error) {
@@ -95,8 +96,6 @@ class WorkspaceService {
             throw error;
         }
     }
-
-
     public async countDelayedTasksWorkspace(workspaceId: string): Promise<number> {
         try {
             const workspace = await Objetivo.findOne({ _id: workspaceId, workspace: true }).populate('tarefas').exec();
@@ -234,6 +233,46 @@ class WorkspaceService {
                 });
             });
             return count;
+        } catch (error) {
+                throw error;
+            }
+    }
+
+    public async getDataByMonth(date: Date, id : string) {
+        try {
+            const firstDayOfMonth = startOfMonth(date);
+            const lastDayOfMonth = endOfMonth(date);
+
+            const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { $or: [{ proprietario: id }, { "usuarios.usuario": id }] }] }).populate('tarefas proprietario usuarios.usuario').populate({
+                path: 'tarefas',
+                populate: {
+                    path: 'usuarios', populate: { path: 'usuario' }
+                }
+            }).exec();
+
+            // Inicializa o dicionário para contar os objetivos por status
+            const statusCount: { [status: number]: number } = {
+                1: 0,
+                2: 0,
+                3: 0,
+            };
+
+            // Conta os objetivos por status
+            workspaces.forEach(objetivo => {
+                const status = objetivo.status;
+                const parts = objetivo.data_criacao.split('/');
+                const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+
+                if (
+                    new Date(formattedDate) &&
+                    new Date(formattedDate) >= new Date(firstDayOfMonth) &&
+                    new Date(formattedDate) <= new Date(lastDayOfMonth)
+                ) {
+                    statusCount[status] += 1;
+                }
+            });
+
+            return statusCount;
         } catch (error) {
             throw error;
         }
