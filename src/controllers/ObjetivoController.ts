@@ -102,6 +102,22 @@ class ObjetivoController {
         }
     }
 
+    public async getObjectivesByMonth(req: Request, res: Response) {
+        try{
+            const { date } = req.body
+            const usuario = res.locals.jwtPayload;
+
+            const parts = date.split('/');
+            const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+
+            const result = await ObjetivoService.getDataByMonth(formattedDate, usuario)
+
+            return res.json(result)
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    }
+
 }
 
 
