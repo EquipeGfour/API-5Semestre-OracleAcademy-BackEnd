@@ -106,11 +106,13 @@ class WorkspaceController {
             const userId = res.locals.jwtPayload._id;
             const inProgressTasksCount = await WorkspaceService.countInProgressTasks(userId);
             const inCompletedTasksCount = await WorkspaceService.countIncompletedTasks(userId);
-            const workedHoursCount = await WorkspaceService.countWorkedHours(userId)
+            const workedHoursCount = await WorkspaceService.countWorkedHours(userId);
+            const taskslate = await WorkspaceService.countInlateTasks(userId);
             res.status(200).json({
-                EmAndamento: inProgressTasksCount 
-                ,Concluídos: inCompletedTasksCount
-                ,HorasTrabalhadas: workedHoursCount
+                EmAndamento: inProgressTasksCount,
+                Concluídos: inCompletedTasksCount,
+                Atrasadas:taskslate,
+                HorasTrabalhadas: workedHoursCount
                 });
         } catch (error) {
             console.error(error);
