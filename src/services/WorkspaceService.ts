@@ -217,6 +217,27 @@ class WorkspaceService {
             throw error;
         }
     }
+    public async countInlateTasks(userId: string): Promise<number> {
+        try {
+            const workspaces = await Objetivo.find({
+                $or: [
+                    { proprietario: userId },
+                    { "usuarios.usuario": userId }
+                ]
+            }).populate('tarefas');
+            let count = 0;
+            workspaces.forEach(workspace => {
+                workspace.tarefas.forEach(tarefa => {
+                    if (tarefa.status === STATUS.ATRASADO && tarefa.usuarios.some(u => u.usuario.toString() === userId)) {
+                        count++;
+                    }
+                });
+            });
+            return count;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 
