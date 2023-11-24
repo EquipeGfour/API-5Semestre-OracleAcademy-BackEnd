@@ -62,7 +62,6 @@ class WorkspaceService {
     public async findWorkspaceByUser(usuario) {
         try {
             const { _id } = usuario;
-            console.log(JSON.stringify(_id));
             const workspaces = await Objetivo.find({ $and: [{ workspace: true }, { "usuarios.usuario": _id }] }).populate('usuarios.usuario proprietario').exec();
 
             return workspaces;
