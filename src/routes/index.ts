@@ -9,7 +9,7 @@ import uploadRouter from "./uploadRouter";
 
 const routes = Router();
 
-routes.get('/', (req, res) => res.json('Is Rodando......') );
+routes.post('/', (req, res) => res.json('Is Rodando......') );
 routes.use('/login', LoginController.login);
 routes.use('/objetivo', objetivoRouter);
 routes.use('/tarefa', tarefaRouter); 

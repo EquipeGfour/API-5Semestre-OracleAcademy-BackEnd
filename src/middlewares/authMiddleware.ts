@@ -33,7 +33,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 export const authenticateAsADM = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const workspaces = await WorkspaceService.findWorkByID(id)
+        const workspaces = await WorkspaceService.findWorkByID(id);
         const usuario = res.locals.jwtPayload
         const usuarioObjectId = new mongoose.Types.ObjectId(usuario._id);
         if (workspaces.proprietario._id.toString() === usuarioObjectId.toString()) {

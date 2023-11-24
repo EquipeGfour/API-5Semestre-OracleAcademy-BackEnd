@@ -83,8 +83,8 @@ class WorkspaceController {
     public async getWorkspaceByMonth(req: Request, res: Response) {
         try {
             const usuario = res.locals.jwtPayload;
+            const date = req.query.date as string;
             const id = usuario._id;
-            const { date } = req.body
             const parts = date.split('/');
             const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
 
@@ -96,6 +96,45 @@ class WorkspaceController {
         }
     }
 
+    public async countDelayedTasksWorkspace(req: Request, res: Response): Promise<void> {
+        const workspaceId = req.params.workspaceId;
+        try {
+            const delayedTasksCount = await WorkspaceService.countDelayedTasksWorkspace(workspaceId);
+            res.status(200).json({ count: delayedTasksCount });
+        } catch (error) {
+            res.status(500).json({ error: error.message || 'Erro interno do servidor' });
+        }
+    }
+
+    public async countWorkedHours(req: Request, res: Response): Promise<void> {
+        const userId = res.locals.jwtPayload
+        try {
+            const workedHoursCount = await WorkspaceService.countWorkedHours(userId)
+            res.status(200).json({ workedHoursCount })
+        } catch (error) {
+            res.status(500).json({ error: error.message || 'Erro interno do servidor' })
+        }
+    }
+    public async countInProgressTasks(req: Request, res: Response): Promise<void> {
+        try {
+            const userId = res.locals.jwtPayload._id;
+            const inProgressTasksCount = await WorkspaceService.countInProgressTasks(userId);
+            const inCompletedTasksCount = await WorkspaceService.countIncompletedTasks(userId);
+            const workedHoursCount = await WorkspaceService.countWorkedHours(userId);
+            const taskslate = await WorkspaceService.countInlateTasks(userId);
+            const TasksWorkspaceCount = await WorkspaceService.countTasksWorkspace(userId)
+            res.status(200).json({
+                EmAndamento: inProgressTasksCount,
+                Concluídos: inCompletedTasksCount,
+                Atrasadas:taskslate,
+                TarefasTotais: TasksWorkspaceCount,
+                HorasTrabalhadas: workedHoursCount
+                });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erro interno do servidor' });
+        }
+    }
 }
 
 
