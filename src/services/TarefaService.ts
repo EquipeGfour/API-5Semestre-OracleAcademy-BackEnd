@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 
 class TarefaService {
+
     public async createTarefa(titulo, descricao, data_estimada, prioridade, objetivo) {
         try {
             const tarefa = new Tarefa({
