@@ -104,7 +104,7 @@ class ObjetivoController {
 
     public async getObjectivesByMonth(req: Request, res: Response) {
         try{
-            const { date } = req.body
+            const date = req.query.date as string;
             const usuario = res.locals.jwtPayload;
 
             const parts = date.split('/');
