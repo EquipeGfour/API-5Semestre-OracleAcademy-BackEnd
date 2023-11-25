@@ -146,7 +146,7 @@ class WorkspaceService {
 
     public async countWorkedHours(userId: string): Promise<any> {
         try {
-            const workspace = await Objetivo.findOne({ $or: [{ proprietario: userId }, { "usuarios.usuario": userId }] }).populate('tarefas').exec();
+            const workspace = await Objetivo.findOne({ $or: [{ proprietario: userId }, { "usuarios.usuario": userId }], $and: [{ workspace: true }] }).populate('tarefas').exec();
             let count = 0;
             workspace.tarefas.forEach(tarefa => {
                 count += tarefa.cronometro

@@ -15,5 +15,6 @@ routes.patch("/editar/:id", ObjetivoController.editarObjetivo);
 routes.put("/adicionarUser/:id",authenticate, ObjetivoController.adicionarUsuariosWork);
 routes.get("/buscarCompletos", authenticate, ObjetivoController.buscarObjetivoConcluido);
 routes.get("/buscarPorData", authenticate, ObjetivoController.getObjectivesByMonth);
+routes.get("/buscarHorasTrabalhadas", authenticate, ObjetivoController.countWorkedHours);
 
 export default routes;

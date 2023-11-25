@@ -150,5 +150,48 @@ class ObjetivoService {
             throw error;
         }
     }
+
+    public async countWorkedHours(userId: string): Promise<any> {
+        try {
+            const objetivos = await Objetivo.findOne({
+                $and: [
+                    { workspace: false },
+                    { proprietario: userId }
+                ]
+            }, '-__v').populate({
+                path: 'tarefas',
+                populate: {
+                    path: 'usuarios', populate: { path: 'usuario' }
+                }
+            }).exec();
+            let count = 0;
+            objetivos.tarefas.forEach(tarefa => {
+                count += tarefa.cronometro
+            });
+            let sec = count / 1000
+
+            function converte(segundo) {
+                const FATOR_DE_CONVERSAO_HORAS = 3600;
+                const FATOR_DE_CONVERSAO_MINUTOS = 60;
+                const FATOR_DE_CONVERSAO_SEGUNDOS = 60;
+                const horas = (segundo / FATOR_DE_CONVERSAO_HORAS)
+                const h = {
+                    horas_inteiras: Math.trunc(horas),
+                    horas_quebradas: (horas % 1),
+                }
+
+                const minutos = (h.horas_quebradas * FATOR_DE_CONVERSAO_MINUTOS)
+                const m = {
+                    minutos_inteiros: Math.trunc(minutos),
+                    minutos_quebrados: minutos % 1,
+                }
+                const s = Math.floor((m.minutos_quebrados * FATOR_DE_CONVERSAO_SEGUNDOS))
+                return { horas: h.horas_inteiras, minutos: m.minutos_inteiros, segundos: s }
+            }
+            return converte(sec)
+        } catch (error) {
+            throw error
+        }
+    }
 }
 export default new ObjetivoService();

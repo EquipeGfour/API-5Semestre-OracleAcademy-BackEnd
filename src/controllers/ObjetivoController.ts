@@ -128,6 +128,16 @@ class ObjetivoController {
         }
     }
 
+    public async countWorkedHours(req: Request, res: Response): Promise<void> {
+        const userId = res.locals.jwtPayload
+        try {
+            const workedHoursCount = await ObjetivoService.countWorkedHours(userId)
+            res.status(200).json(workedHoursCount.horas)
+        } catch (error) {
+            res.status(500).json({ error: error.message || 'Erro interno do servidor' })
+        }
+    }
+
 }
 
 
