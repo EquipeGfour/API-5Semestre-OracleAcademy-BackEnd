@@ -9,25 +9,31 @@ class TarefaService {
 
     public async createTarefa(titulo, descricao, data_estimada, prioridade, objetivo) {
         try {
-            const today = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0];
-            const formatedDate = parseDate(data_estimada);
-            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Definir horas, minutos, segundos e milissegundos para 0
+    
+            const formatedDate = new Date(data_estimada);
+            formatedDate.setHours(0, 0, 0, 0); // Definir horas, minutos, segundos e milissegundos para 0
+    
+            const isAtrasado = formatedDate.getTime() < today.getTime();
+    
             const tarefa = new Tarefa({
                 titulo: titulo,
                 descricao: descricao,
                 data_estimada: formatedDate,
                 prioridade: prioridade,
-                status: formatedDate < new Date(today).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0] ? STATUS.ATRASADO : STATUS.NAO_INICIADO,
-            })
+                status: isAtrasado ? STATUS.ATRASADO : STATUS.NAO_INICIADO,
+            });
+    
             const response = await tarefa.save();
             objetivo.tarefas.push(response);
             await objetivo.save();
             return response;
         } catch (error) {
-            throw error
+            throw error;
         }
     }
-
+    
     public async findTarefasByObjetivoId(id) {
         try {
             const objetivo = await ObjetivoService.getObjetivoById(id);
