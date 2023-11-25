@@ -254,22 +254,26 @@ class WorkspaceService {
                 1: 0,
                 2: 0,
                 3: 0,
+                4: 0
             };
 
             // Conta os objetivos por status
             workspaces.forEach(objetivo => {
-                const status = objetivo.status;
-                const parts = objetivo.data_criacao.split('/');
-                const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                objetivo.tarefas.forEach(tarefa => {
+                    const status = tarefa.status;
+                    const parts = tarefa.data_criacao.split('/');
+                    const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
 
-                if (
-                    new Date(formattedDate) &&
-                    new Date(formattedDate) >= new Date(firstDayOfMonth) &&
-                    new Date(formattedDate) <= new Date(lastDayOfMonth)
-                ) {
-                    statusCount[status] += 1;
-                }
+                    if (
+                        new Date(formattedDate) &&
+                        new Date(formattedDate) >= new Date(firstDayOfMonth) &&
+                        new Date(formattedDate) <= new Date(lastDayOfMonth)
+                    ) {
+                        statusCount[status] += 1;
+                    }
+                });
             });
+
 
             return statusCount;
         } catch (error) {

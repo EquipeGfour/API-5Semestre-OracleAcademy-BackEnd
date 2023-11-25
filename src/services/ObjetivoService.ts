@@ -103,30 +103,43 @@ class ObjetivoService {
                     { data_criacao: { $gte: formattedFirstDay, $lt: formattedLastDay } },
                     { proprietario: usuario._id }
                 ]
-            });
+            }, '-__v').populate({
+                path: 'tarefas',
+                populate: {
+                    path: 'usuarios', populate: { path: 'usuario' }
+                }
+            })
+                .populate('proprietario', '-__v').exec();
+
             // Inicializa o dicionário para contar os objetivos por status
             const statusCount: { [status: number]: number } = {
                 1: 0,
                 2: 0,
                 3: 0,
+                4: 0
             };
 
             // Conta os objetivos por status
             result.forEach(objetivo => {
-                const status = objetivo.status;
-                const parts = objetivo.data_criacao.split('/');
-                const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-                
-                if (
-                    new Date(formattedDate) &&
-                    new Date(formattedDate) >= new Date(firstDayOfMonth) &&
-                    new Date(formattedDate) <= new Date(lastDayOfMonth)
-                ) {
-                    statusCount[status] += 1;
-                }
-            });
+                objetivo.tarefas.forEach(tarefa => {
+                    statusCount[tarefa.status] += 1;
 
+                    const status = tarefa.status;
+                    const parts = tarefa.data_criacao.split('/');
+                    const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                    
+                    if (
+                        new Date(formattedDate) &&
+                        new Date(formattedDate) >= new Date(firstDayOfMonth) &&
+                        new Date(formattedDate) <= new Date(lastDayOfMonth)
+                    ) {
+                        statusCount[status] += 1;
+                    }
+                });
+            });
+            
             return statusCount;
+
         } catch (error) {
             throw error;
         }

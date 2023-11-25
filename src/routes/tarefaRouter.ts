@@ -10,7 +10,7 @@ routes.post("/criar/:id",authenticate, TarefaController.criarTarefa);
 routes.get("/buscarTarefas/:id", TarefaController.buscarTarefas);
 routes.get("/buscarTarefa/:id", TarefaController.buscarTarefaPorId);
 routes.patch("/editar/:id",authenticate, authenticateAsADM, TarefaController.editarTarefa);
-routes.delete("/deletar/:id",authenticate, authenticateAsADM, TarefaController.excluirTarefa);
+routes.delete("/deletar/:id",authenticate, TarefaController.excluirTarefa);
 routes.put("/mudarPrioridade/:id",authenticate, authenticateAsADM, TarefaController.alterarPrioridade);
 routes.put("/adicionarUser/:id",authenticate, authenticateAsADM, TarefaController.adicionarUsuariosTarefa);
 routes.put("/mudarStatus/:id", TarefaController.mudarStatusDaTarefa);
