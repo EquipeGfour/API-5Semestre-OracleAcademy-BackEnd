@@ -272,9 +272,9 @@ class WorkspaceService {
                     const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
 
                     if (
-                        new Date(formattedDate) &&
-                        new Date(formattedDate) >= new Date(firstDayOfMonth) &&
-                        new Date(formattedDate) <= new Date(lastDayOfMonth)
+                        new Date(tarefa.data_estimada) &&
+                        new Date(tarefa.data_estimada) >= new Date(firstDayOfMonth) &&
+                        new Date(tarefa.data_estimada) <= new Date(lastDayOfMonth)
                     ) {
                         statusCount[status] += 1;
                     }
