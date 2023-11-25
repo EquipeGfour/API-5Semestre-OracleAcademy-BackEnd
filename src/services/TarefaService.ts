@@ -11,10 +11,8 @@ class TarefaService {
         try {
             const today = new Date();
             today.setHours(0, 0, 0, 0); // Definir horas, minutos, segundos e milissegundos para 0
-    
             const formatedDate = new Date(data_estimada);
             formatedDate.setHours(0, 0, 0, 0); // Definir horas, minutos, segundos e milissegundos para 0
-    
             const isAtrasado = formatedDate.getTime() < today.getTime();
     
             const tarefa = new Tarefa({

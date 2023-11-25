@@ -268,7 +268,7 @@ class WorkspaceService {
             workspaces.forEach(objetivo => {
                 objetivo.tarefas.forEach(tarefa => {
                     const status = tarefa.status;
-                    const parts = tarefa.data_criacao.split('/');
+                    const parts = tarefa.data_estimada.split('/');
                     const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
 
                     if (

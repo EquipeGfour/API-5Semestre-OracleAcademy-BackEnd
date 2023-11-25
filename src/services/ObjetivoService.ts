@@ -104,12 +104,10 @@ class ObjetivoService {
             const firstDayOfMonth = startOfMonth(date);
             const lastDayOfMonth = endOfMonth(date);
 
-            const formattedFirstDay = firstDayOfMonth.toLocaleDateString('pt-BR');
-            const formattedLastDay = lastDayOfMonth.toLocaleDateString('pt-BR');
 
             const result = await Objetivo.find({
                 $and: [
-                    { data_criacao: { $gte: formattedFirstDay, $lt: formattedLastDay } },
+                    { workspace: false },
                     { proprietario: usuario._id }
                 ]
             }, '-__v').populate({
@@ -119,6 +117,7 @@ class ObjetivoService {
                 }
             })
                 .populate('proprietario', '-__v').exec();
+
             // Inicializa o dicionário para contar os objetivos por status
             const statusCount: { [status: number]: number } = {
                 1: 0,
@@ -131,11 +130,10 @@ class ObjetivoService {
             result.forEach(objetivo => {
                 objetivo.tarefas.forEach(tarefa => {
 
-
                     const status = tarefa.status;
-                    const parts = tarefa.data_criacao.split('/');
+                    const parts = tarefa.data_estimada.split('/');
                     const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-                    
+
                     if (
                         new Date(formattedDate) &&
                         new Date(formattedDate) >= new Date(firstDayOfMonth) &&
