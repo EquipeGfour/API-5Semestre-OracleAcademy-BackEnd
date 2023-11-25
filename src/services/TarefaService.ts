@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 
 class TarefaService {
+
     public async createTarefa(titulo, descricao, data_estimada, prioridade, objetivo) {
         try {
             const tarefa = new Tarefa({
@@ -237,7 +238,7 @@ class TarefaService {
                     if (data_estimada) {
                         if (data_estimada < today) {
                             if (tarefas[i].status != STATUS.ATRASADO) {
-                                ids.push(tarefas[i]._id)
+                                ids.push(tarefas[i]._id);
                             }
                         }
                     }

@@ -12,5 +12,9 @@ routes.put('/changestatus', authenticate, WorkspaceController.changeStatusWorksp
 routes.get("/buscarWorkspaceUsuario", authenticate, WorkspaceController.buscarWorkspaceUsuario);
 routes.get("/buscarWorkspaceProprietario", authenticate, WorkspaceController.buscarWorkspacesByOwner);
 routes.get("/buscarCompletos", authenticate, WorkspaceController.buscarWorkspaceConcluido);
+routes.get('/buscaStatus/:workspaceId/atrasadas', WorkspaceController.countDelayedTasksWorkspace);
+routes.get('/buscaTempo', authenticate, WorkspaceController.countWorkedHours);
+routes.get('/buscaEmAndamento', authenticate, WorkspaceController.countInProgressTasks);
+routes.get("/buscarWorkspaceByMonth", authenticate, WorkspaceController.getWorkspaceByMonth);
 
 export default routes;
