@@ -18,7 +18,7 @@ class TarefaService {
             const tarefa = new Tarefa({
                 titulo: titulo,
                 descricao: descricao,
-                data_estimada: formatedDate,
+                data_estimada: data_estimada,
                 prioridade: prioridade,
                 status: isAtrasado ? STATUS.ATRASADO : STATUS.NAO_INICIADO,
             });

@@ -125,7 +125,7 @@ class ObjetivoService {
                 3: 0,
                 4: 0
             };
-
+            
             // Conta os objetivos por status
             result.forEach(objetivo => {
                 objetivo.tarefas.forEach(tarefa => {
@@ -133,11 +133,11 @@ class ObjetivoService {
                     const status = tarefa.status;
                     const parts = tarefa.data_estimada.split('/');
                     const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-
+                    console.log(formattedDate)
                     if (
-                        new Date(formattedDate) &&
-                        new Date(formattedDate) >= new Date(firstDayOfMonth) &&
-                        new Date(formattedDate) <= new Date(lastDayOfMonth)
+                        new Date(tarefa.data_estimada) &&
+                        new Date(tarefa.data_estimada) >= new Date(firstDayOfMonth) &&
+                        new Date(tarefa.data_estimada) <= new Date(lastDayOfMonth)
                     ) {
                         statusCount[status] += 1;
                     }
