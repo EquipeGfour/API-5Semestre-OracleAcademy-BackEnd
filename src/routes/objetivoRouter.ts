@@ -13,6 +13,7 @@ routes.delete("/deletar/:id", ObjetivoController.excluirObjetivo);
 routes.put("/mudarPrioridade/:id", ObjetivoController.alterarPrioridade);
 routes.patch("/editar/:id", ObjetivoController.editarObjetivo);
 routes.put("/adicionarUser/:id",authenticate, ObjetivoController.adicionarUsuariosWork);
+routes.get("/buscarCompletos", authenticate, ObjetivoController.buscarObjetivoConcluido);
 routes.get("/buscarPorData", authenticate, ObjetivoController.getObjectivesByMonth);
 
 export default routes;

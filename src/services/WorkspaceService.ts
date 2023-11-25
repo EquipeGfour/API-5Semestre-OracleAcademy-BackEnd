@@ -3,7 +3,6 @@ import { PERMISSAO, STATUS } from "../utils/enum";
 import { startOfMonth, endOfMonth } from 'date-fns';
 import TarefaService from "./TarefaService";
 
-
 class WorkspaceService {
 
     public async findWorkByID(id: string) {
@@ -95,6 +94,14 @@ class WorkspaceService {
             throw error;
         }
     }
+    public async findWorkspacesByCompletion(id: string) {
+        try {
+            const workspaces = await Objetivo.find({ $and: [{ status: 1 }, { workspace: true }, { $or: [{ proprietario: id }] }] }).populate('tarefas proprietario usuarios.usuario').exec();
+            return workspaces;
+        } catch (error) {
+            console.log(error)
+        }
+    }
     public async countDelayedTasksWorkspace(workspaceId: string): Promise<number> {
         try {
             const workspace = await Objetivo.findOne({ _id: workspaceId, workspace: true }).populate('tarefas').exec();
@@ -122,10 +129,10 @@ class WorkspaceService {
             }
             let TasksCount = 0
             workspaces.forEach(workspaces => {
-                workspaces.tarefas.forEach((tarefa , i) => {
-                    if (tarefa.status === STATUS.COMPLETO && tarefa.usuarios.some(u => u.usuario.toString() === userId) || 
-                    tarefa.status === STATUS.EM_ANDAMENTO && tarefa.usuarios.some(u => u.usuario.toString() === userId) || 
-                    tarefa.status === STATUS.ATRASADO && tarefa.usuarios.some(u => u.usuario.toString() === userId)) {
+                workspaces.tarefas.forEach((tarefa, i) => {
+                    if (tarefa.status === STATUS.COMPLETO && tarefa.usuarios.some(u => u.usuario.toString() === userId) ||
+                        tarefa.status === STATUS.EM_ANDAMENTO && tarefa.usuarios.some(u => u.usuario.toString() === userId) ||
+                        tarefa.status === STATUS.ATRASADO && tarefa.usuarios.some(u => u.usuario.toString() === userId)) {
                         TasksCount += workspaces.total_tarefas
                     }
                 })
@@ -233,11 +240,11 @@ class WorkspaceService {
             });
             return count;
         } catch (error) {
-                throw error;
-            }
+            throw error;
+        }
     }
 
-    public async getDataByMonth(date: Date, id : string) {
+    public async getDataByMonth(date: Date, id: string) {
         try {
             const firstDayOfMonth = startOfMonth(date);
             const lastDayOfMonth = endOfMonth(date);

@@ -101,7 +101,17 @@ class ObjetivoController {
             res.status(500).json(error)
         }
     }
-
+  
+    public async buscarObjetivoConcluido(req: Request, res: Response) {
+        try {
+            const usuario = res.locals.jwtPayload;
+            const workspace = await ObjetivoService.getByCompletion(usuario._id);
+            return res.json(workspace);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    }
+    
     public async getObjectivesByMonth(req: Request, res: Response) {
         try{
             const date = req.query.date as string;
