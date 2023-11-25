@@ -80,7 +80,15 @@ class WorkspaceController {
             return res.status(500).json({ error: 'Erro interno do servidor' });
         }
     }
-
+    public async buscarWorkspaceConcluido(req: Request, res: Response) {
+        try {
+            const usuario = res.locals.jwtPayload;
+            const workspace = await WorkspaceService.findWorkspacesByCompletion(usuario._id);
+            return res.json(workspace);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    }
 
 }
 

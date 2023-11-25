@@ -88,7 +88,15 @@ class ObjetivoService {
             throw error;
         }
     }
-
+    public async getByCompletion(id: string) {
+        try {
+            const objetivos = await Objetivo.find({ $and: [{ status: 1 }, { proprietario: id }, { workspace: false }] }, '-__v').populate("tarefas proprietario usuarios.usuario", "-__v").exec();
+            return objetivos;
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    }
 
 }
 

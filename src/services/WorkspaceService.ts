@@ -88,7 +88,15 @@ class WorkspaceService {
             throw error;
         }
     }
-
+    public async findWorkspacesByCompletion(id: string) {
+        try {
+            const workspaces = await Objetivo.find({ $and: [{ status: 1 }, { workspace: true }, { $or: [{ proprietario: id }] }]}).populate('tarefas proprietario usuarios.usuario').exec();
+            return workspaces;
+        } catch (error) {
+            console.log(error)
+            throw error;
+        }
+    }
 }
 
 
