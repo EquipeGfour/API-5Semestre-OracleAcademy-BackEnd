@@ -119,7 +119,6 @@ class ObjetivoService {
                 }
             })
                 .populate('proprietario', '-__v').exec();
-
             // Inicializa o dicionário para contar os objetivos por status
             const statusCount: { [status: number]: number } = {
                 1: 0,
@@ -131,7 +130,7 @@ class ObjetivoService {
             // Conta os objetivos por status
             result.forEach(objetivo => {
                 objetivo.tarefas.forEach(tarefa => {
-                    statusCount[tarefa.status] += 1;
+
 
                     const status = tarefa.status;
                     const parts = tarefa.data_criacao.split('/');

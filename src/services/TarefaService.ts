@@ -9,11 +9,15 @@ class TarefaService {
 
     public async createTarefa(titulo, descricao, data_estimada, prioridade, objetivo) {
         try {
+            const today = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0];
+            const formatedDate = parseDate(data_estimada);
+            
             const tarefa = new Tarefa({
                 titulo: titulo,
                 descricao: descricao,
-                data_estimada: data_estimada,
-                prioridade: prioridade
+                data_estimada: formatedDate,
+                prioridade: prioridade,
+                status: formatedDate < new Date(today).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0] ? STATUS.ATRASADO : STATUS.NAO_INICIADO,
             })
             const response = await tarefa.save();
             objetivo.tarefas.push(response);
@@ -229,26 +233,29 @@ class TarefaService {
 
     public async verifyIfTarefaIsExpired() {
         try {
+            console.log("Crontab running at " + new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }));
+    
             const tarefas = await Tarefa.find();
-            let ids = []
-            if (tarefas.length) {
-                const today: Date = new Date();
-                for (let i = 0; i < tarefas.length; i++) {
-                    const data_estimada = parseDate(tarefas[i].data_estimada);
-                    if (data_estimada) {
-                        if (data_estimada < today) {
-                            if (tarefas[i].status != STATUS.ATRASADO) {
-                                ids.push(tarefas[i]._id);
-                            }
-                        }
-                    }
-                    if (ids.length) {
-                        await Tarefa.updateMany({ _id: { $in: ids } }, { $set: { status: STATUS.ATRASADO } });
-                    }
+            let ids = [];
+    
+            tarefas.forEach(async (tarefa) => {
+                if (tarefa.status === STATUS.ATRASADO) {
+                    return;
                 }
+    
+                const data_estimada = parseDate(tarefa.data_estimada);
+                const today = new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).split(',')[0];
+    
+                if (data_estimada < today) {
+                    ids.push(tarefa._id);
+                }
+            });
+    
+            if (ids.length) {
+                await Tarefa.updateMany({ _id: { $in: ids } }, { $set: { status: STATUS.ATRASADO } });
             }
         } catch (error) {
-            console.log(error);
+            console.error("Erro ao verificar tarefas expiradas:", error);
         }
     }
 
