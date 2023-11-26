@@ -15,6 +15,8 @@ class TarefaController {
             const objetivo = await ObjetivoService.getObjetivoById(id);
             const { titulo, descricao, data_estimada, prioridade } = req.body;
             const response = await TarefaService.createTarefa(titulo, descricao, data_estimada, prioridade, objetivo);
+            objetivo.total_tarefas++;
+            await objetivo.save();
             return res.status(200).json(response);
         } catch (error) {
             res.status(500).json(error);

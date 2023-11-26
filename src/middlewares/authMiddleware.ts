@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import * as dotenv from "dotenv";
 import { Request, Response, NextFunction } from 'express';
+import { UsuarioService, WorkspaceService } from '../services';
+import { IObjetivo } from '../models';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -26,3 +29,19 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     }
     next();
 };
+
+export const authenticateAsADM = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        const workspaces = await WorkspaceService.findWorkByID(id);
+        const usuario = res.locals.jwtPayload
+        const usuarioObjectId = new mongoose.Types.ObjectId(usuario._id);
+        if (workspaces.proprietario._id.toString() === usuarioObjectId.toString()) {
+            next()
+        } else {
+            return res.status(403).json({message: "Permissão negada."})
+        }
+    } catch (error) {
+        return res.json(error)
+    }
+}
