@@ -144,12 +144,21 @@ class WorkspaceService {
     }
 
 
-    public async countWorkedHours(userId: string): Promise<any> {
+    public async countWorkedHours(date: Date, userId: string): Promise<any> {
         try {
+            const firstDayOfMonth = startOfMonth(date);
+            const lastDayOfMonth = endOfMonth(date);
+
             const workspace = await Objetivo.findOne({ $or: [{ proprietario: userId }, { "usuarios.usuario": userId }], $and: [{ workspace: true }] }).populate('tarefas').exec();
             let count = 0;
             workspace.tarefas.forEach(tarefa => {
-                count += tarefa.cronometro
+                if (
+                    new Date(tarefa.data_estimada) &&
+                    new Date(tarefa.data_estimada) >= new Date(firstDayOfMonth) &&
+                    new Date(tarefa.data_estimada) <= new Date(lastDayOfMonth)
+                ) {
+                    count += tarefa.cronometro
+                }
             });
             let sec = count / 1000
 

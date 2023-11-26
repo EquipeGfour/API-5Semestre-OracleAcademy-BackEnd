@@ -133,7 +133,7 @@ class ObjetivoService {
                     const status = tarefa.status;
                     const parts = tarefa.data_estimada.split('/');
                     const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-                    console.log(formattedDate)
+
                     if (
                         new Date(tarefa.data_estimada) &&
                         new Date(tarefa.data_estimada) >= new Date(firstDayOfMonth) &&
@@ -151,8 +151,11 @@ class ObjetivoService {
         }
     }
 
-    public async countWorkedHours(userId: string): Promise<any> {
+    public async countWorkedHours(date: Date, userId: string): Promise<any> {
         try {
+            const firstDayOfMonth = startOfMonth(date);
+            const lastDayOfMonth = endOfMonth(date);
+
             const objetivos = await Objetivo.findOne({
                 $and: [
                     { workspace: false },
@@ -166,7 +169,15 @@ class ObjetivoService {
             }).exec();
             let count = 0;
             objetivos.tarefas.forEach(tarefa => {
-                count += tarefa.cronometro
+                const parts = tarefa.data_estimada.split('/');
+                const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                if (
+                    new Date(tarefa.data_estimada) &&
+                    new Date(tarefa.data_estimada) >= new Date(firstDayOfMonth) &&
+                    new Date(tarefa.data_estimada) <= new Date(lastDayOfMonth)
+                ) {
+                    count += tarefa.cronometro
+                }
             });
             let sec = count / 1000
 

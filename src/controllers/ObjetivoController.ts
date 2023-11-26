@@ -130,8 +130,11 @@ class ObjetivoController {
 
     public async countWorkedHours(req: Request, res: Response): Promise<void> {
         const userId = res.locals.jwtPayload
+        const date = req.query.date as string
+        const parts = date.split('/');
+        const formattedDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
         try {
-            const workedHoursCount = await ObjetivoService.countWorkedHours(userId)
+            const workedHoursCount = await ObjetivoService.countWorkedHours(formattedDate, userId)
             res.status(200).json(workedHoursCount.horas)
         } catch (error) {
             res.status(500).json({ error: error.message || 'Erro interno do servidor' })
